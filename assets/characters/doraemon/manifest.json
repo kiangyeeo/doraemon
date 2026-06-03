@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "characterId": "doraemon-local-placeholder",
+  "displayName": "Local Placeholder Mascot",
+  "defaultState": "idle",
+  "window": {
+    "width": 512,
+    "height": 512
+  },
+  "stage": {
+    "anchorX": 256,
+    "anchorY": 448,
+    "defaultDisplaySize": 256
+  },
+  "actions": [
+    {
+      "name": "idle",
+      "frames": [
+        "processed/idle/idle_000.png",
+        "processed/idle/idle_001.png",
+        "processed/idle/idle_002.png",
+        "processed/idle/idle_003.png"
+      ],
+      "fps": 4,
+      "loop": true,
+      "anchorX": 128,
+      "anchorY": 256,
+      "scale": 1,
+      "nextState": "idle"
+    },
+    {
+      "name": "walk",
+      "frames": [
+        "processed/walk/walk_000.png",
+        "processed/walk/walk_001.png",
+        "processed/walk/walk_002.png",
+        "processed/walk/walk_003.png"
+      ],
+      "fps": 8,
+      "loop": true,
+      "anchorX": 128,
+      "anchorY": 256,
+      "scale": 1,
+      "nextState": "idle"
+    },
+    {
+      "name": "sleep",
+      "frames": [
+        "processed/sleep/sleep_000.png",
+        "processed/sleep/sleep_001.png",
+        "processed/sleep/sleep_002.png"
+      ],
+      "fps": 2,
+      "loop": true,
+      "anchorX": 128,
+      "anchorY": 256,
+      "scale": 1,
+      "nextState": "idle"
+    },
+    {
+      "name": "drag",
+      "frames": [
+        "processed/drag/drag_000.png",
+        "processed/drag/drag_001.png"
+      ],
+      "fps": 6,
+      "loop": true,
+      "anchorX": 128,
+      "anchorY": 256,
+      "scale": 1,
+      "nextState": "idle"
+    },
+    {
+      "name": "happy",
+      "frames": [
+        "processed/happy/happy_000.png",
+        "processed/happy/happy_001.png",
+        "processed/happy/happy_002.png",
+        "processed/happy/happy_003.png"
+      ],
+      "fps": 8,
+      "loop": false,
+      "anchorX": 128,
+      "anchorY": 256,
+      "scale": 1,
+      "nextState": "idle"
+    },
+    {
+      "name": "thinking",
+      "frames": [
+        "processed/thinking/thinking_000.png",
+        "processed/thinking/thinking_001.png",
+        "processed/thinking/thinking_002.png"
+      ],
+      "fps": 4,
+      "loop": true,
+      "anchorX": 128,
+      "anchorY": 256,
+      "scale": 1,
+      "nextState": "idle"
+    },
+    {
+      "name": "coding",
+      "frames": [
+        "processed/coding/coding_000.png",
+        "processed/coding/coding_001.png",
+        "processed/coding/coding_002.png",
+        "processed/coding/coding_003.png"
+      ],
+      "fps": 6,
+      "loop": true,
+      "anchorX": 128,
+      "anchorY": 256,
+      "scale": 1,
+      "nextState": "idle"
+    },
+    {
+      "name": "gadget",
+      "frames": [
+        "processed/gadget/gadget_000.png",
+        "processed/gadget/gadget_001.png",
+        "processed/gadget/gadget_002.png",
+        "processed/gadget/gadget_003.png"
+      ],
+      "fps": 7,
+      "loop": false,
+      "anchorX": 128,
+      "anchorY": 256,
+      "scale": 1,
+      "nextState": "idle"
+    },
+    {
+      "name": "eating",
+      "frames": [
+        "processed/eating/eating_000.png",
+        "processed/eating/eating_001.png",
+        "processed/eating/eating_002.png",
+        "processed/eating/eating_003.png"
+      ],
+      "fps": 6,
+      "loop": true,
+      "anchorX": 128,
+      "anchorY": 256,
+      "scale": 1,
+      "nextState": "idle"
+    }
+  ]
+}

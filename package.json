@@ -1,0 +1,28 @@
+{
+  "name": "doraemon-style-desktop-pet",
+  "version": "0.1.0",
+  "description": "Local-only desktop mascot prototype built with Electron, TypeScript, Vite, and Preact.",
+  "private": true,
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "npm run type-check && electron-vite build",
+    "preview": "electron-vite preview",
+    "type-check": "tsc --noEmit",
+    "assets:import": "tsx scripts/import-assets.ts",
+    "assets:normalize": "tsx scripts/normalize-frames.ts",
+    "assets:manifest": "tsx scripts/build-manifest.ts"
+  },
+  "dependencies": {
+    "preact": "^10.24.3"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.9.1",
+    "@types/node": "^22.10.2",
+    "electron": "^33.2.1",
+    "electron-vite": "^2.3.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11"
+  }
+}

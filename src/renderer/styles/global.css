@@ -1,0 +1,60 @@
+:root {
+  color-scheme: light;
+  font-family: system-ui, sans-serif;
+  background: transparent;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-user-drag: none;
+}
+
+html,
+body,
+#root {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+  user-select: none;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+.mascot-stage {
+  position: relative;
+  width: 512px;
+  height: 512px;
+  overflow: hidden;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+
+.mascot-stage.is-dragging {
+  cursor: grabbing;
+}
+
+.mascot-stage-error {
+  outline: 1px solid rgb(255 80 80 / 45%);
+  outline-offset: -1px;
+}
+
+.sprite-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.sprite-img {
+  position: absolute;
+  display: block;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}

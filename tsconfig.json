@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "types": ["node"]
+  },
+  "include": ["electron.vite.config.ts", "src", "scripts"]
+}
