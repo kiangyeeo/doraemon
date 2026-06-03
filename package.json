@@ -9,7 +9,7 @@
     "build": "npm run type-check && electron-vite build",
     "preview": "electron-vite preview",
     "type-check": "tsc --noEmit",
-    "assets:import": "tsx scripts/import-assets.ts",
+    "assets:import": "tsx scripts/import-doraemon-assets.ts",
     "assets:normalize": "tsx scripts/normalize-frames.ts",
     "assets:manifest": "tsx scripts/build-manifest.ts"
   },
@@ -21,6 +21,7 @@
     "@types/node": "^22.10.2",
     "electron": "^33.2.1",
     "electron-vite": "^2.3.0",
+    "sharp": "^0.34.5",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vite": "^5.4.11"

@@ -42,8 +42,11 @@ assets/
     doraemon/
       raw/
       processed/
+      processed-manifest.json
+      contact-sheet.png
       manifest.json
 scripts/
+  import-doraemon-assets.ts
   import-assets.ts
   build-manifest.ts
   normalize-frames.ts
@@ -85,35 +88,65 @@ idle, walk, sleep, drag, happy, thinking, coding, gadget, eating
 
 ## Replacing Placeholder Art
 
-Put your source PNG frames under `assets/characters/doraemon/raw/<action>/`, for example:
+You can put source PNG frames under `assets/characters/doraemon/raw/<action>/`, for example:
 
 ```text
 assets/characters/doraemon/raw/idle/frame_000.png
 assets/characters/doraemon/raw/idle/frame_001.png
 ```
 
-Then normalize file names:
+To import Doraemon desktop-pet assets from a local clone of AlleyBo55/doraemon, run:
 
 ```bash
-npm run assets:normalize -- doraemon
+npm run assets:import -- --source ../doraemon-source
 ```
 
-This copies frames into:
+Windows absolute path example:
+
+```bash
+npm run assets:import -- --source E:\Project\doraemon_source
+```
+
+The importer only reads the local source folder; it does not download assets from the web. It recursively scans PNG and SVG files, copies likely Doraemon desktop-pet sprite assets into:
 
 ```text
-assets/characters/doraemon/processed/<action>/<action>_000.png
+assets/characters/doraemon/raw/emotion/
+assets/characters/doraemon/raw/action/
+assets/characters/doraemon/raw/motion/
+assets/characters/doraemon/raw/coding/
+assets/characters/doraemon/raw/misc/
+```
+
+Original file names are preserved. The import also writes:
+
+```text
+assets/characters/doraemon/asset-report.md
+assets/characters/doraemon/source-credit.md
+```
+
+Then normalize every raw PNG frame into a 512 x 512 transparent canvas:
+
+```bash
+npm run assets:normalize
+```
+
+The normalizer detects each frame's non-transparent bounding box, crops transparent edges, scales the character body to roughly 70% of the canvas height, and aligns the body bottom to the 88% baseline. It preserves the raw folder structure under:
+
+```text
+assets/characters/doraemon/processed/
+```
+
+It also writes:
+
+```text
+assets/characters/doraemon/processed-manifest.json
+assets/characters/doraemon/contact-sheet.png
 ```
 
 Rebuild the manifest from processed folders while preserving existing timing and anchor settings:
 
 ```bash
 npm run assets:manifest -- doraemon
-```
-
-You can also import a folder directly:
-
-```bash
-npm run assets:import -- --source C:\path\to\pngs --character doraemon --action idle
 ```
 
 ## Rendering Notes

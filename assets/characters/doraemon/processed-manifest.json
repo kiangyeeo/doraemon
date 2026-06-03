@@ -1,0 +1,4197 @@
+{
+  "generatedAt": "2026-06-03T15:41:30.741Z",
+  "rawRoot": "assets/characters/doraemon/raw",
+  "processedRoot": "assets/characters/doraemon/processed",
+  "canvas": {
+    "width": 512,
+    "height": 512,
+    "targetBodyHeightRatio": 0.7,
+    "anchorX": 0.5,
+    "anchorY": 0.88
+  },
+  "frames": [
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-angry-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-angry-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 16,
+        "top": 24,
+        "right": 111,
+        "bottom": 121,
+        "width": 96,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-angry-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-angry-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 16,
+        "top": 22,
+        "right": 111,
+        "bottom": 121,
+        "width": 96,
+        "height": 100
+      },
+      "scale": 3.5839999999999996,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-angry-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-angry-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 16,
+        "top": 24,
+        "right": 110,
+        "bottom": 121,
+        "width": 95,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-chat_answer-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-chat_answer-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 21,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-chat_answer-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-chat_answer-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 17,
+        "top": 19,
+        "right": 109,
+        "bottom": 121,
+        "width": 93,
+        "height": 103
+      },
+      "scale": 3.479611650485437,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-chat_answer-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-chat_answer-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 17,
+        "top": 20,
+        "right": 109,
+        "bottom": 121,
+        "width": 93,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-chat_question-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-chat_question-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 14,
+        "top": 31,
+        "right": 113,
+        "bottom": 121,
+        "width": 100,
+        "height": 91
+      },
+      "scale": 3.9384615384615382,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-chat_question-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-chat_question-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 14,
+        "top": 30,
+        "right": 112,
+        "bottom": 121,
+        "width": 99,
+        "height": 92
+      },
+      "scale": 3.895652173913043,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-chat_question-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-chat_question-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 14,
+        "top": 31,
+        "right": 113,
+        "bottom": 121,
+        "width": 100,
+        "height": 91
+      },
+      "scale": 3.9384615384615382,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-coding_thinking-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-coding_thinking-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 16,
+        "top": 21,
+        "right": 110,
+        "bottom": 121,
+        "width": 95,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-coding_thinking-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-coding_thinking-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 16,
+        "top": 20,
+        "right": 111,
+        "bottom": 121,
+        "width": 96,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-coding_thinking-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-coding_thinking-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 16,
+        "top": 21,
+        "right": 110,
+        "bottom": 121,
+        "width": 95,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-coding_typing-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-coding_typing-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 14,
+        "top": 31,
+        "right": 113,
+        "bottom": 121,
+        "width": 100,
+        "height": 91
+      },
+      "scale": 3.9384615384615382,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-coding_typing-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-coding_typing-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 14,
+        "top": 31,
+        "right": 113,
+        "bottom": 121,
+        "width": 100,
+        "height": 91
+      },
+      "scale": 3.9384615384615382,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-coding_typing-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-coding_typing-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 14,
+        "top": 31,
+        "right": 113,
+        "bottom": 121,
+        "width": 100,
+        "height": 91
+      },
+      "scale": 3.9384615384615382,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-eating-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-eating-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 24,
+        "right": 101,
+        "bottom": 121,
+        "width": 77,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-eating-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-eating-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 24,
+        "right": 101,
+        "bottom": 121,
+        "width": 77,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-eating-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-eating-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 24,
+        "right": 101,
+        "bottom": 121,
+        "width": 77,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-explain_gadget-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-explain_gadget-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 18,
+        "right": 102,
+        "bottom": 121,
+        "width": 78,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-explain_gadget-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-explain_gadget-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 18,
+        "right": 102,
+        "bottom": 121,
+        "width": 78,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-explain_gadget-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-explain_gadget-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 18,
+        "right": 102,
+        "bottom": 121,
+        "width": 78,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-gadget_search-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-gadget_search-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 20,
+        "top": 24,
+        "right": 107,
+        "bottom": 121,
+        "width": 88,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-gadget_search-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-gadget_search-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 20,
+        "top": 23,
+        "right": 107,
+        "bottom": 121,
+        "width": 88,
+        "height": 99
+      },
+      "scale": 3.62020202020202,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-gadget_search-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-gadget_search-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 20,
+        "top": 24,
+        "right": 107,
+        "bottom": 121,
+        "width": 88,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-gadget_surprise-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-gadget_surprise-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 13,
+        "top": 18,
+        "right": 114,
+        "bottom": 121,
+        "width": 102,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-gadget_surprise-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-gadget_surprise-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 27,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 95
+      },
+      "scale": 3.7726315789473683,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-gadget_surprise-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-gadget_surprise-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 13,
+        "top": 18,
+        "right": 114,
+        "bottom": 121,
+        "width": 102,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-gadget_use-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-gadget_use-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 18,
+        "right": 102,
+        "bottom": 121,
+        "width": 78,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-gadget_use-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-gadget_use-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 18,
+        "right": 102,
+        "bottom": 121,
+        "width": 78,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-gadget_use-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-gadget_use-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 18,
+        "right": 102,
+        "bottom": 121,
+        "width": 78,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-greeting-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-greeting-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 21,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-greeting-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-greeting-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 17,
+        "top": 19,
+        "right": 109,
+        "bottom": 121,
+        "width": 93,
+        "height": 103
+      },
+      "scale": 3.479611650485437,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-greeting-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-greeting-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 17,
+        "top": 20,
+        "right": 109,
+        "bottom": 121,
+        "width": 93,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-hungry-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-hungry-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 24,
+        "right": 101,
+        "bottom": 121,
+        "width": 77,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-hungry-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-hungry-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 24,
+        "right": 102,
+        "bottom": 121,
+        "width": 78,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-hungry-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-hungry-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 23,
+        "right": 102,
+        "bottom": 121,
+        "width": 78,
+        "height": 99
+      },
+      "scale": 3.62020202020202,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-nap-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-nap-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 43,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 79
+      },
+      "scale": 4.536708860759493,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-nap-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-nap-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 43,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 79
+      },
+      "scale": 4.536708860759493,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-nap-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-nap-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 43,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 79
+      },
+      "scale": 4.536708860759493,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-protect-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-protect-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 13,
+        "top": 18,
+        "right": 114,
+        "bottom": 121,
+        "width": 102,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-protect-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-protect-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 27,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 95
+      },
+      "scale": 3.7726315789473683,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-protect-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-protect-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 13,
+        "top": 18,
+        "right": 114,
+        "bottom": 121,
+        "width": 102,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-random_thought-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-random_thought-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 31,
+        "top": 18,
+        "right": 96,
+        "bottom": 121,
+        "width": 66,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-random_thought-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-random_thought-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 30,
+        "top": 18,
+        "right": 96,
+        "bottom": 121,
+        "width": 67,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-random_thought-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-random_thought-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 31,
+        "top": 18,
+        "right": 96,
+        "bottom": 121,
+        "width": 66,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-research-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-research-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 20,
+        "top": 24,
+        "right": 107,
+        "bottom": 121,
+        "width": 88,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-research-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-research-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 20,
+        "top": 23,
+        "right": 107,
+        "bottom": 121,
+        "width": 88,
+        "height": 99
+      },
+      "scale": 3.62020202020202,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-research-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-research-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 20,
+        "top": 24,
+        "right": 107,
+        "bottom": 121,
+        "width": 88,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-rest-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-rest-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 24,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-rest-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-rest-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 24,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-rest-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-rest-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 24,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-take_copter-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-take_copter-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 19,
+        "right": 102,
+        "bottom": 121,
+        "width": 78,
+        "height": 103
+      },
+      "scale": 3.479611650485437,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-take_copter-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-take_copter-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 23,
+        "top": 18,
+        "right": 103,
+        "bottom": 121,
+        "width": 81,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-take_copter-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-take_copter-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 24,
+        "top": 20,
+        "right": 103,
+        "bottom": 121,
+        "width": 80,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-time_travel-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-time_travel-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 15,
+        "top": 35,
+        "right": 112,
+        "bottom": 121,
+        "width": 98,
+        "height": 87
+      },
+      "scale": 4.119540229885057,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-time_travel-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-time_travel-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 15,
+        "top": 35,
+        "right": 112,
+        "bottom": 121,
+        "width": 98,
+        "height": 87
+      },
+      "scale": 4.119540229885057,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-time_travel-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-time_travel-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 15,
+        "top": 35,
+        "right": 112,
+        "bottom": 121,
+        "width": 98,
+        "height": 87
+      },
+      "scale": 4.119540229885057,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-walk-01.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-walk-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 28,
+        "top": 18,
+        "right": 98,
+        "bottom": 121,
+        "width": 71,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-walk-02.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-walk-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 23,
+        "top": 20,
+        "right": 103,
+        "bottom": 121,
+        "width": 81,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/action/action-walk-03.png",
+      "outputPath": "assets/characters/doraemon/processed/action/action-walk-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 28,
+        "top": 20,
+        "right": 98,
+        "bottom": 121,
+        "width": 71,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/coding.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/coding.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 11,
+        "top": 33,
+        "right": 154,
+        "bottom": 147,
+        "width": 144,
+        "height": 115
+      },
+      "scale": 3.1165217391304347,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/coding2.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/coding2.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 16,
+        "top": 25,
+        "right": 161,
+        "bottom": 156,
+        "width": 146,
+        "height": 132
+      },
+      "scale": 2.715151515151515,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/coding3.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/coding3.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 7,
+        "top": 27,
+        "right": 159,
+        "bottom": 147,
+        "width": 153,
+        "height": 121
+      },
+      "scale": 2.96198347107438,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/coding4.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/coding4.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 10,
+        "top": 28,
+        "right": 154,
+        "bottom": 144,
+        "width": 145,
+        "height": 117
+      },
+      "scale": 3.063247863247863,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/coding9.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/coding9.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 7,
+        "top": 14,
+        "right": 166,
+        "bottom": 154,
+        "width": 160,
+        "height": 141
+      },
+      "scale": 2.5418439716312053,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/coding10.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/coding10.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 7,
+        "top": 8,
+        "right": 166,
+        "bottom": 154,
+        "width": 160,
+        "height": 147
+      },
+      "scale": 2.438095238095238,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/coding11.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/coding11.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 7,
+        "top": 14,
+        "right": 166,
+        "bottom": 154,
+        "width": 160,
+        "height": 141
+      },
+      "scale": 2.5418439716312053,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingcelebrate1.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingcelebrate1.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 7,
+        "top": 32,
+        "right": 154,
+        "bottom": 143,
+        "width": 148,
+        "height": 112
+      },
+      "scale": 3.1999999999999997,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingcelebrate2.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingcelebrate2.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 7,
+        "top": 32,
+        "right": 154,
+        "bottom": 143,
+        "width": 148,
+        "height": 112
+      },
+      "scale": 3.1999999999999997,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingcelebrate3.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingcelebrate3.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 7,
+        "top": 32,
+        "right": 154,
+        "bottom": 143,
+        "width": 148,
+        "height": 112
+      },
+      "scale": 3.1999999999999997,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingcelebrate4.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingcelebrate4.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 10,
+        "top": 16,
+        "right": 152,
+        "bottom": 141,
+        "width": 143,
+        "height": 126
+      },
+      "scale": 2.844444444444444,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingcelebrate5.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingcelebrate5.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 10,
+        "top": 15,
+        "right": 152,
+        "bottom": 150,
+        "width": 143,
+        "height": 136
+      },
+      "scale": 2.635294117647059,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingcelebrate6.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingcelebrate6.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 11,
+        "top": 15,
+        "right": 152,
+        "bottom": 150,
+        "width": 142,
+        "height": 136
+      },
+      "scale": 2.635294117647059,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingcelebrate7.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingcelebrate7.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 11,
+        "top": 15,
+        "right": 152,
+        "bottom": 150,
+        "width": 142,
+        "height": 136
+      },
+      "scale": 2.635294117647059,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingcelebrate8.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingcelebrate8.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 11,
+        "top": 15,
+        "right": 152,
+        "bottom": 147,
+        "width": 142,
+        "height": 133
+      },
+      "scale": 2.694736842105263,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingcelebrate9.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingcelebrate9.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 11,
+        "top": 15,
+        "right": 152,
+        "bottom": 147,
+        "width": 142,
+        "height": 133
+      },
+      "scale": 2.694736842105263,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingcelebrate10.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingcelebrate10.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 11,
+        "top": 15,
+        "right": 152,
+        "bottom": 147,
+        "width": 142,
+        "height": 133
+      },
+      "scale": 2.694736842105263,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingcelebrate11.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingcelebrate11.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 11,
+        "top": 15,
+        "right": 153,
+        "bottom": 137,
+        "width": 143,
+        "height": 123
+      },
+      "scale": 2.913821138211382,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingintense.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingintense.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 8,
+        "top": 14,
+        "right": 166,
+        "bottom": 154,
+        "width": 159,
+        "height": 141
+      },
+      "scale": 2.5418439716312053,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingintense1.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingintense1.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 8,
+        "top": 14,
+        "right": 166,
+        "bottom": 154,
+        "width": 159,
+        "height": 141
+      },
+      "scale": 2.5418439716312053,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingintense2.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingintense2.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 8,
+        "top": 14,
+        "right": 166,
+        "bottom": 154,
+        "width": 159,
+        "height": 141
+      },
+      "scale": 2.5418439716312053,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingintense3.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingintense3.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 8,
+        "top": 14,
+        "right": 166,
+        "bottom": 153,
+        "width": 159,
+        "height": 140
+      },
+      "scale": 2.56,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingintense4.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingintense4.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 8,
+        "top": 14,
+        "right": 166,
+        "bottom": 153,
+        "width": 159,
+        "height": 140
+      },
+      "scale": 2.56,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingthinking1.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingthinking1.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 11,
+        "top": 18,
+        "right": 161,
+        "bottom": 149,
+        "width": 151,
+        "height": 132
+      },
+      "scale": 2.715151515151515,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingthinking2.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingthinking2.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 11,
+        "top": 18,
+        "right": 161,
+        "bottom": 149,
+        "width": 151,
+        "height": 132
+      },
+      "scale": 2.715151515151515,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingthinking3.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingthinking3.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 11,
+        "top": 18,
+        "right": 161,
+        "bottom": 149,
+        "width": 151,
+        "height": 132
+      },
+      "scale": 2.715151515151515,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingthinking4.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingthinking4.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 11,
+        "top": 15,
+        "right": 161,
+        "bottom": 149,
+        "width": 151,
+        "height": 135
+      },
+      "scale": 2.6548148148148147,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/coding/codingthinking5.png",
+      "outputPath": "assets/characters/doraemon/processed/coding/codingthinking5.png",
+      "originalWidth": 168,
+      "originalHeight": 168,
+      "bbox": {
+        "left": 11,
+        "top": 18,
+        "right": 161,
+        "bottom": 149,
+        "width": 151,
+        "height": 132
+      },
+      "scale": 2.715151515151515,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-awe-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-awe-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 29,
+        "top": 21,
+        "right": 98,
+        "bottom": 121,
+        "width": 70,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-awe-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-awe-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 28,
+        "top": 20,
+        "right": 98,
+        "bottom": 121,
+        "width": 71,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-awe-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-awe-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 28,
+        "top": 20,
+        "right": 98,
+        "bottom": 121,
+        "width": 71,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-calm-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-calm-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 28,
+        "top": 18,
+        "right": 98,
+        "bottom": 121,
+        "width": 71,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-calm-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-calm-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 28,
+        "top": 18,
+        "right": 98,
+        "bottom": 121,
+        "width": 71,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-calm-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-calm-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 28,
+        "top": 18,
+        "right": 98,
+        "bottom": 121,
+        "width": 71,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-calm-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-calm-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 28,
+        "top": 18,
+        "right": 98,
+        "bottom": 121,
+        "width": 71,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-concern-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-concern-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 31,
+        "top": 23,
+        "right": 95,
+        "bottom": 121,
+        "width": 65,
+        "height": 99
+      },
+      "scale": 3.62020202020202,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-concern-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-concern-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 31,
+        "top": 22,
+        "right": 95,
+        "bottom": 121,
+        "width": 65,
+        "height": 100
+      },
+      "scale": 3.5839999999999996,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-concern-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-concern-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 31,
+        "top": 24,
+        "right": 95,
+        "bottom": 121,
+        "width": 65,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-concern-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-concern-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 31,
+        "top": 23,
+        "right": 95,
+        "bottom": 121,
+        "width": 65,
+        "height": 99
+      },
+      "scale": 3.62020202020202,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-confusion-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-confusion-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 30,
+        "top": 18,
+        "right": 96,
+        "bottom": 121,
+        "width": 67,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-confusion-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-confusion-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 30,
+        "top": 18,
+        "right": 96,
+        "bottom": 121,
+        "width": 67,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-confusion-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-confusion-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 30,
+        "top": 18,
+        "right": 96,
+        "bottom": 121,
+        "width": 67,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-confusion-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-confusion-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 30,
+        "top": 18,
+        "right": 96,
+        "bottom": 121,
+        "width": 67,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-connection-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-connection-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 21,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-connection-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-connection-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 17,
+        "top": 19,
+        "right": 109,
+        "bottom": 121,
+        "width": 93,
+        "height": 103
+      },
+      "scale": 3.479611650485437,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-connection-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-connection-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 21,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-connection-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-connection-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 17,
+        "top": 20,
+        "right": 109,
+        "bottom": 121,
+        "width": 93,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-contemplation-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-contemplation-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 31,
+        "top": 18,
+        "right": 96,
+        "bottom": 121,
+        "width": 66,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-contemplation-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-contemplation-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 30,
+        "top": 18,
+        "right": 96,
+        "bottom": 121,
+        "width": 67,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-contemplation-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-contemplation-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 31,
+        "top": 18,
+        "right": 96,
+        "bottom": 121,
+        "width": 66,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-contemplation-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-contemplation-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 30,
+        "top": 18,
+        "right": 96,
+        "bottom": 121,
+        "width": 67,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-curiosity-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-curiosity-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 31,
+        "top": 18,
+        "right": 96,
+        "bottom": 121,
+        "width": 66,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-curiosity-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-curiosity-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 30,
+        "top": 18,
+        "right": 96,
+        "bottom": 121,
+        "width": 67,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-curiosity-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-curiosity-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 31,
+        "top": 18,
+        "right": 96,
+        "bottom": 121,
+        "width": 66,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-curiosity-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-curiosity-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 30,
+        "top": 18,
+        "right": 96,
+        "bottom": 121,
+        "width": 67,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-determination-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-determination-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 28,
+        "top": 18,
+        "right": 98,
+        "bottom": 121,
+        "width": 71,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-determination-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-determination-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 23,
+        "top": 20,
+        "right": 103,
+        "bottom": 121,
+        "width": 81,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-determination-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-determination-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 28,
+        "top": 18,
+        "right": 98,
+        "bottom": 121,
+        "width": 71,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-determination-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-determination-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 28,
+        "top": 20,
+        "right": 98,
+        "bottom": 121,
+        "width": 71,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-excitement-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-excitement-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 30,
+        "top": 19,
+        "right": 97,
+        "bottom": 121,
+        "width": 68,
+        "height": 103
+      },
+      "scale": 3.479611650485437,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-excitement-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-excitement-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 29,
+        "top": 19,
+        "right": 97,
+        "bottom": 121,
+        "width": 69,
+        "height": 103
+      },
+      "scale": 3.479611650485437,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-excitement-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-excitement-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 30,
+        "top": 19,
+        "right": 97,
+        "bottom": 121,
+        "width": 68,
+        "height": 103
+      },
+      "scale": 3.479611650485437,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-excitement-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-excitement-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 29,
+        "top": 18,
+        "right": 97,
+        "bottom": 121,
+        "width": 69,
+        "height": 104
+      },
+      "scale": 3.446153846153846,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-fatigue-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-fatigue-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 43,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 79
+      },
+      "scale": 4.536708860759493,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-fatigue-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-fatigue-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 43,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 79
+      },
+      "scale": 4.536708860759493,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-fatigue-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-fatigue-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 43,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 79
+      },
+      "scale": 4.536708860759493,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-fatigue-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-fatigue-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 43,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 79
+      },
+      "scale": 4.536708860759493,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-focus-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-focus-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 14,
+        "top": 31,
+        "right": 113,
+        "bottom": 121,
+        "width": 100,
+        "height": 91
+      },
+      "scale": 3.9384615384615382,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-focus-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-focus-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 14,
+        "top": 30,
+        "right": 112,
+        "bottom": 121,
+        "width": 99,
+        "height": 92
+      },
+      "scale": 3.895652173913043,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-focus-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-focus-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 14,
+        "top": 31,
+        "right": 113,
+        "bottom": 121,
+        "width": 100,
+        "height": 91
+      },
+      "scale": 3.9384615384615382,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-focus-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-focus-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 14,
+        "top": 29,
+        "right": 112,
+        "bottom": 121,
+        "width": 99,
+        "height": 93
+      },
+      "scale": 3.853763440860215,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-frustration-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-frustration-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 16,
+        "top": 24,
+        "right": 111,
+        "bottom": 121,
+        "width": 96,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-frustration-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-frustration-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 16,
+        "top": 22,
+        "right": 111,
+        "bottom": 121,
+        "width": 96,
+        "height": 100
+      },
+      "scale": 3.5839999999999996,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-frustration-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-frustration-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 16,
+        "top": 24,
+        "right": 111,
+        "bottom": 121,
+        "width": 96,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-frustration-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-frustration-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 16,
+        "top": 22,
+        "right": 111,
+        "bottom": 121,
+        "width": 96,
+        "height": 100
+      },
+      "scale": 3.5839999999999996,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-gratitude-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-gratitude-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 21,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-gratitude-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-gratitude-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 21,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-gratitude-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-gratitude-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 21,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-gratitude-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-gratitude-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 21,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-hope-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-hope-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 21,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-hope-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-hope-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 17,
+        "top": 19,
+        "right": 109,
+        "bottom": 121,
+        "width": 93,
+        "height": 103
+      },
+      "scale": 3.479611650485437,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-hope-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-hope-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 21,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-hope-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-hope-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 17,
+        "top": 20,
+        "right": 109,
+        "bottom": 121,
+        "width": 93,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-joy-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-joy-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 21,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-joy-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-joy-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 17,
+        "top": 19,
+        "right": 109,
+        "bottom": 121,
+        "width": 93,
+        "height": 103
+      },
+      "scale": 3.479611650485437,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-joy-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-joy-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 21,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-joy-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-joy-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 17,
+        "top": 20,
+        "right": 109,
+        "bottom": 121,
+        "width": 93,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-longing-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-longing-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 41,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 81
+      },
+      "scale": 4.424691358024691,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-longing-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-longing-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 41,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 81
+      },
+      "scale": 4.424691358024691,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-longing-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-longing-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 41,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 81
+      },
+      "scale": 4.424691358024691,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-longing-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-longing-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 41,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 81
+      },
+      "scale": 4.424691358024691,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-melancholy-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-melancholy-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 44,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 78
+      },
+      "scale": 4.5948717948717945,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-melancholy-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-melancholy-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 44,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 78
+      },
+      "scale": 4.5948717948717945,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-melancholy-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-melancholy-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 44,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 78
+      },
+      "scale": 4.5948717948717945,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-melancholy-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-melancholy-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 44,
+        "right": 115,
+        "bottom": 121,
+        "width": 104,
+        "height": 78
+      },
+      "scale": 4.5948717948717945,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-pride-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-pride-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 26,
+        "top": 21,
+        "right": 101,
+        "bottom": 121,
+        "width": 76,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-pride-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-pride-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 26,
+        "top": 20,
+        "right": 101,
+        "bottom": 121,
+        "width": 76,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-pride-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-pride-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 26,
+        "top": 21,
+        "right": 101,
+        "bottom": 121,
+        "width": 76,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-pride-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-pride-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 20,
+        "right": 102,
+        "bottom": 121,
+        "width": 78,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-satisfaction-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-satisfaction-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 24,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-satisfaction-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-satisfaction-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 24,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-satisfaction-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-satisfaction-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 24,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-satisfaction-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-satisfaction-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 24,
+        "right": 109,
+        "bottom": 121,
+        "width": 92,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-wonder-01.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-wonder-01.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 29,
+        "top": 21,
+        "right": 98,
+        "bottom": 121,
+        "width": 70,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-wonder-02.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-wonder-02.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 28,
+        "top": 20,
+        "right": 98,
+        "bottom": 121,
+        "width": 71,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-wonder-03.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-wonder-03.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 29,
+        "top": 21,
+        "right": 98,
+        "bottom": 121,
+        "width": 70,
+        "height": 101
+      },
+      "scale": 3.548514851485148,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/emotion/emotion-wonder-04.png",
+      "outputPath": "assets/characters/doraemon/processed/emotion/emotion-wonder-04.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 28,
+        "top": 20,
+        "right": 98,
+        "bottom": 121,
+        "width": 71,
+        "height": 102
+      },
+      "scale": 3.5137254901960784,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime1.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime1.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 7,
+        "right": 107,
+        "bottom": 127,
+        "width": 83,
+        "height": 121
+      },
+      "scale": 2.96198347107438,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime1a.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime1a.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 7,
+        "right": 107,
+        "bottom": 127,
+        "width": 83,
+        "height": 121
+      },
+      "scale": 2.96198347107438,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime2.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime2.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 18,
+        "top": 9,
+        "right": 112,
+        "bottom": 127,
+        "width": 95,
+        "height": 119
+      },
+      "scale": 3.011764705882353,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime3.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime3.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 23,
+        "top": 9,
+        "right": 104,
+        "bottom": 127,
+        "width": 82,
+        "height": 119
+      },
+      "scale": 3.011764705882353,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime4.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime4.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 21,
+        "top": 6,
+        "right": 116,
+        "bottom": 124,
+        "width": 96,
+        "height": 119
+      },
+      "scale": 3.011764705882353,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime5.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime5.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 14,
+        "top": 10,
+        "right": 101,
+        "bottom": 127,
+        "width": 88,
+        "height": 118
+      },
+      "scale": 3.03728813559322,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime6.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime6.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 10,
+        "right": 112,
+        "bottom": 127,
+        "width": 88,
+        "height": 118
+      },
+      "scale": 3.03728813559322,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime7.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime7.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 14,
+        "top": 10,
+        "right": 101,
+        "bottom": 127,
+        "width": 88,
+        "height": 118
+      },
+      "scale": 3.03728813559322,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime8.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime8.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 10,
+        "right": 112,
+        "bottom": 127,
+        "width": 88,
+        "height": 118
+      },
+      "scale": 3.03728813559322,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime9.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime9.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 14,
+        "top": 10,
+        "right": 101,
+        "bottom": 127,
+        "width": 88,
+        "height": 118
+      },
+      "scale": 3.03728813559322,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime10.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime10.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 10,
+        "right": 112,
+        "bottom": 127,
+        "width": 88,
+        "height": 118
+      },
+      "scale": 3.03728813559322,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime11.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime11.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 10,
+        "top": 18,
+        "right": 112,
+        "bottom": 127,
+        "width": 103,
+        "height": 110
+      },
+      "scale": 3.258181818181818,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime11a.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime11a.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 22,
+        "top": 18,
+        "right": 112,
+        "bottom": 127,
+        "width": 91,
+        "height": 110
+      },
+      "scale": 3.258181818181818,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime11b.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime11b.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 17,
+        "top": 18,
+        "right": 112,
+        "bottom": 127,
+        "width": 96,
+        "height": 110
+      },
+      "scale": 3.258181818181818,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime11c.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime11c.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 17,
+        "top": 18,
+        "right": 112,
+        "bottom": 127,
+        "width": 96,
+        "height": 110
+      },
+      "scale": 3.258181818181818,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime11d.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime11d.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 20,
+        "top": 18,
+        "right": 112,
+        "bottom": 127,
+        "width": 93,
+        "height": 110
+      },
+      "scale": 3.258181818181818,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime12.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime12.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 47,
+        "top": 2,
+        "right": 126,
+        "bottom": 126,
+        "width": 80,
+        "height": 125
+      },
+      "scale": 2.8672,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime13.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime13.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 47,
+        "top": 2,
+        "right": 126,
+        "bottom": 126,
+        "width": 80,
+        "height": 125
+      },
+      "scale": 2.8672,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime13a.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime13a.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 47,
+        "top": 2,
+        "right": 126,
+        "bottom": 126,
+        "width": 80,
+        "height": 125
+      },
+      "scale": 2.8672,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime14.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime14.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 47,
+        "top": 2,
+        "right": 126,
+        "bottom": 126,
+        "width": 80,
+        "height": 125
+      },
+      "scale": 2.8672,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime15.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime15.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 0,
+        "right": 113,
+        "bottom": 126,
+        "width": 95,
+        "height": 127
+      },
+      "scale": 2.822047244094488,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime16.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime16.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 17,
+        "top": 0,
+        "right": 115,
+        "bottom": 126,
+        "width": 99,
+        "height": 127
+      },
+      "scale": 2.822047244094488,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime17.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime17.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 17,
+        "top": 0,
+        "right": 115,
+        "bottom": 126,
+        "width": 99,
+        "height": 127
+      },
+      "scale": 2.822047244094488,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime18.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime18.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 2,
+        "top": 20,
+        "right": 124,
+        "bottom": 127,
+        "width": 123,
+        "height": 108
+      },
+      "scale": 3.3185185185185184,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime19.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime19.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 20,
+        "top": 18,
+        "right": 112,
+        "bottom": 127,
+        "width": 93,
+        "height": 110
+      },
+      "scale": 3.258181818181818,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime20.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime20.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 0,
+        "top": 31,
+        "right": 127,
+        "bottom": 127,
+        "width": 128,
+        "height": 97
+      },
+      "scale": 3.694845360824742,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime20a.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime20a.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 0,
+        "top": 32,
+        "right": 127,
+        "bottom": 127,
+        "width": 128,
+        "height": 96
+      },
+      "scale": 3.733333333333333,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime20b.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime20b.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 0,
+        "top": 49,
+        "right": 127,
+        "bottom": 127,
+        "width": 128,
+        "height": 79
+      },
+      "scale": 3.8,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime21.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime21.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 1,
+        "top": 29,
+        "right": 127,
+        "bottom": 127,
+        "width": 127,
+        "height": 99
+      },
+      "scale": 3.62020202020202,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime21a.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime21a.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 1,
+        "top": 30,
+        "right": 127,
+        "bottom": 127,
+        "width": 127,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime22.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime22.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 20,
+        "top": 0,
+        "right": 103,
+        "bottom": 127,
+        "width": 84,
+        "height": 128
+      },
+      "scale": 2.8,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime23.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime23.png",
+      "originalWidth": 128,
+      "originalHeight": 184,
+      "bbox": {
+        "left": 16,
+        "top": 55,
+        "right": 110,
+        "bottom": 182,
+        "width": 95,
+        "height": 128
+      },
+      "scale": 2.8,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime23a.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime23a.png",
+      "originalWidth": 128,
+      "originalHeight": 184,
+      "bbox": {
+        "left": 16,
+        "top": 57,
+        "right": 110,
+        "bottom": 183,
+        "width": 95,
+        "height": 127
+      },
+      "scale": 2.822047244094488,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime23b.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime23b.png",
+      "originalWidth": 128,
+      "originalHeight": 184,
+      "bbox": {
+        "left": 16,
+        "top": 55,
+        "right": 110,
+        "bottom": 182,
+        "width": 95,
+        "height": 128
+      },
+      "scale": 2.8,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime23c.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime23c.png",
+      "originalWidth": 128,
+      "originalHeight": 184,
+      "bbox": {
+        "left": 16,
+        "top": 55,
+        "right": 110,
+        "bottom": 182,
+        "width": 95,
+        "height": 128
+      },
+      "scale": 2.8,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime24.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime24.png",
+      "originalWidth": 128,
+      "originalHeight": 184,
+      "bbox": {
+        "left": 12,
+        "top": 53,
+        "right": 106,
+        "bottom": 180,
+        "width": 95,
+        "height": 128
+      },
+      "scale": 2.8,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime25.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime25.png",
+      "originalWidth": 128,
+      "originalHeight": 184,
+      "bbox": {
+        "left": 21,
+        "top": 57,
+        "right": 115,
+        "bottom": 183,
+        "width": 95,
+        "height": 127
+      },
+      "scale": 2.822047244094488,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime26.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime26.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 7,
+        "right": 101,
+        "bottom": 127,
+        "width": 77,
+        "height": 121
+      },
+      "scale": 2.96198347107438,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime27.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime27.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 7,
+        "right": 101,
+        "bottom": 127,
+        "width": 77,
+        "height": 121
+      },
+      "scale": 2.96198347107438,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime28.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime28.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 7,
+        "right": 101,
+        "bottom": 127,
+        "width": 77,
+        "height": 121
+      },
+      "scale": 2.96198347107438,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime29.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime29.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 7,
+        "right": 101,
+        "bottom": 127,
+        "width": 77,
+        "height": 121
+      },
+      "scale": 2.96198347107438,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime30.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime30.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 23,
+        "top": 2,
+        "right": 106,
+        "bottom": 113,
+        "width": 84,
+        "height": 112
+      },
+      "scale": 3.1999999999999997,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime31.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime31.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 23,
+        "top": 2,
+        "right": 106,
+        "bottom": 113,
+        "width": 84,
+        "height": 112
+      },
+      "scale": 3.1999999999999997,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime32.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime32.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 23,
+        "top": 2,
+        "right": 106,
+        "bottom": 113,
+        "width": 84,
+        "height": 112
+      },
+      "scale": 3.1999999999999997,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime33.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime33.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 23,
+        "top": 2,
+        "right": 106,
+        "bottom": 113,
+        "width": 84,
+        "height": 112
+      },
+      "scale": 3.1999999999999997,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime34.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime34.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 13,
+        "top": 11,
+        "right": 127,
+        "bottom": 127,
+        "width": 115,
+        "height": 117
+      },
+      "scale": 3.063247863247863,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime35.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime35.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 0,
+        "top": 11,
+        "right": 127,
+        "bottom": 127,
+        "width": 128,
+        "height": 117
+      },
+      "scale": 3.063247863247863,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime36.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime36.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 13,
+        "top": 11,
+        "right": 127,
+        "bottom": 127,
+        "width": 115,
+        "height": 117
+      },
+      "scale": 3.063247863247863,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime37.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime37.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 13,
+        "top": 11,
+        "right": 127,
+        "bottom": 127,
+        "width": 115,
+        "height": 117
+      },
+      "scale": 3.063247863247863,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime38.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime38.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 7,
+        "right": 101,
+        "bottom": 127,
+        "width": 77,
+        "height": 121
+      },
+      "scale": 2.96198347107438,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime38a.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime38a.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 8,
+        "right": 101,
+        "bottom": 127,
+        "width": 77,
+        "height": 120
+      },
+      "scale": 2.9866666666666664,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime39.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime39.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 24,
+        "top": 7,
+        "right": 102,
+        "bottom": 127,
+        "width": 79,
+        "height": 121
+      },
+      "scale": 2.96198347107438,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime40.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime40.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 5,
+        "top": 1,
+        "right": 122,
+        "bottom": 127,
+        "width": 118,
+        "height": 127
+      },
+      "scale": 2.822047244094488,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime41.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime41.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 0,
+        "top": 0,
+        "right": 127,
+        "bottom": 127,
+        "width": 128,
+        "height": 128
+      },
+      "scale": 2.8,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime41a.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime41a.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 4,
+        "right": 108,
+        "bottom": 127,
+        "width": 90,
+        "height": 124
+      },
+      "scale": 2.890322580645161,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime41b.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime41b.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 2,
+        "right": 108,
+        "bottom": 127,
+        "width": 90,
+        "height": 126
+      },
+      "scale": 2.844444444444444,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime41c.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime41c.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 2,
+        "right": 108,
+        "bottom": 127,
+        "width": 90,
+        "height": 126
+      },
+      "scale": 2.844444444444444,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime41d.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime41d.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 2,
+        "right": 127,
+        "bottom": 127,
+        "width": 109,
+        "height": 126
+      },
+      "scale": 2.844444444444444,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime41e.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime41e.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 2,
+        "right": 127,
+        "bottom": 127,
+        "width": 109,
+        "height": 126
+      },
+      "scale": 2.844444444444444,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime41f.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime41f.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 2,
+        "right": 127,
+        "bottom": 127,
+        "width": 109,
+        "height": 126
+      },
+      "scale": 2.844444444444444,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime41g.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime41g.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 2,
+        "right": 108,
+        "bottom": 127,
+        "width": 90,
+        "height": 126
+      },
+      "scale": 2.844444444444444,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime41h.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime41h.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 2,
+        "right": 108,
+        "bottom": 127,
+        "width": 90,
+        "height": 126
+      },
+      "scale": 2.844444444444444,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime41i.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime41i.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 2,
+        "right": 108,
+        "bottom": 127,
+        "width": 90,
+        "height": 126
+      },
+      "scale": 2.844444444444444,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime41j.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime41j.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 2,
+        "right": 108,
+        "bottom": 113,
+        "width": 90,
+        "height": 112
+      },
+      "scale": 3.1999999999999997,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime41k.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime41k.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 2,
+        "right": 108,
+        "bottom": 99,
+        "width": 90,
+        "height": 98
+      },
+      "scale": 3.657142857142857,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime41l.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime41l.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 2,
+        "right": 108,
+        "bottom": 70,
+        "width": 90,
+        "height": 69
+      },
+      "scale": 5.194202898550724,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime41m.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime41m.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 2,
+        "right": 108,
+        "bottom": 36,
+        "width": 90,
+        "height": 35
+      },
+      "scale": 5.404444444444445,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime41n.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime41n.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 2,
+        "right": 108,
+        "bottom": 16,
+        "width": 90,
+        "height": 15
+      },
+      "scale": 5.404444444444445,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime42.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime42.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 7,
+        "right": 101,
+        "bottom": 127,
+        "width": 77,
+        "height": 121
+      },
+      "scale": 2.96198347107438,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime43.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime43.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 25,
+        "top": 7,
+        "right": 101,
+        "bottom": 127,
+        "width": 77,
+        "height": 121
+      },
+      "scale": 2.96198347107438,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime44.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime44.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 24,
+        "top": 7,
+        "right": 102,
+        "bottom": 127,
+        "width": 79,
+        "height": 121
+      },
+      "scale": 2.96198347107438,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime45.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime45.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 5,
+        "top": 1,
+        "right": 122,
+        "bottom": 127,
+        "width": 118,
+        "height": 127
+      },
+      "scale": 2.822047244094488,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime46.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime46.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 0,
+        "top": 0,
+        "right": 127,
+        "bottom": 127,
+        "width": 128,
+        "height": 128
+      },
+      "scale": 2.8,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime47.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime47.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 4,
+        "right": 108,
+        "bottom": 127,
+        "width": 90,
+        "height": 124
+      },
+      "scale": 2.890322580645161,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime48.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime48.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 2,
+        "right": 108,
+        "bottom": 127,
+        "width": 90,
+        "height": 126
+      },
+      "scale": 2.844444444444444,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime49.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime49.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 2,
+        "right": 108,
+        "bottom": 127,
+        "width": 90,
+        "height": 126
+      },
+      "scale": 2.844444444444444,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shime50.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shime50.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 19,
+        "top": 2,
+        "right": 127,
+        "bottom": 127,
+        "width": 109,
+        "height": 126
+      },
+      "scale": 2.844444444444444,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shimeX.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shimeX.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 12,
+        "top": 10,
+        "right": 114,
+        "bottom": 127,
+        "width": 103,
+        "height": 118
+      },
+      "scale": 3.03728813559322,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    },
+    {
+      "originalPath": "assets/characters/doraemon/raw/misc/shimeXa.png",
+      "outputPath": "assets/characters/doraemon/processed/misc/shimeXa.png",
+      "originalWidth": 128,
+      "originalHeight": 128,
+      "bbox": {
+        "left": 16,
+        "top": 8,
+        "right": 110,
+        "bottom": 126,
+        "width": 95,
+        "height": 119
+      },
+      "scale": 3.011764705882353,
+      "anchorX": 0.5,
+      "anchorY": 0.88
+    }
+  ],
+  "warnings": []
+}
