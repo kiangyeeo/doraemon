@@ -1,14 +1,6 @@
-# Doraemon-Style Desktop Pet
+# Doraemon Desktop Pet
 
-Local-only Windows desktop mascot prototype. Phase 1 only includes the transparent Electron window, drag support, asset manifest loading, sprite playback, and an animation state machine. It intentionally does not include AI, chat, OpenAI API calls, local software automation, or plugins.
-
-## Stack
-
-- Electron + TypeScript + Vite via `electron-vite`
-- Preact renderer
-- PNG frame animation through a manifest-driven `SpriteAnimator`
-
-## Getting Started
+## 🚀 Quick Start
 
 ```bash
 npm install
@@ -41,41 +33,6 @@ plus a behaviour hook
 > Note: the current `manifest.json` has no `drag` frames, so the `drag` state
 > falls back to idle visually. Add a `drag` state to the manifest (or rename art
 > so a frame's file name contains `drag`) to give it a dedicated animation.
-
-## Project Layout
-
-```text
-src/
-  main/
-    index.ts
-    window.ts
-  preload/
-    index.ts
-  renderer/
-    app.tsx
-    components/
-      MascotStage.tsx
-      SpriteAnimator.tsx
-    animation/
-      stateMachine.ts
-      types.ts
-      useAnimationController.ts
-    styles/
-      global.css
-assets/
-  characters/
-    doraemon/
-      raw/
-      processed/
-      processed-manifest.json
-      contact-sheet.png
-      manifest.json
-scripts/
-  import-doraemon-assets.ts
-  import-assets.ts
-  build-manifest.ts
-  normalize-frames.ts
-```
 
 ## Asset Manifest
 
