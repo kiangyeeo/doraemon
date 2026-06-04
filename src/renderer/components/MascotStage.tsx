@@ -204,6 +204,7 @@ export function MascotStage({ manifestUrl }: MascotStageProps) {
         action={action}
         anchor={BASELINE_ANCHOR}
         onComplete={controller.actionComplete}
+        repeat={controller.repeat}
         scale={manifest.defaultScale}
         stageHeight={manifest.canvas.height}
         stageWidth={manifest.canvas.width}

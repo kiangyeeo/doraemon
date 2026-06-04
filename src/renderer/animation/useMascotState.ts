@@ -9,11 +9,20 @@ import type {
 
 // --- Behaviour tuning -------------------------------------------------------
 const DEBOUNCE_MS = 350; // rule 8
-const PROXIMITY_THINKING_MS = 1500; // rule 2
 const IDLE_SLEEP_MS = 60_000; // rule 5
 const VARIATION_MIN_MS = 10_000; // rule 7
 const VARIATION_MAX_MS = 20_000; // rule 7
-const TRANSIENT_HOLD_MS = 2500; // how long a one-shot reaction holds before idle
+// One-shot reactions (rules 2/3/7) play their full animation this many times
+// before settling back to idle, so a short clip no longer flashes past.
+const REACTION_REPEATS = 3;
+// Grace added to the safety timer so it fires just after the final frame; the
+// animation's own completion is what normally drives the return to idle.
+const TRANSIENT_HOLD_BUFFER_MS = 250;
+// Cycle length assumed only when an action reports no frames / zero fps.
+const TRANSIENT_FALLBACK_CYCLE_MS = 2500;
+
+// States that loop while active and never auto-return to idle on their own.
+const PERSISTENT_STATES = new Set<MascotState>(['idle', 'sleep', 'drag']);
 
 // Random reactions for a double-click (rule 3).
 const DOUBLE_CLICK_STATES: MascotState[] = ['happy', 'gadget', 'eating'];
@@ -77,11 +86,14 @@ export type MascotController = {
   manifest: LoadedCharacterManifest | null;
   state: MascotState | null;
   action: ResolvedAnimationState | null;
+  // How many times the current action should play (Infinity = loop forever).
+  repeat: number;
 } & MascotControls;
 
 type Snapshot = {
   state: MascotState;
   action: ResolvedAnimationState;
+  repeat: number;
 };
 
 export function useMascotState(manifestUrl: string): MascotController {
@@ -115,19 +127,43 @@ export function useMascotState(manifestUrl: string): MascotController {
         const machine = new MascotStateMachine(loaded.states, { debounceMs: DEBOUNCE_MS });
         setManifest(loaded);
         setStatus('ready');
-        setSnapshot({ state: machine.state, action: machine.action });
+        setSnapshot({
+          state: machine.state,
+          action: machine.action,
+          repeat: Number.POSITIVE_INFINITY
+        });
 
         let sleepId = 0;
         let transientId = 0;
         let variationId = 0;
 
+        // Duration of a single full play of a state, derived from its real frame
+        // count and fps, used to size the one-shot reaction timers.
+        const stateByName = new Map(loaded.states.map((entry) => [entry.name, entry]));
+        const cycleMs = (name: MascotState): number => {
+          const meta = stateByName.get(name);
+          if (!meta || meta.frames.length === 0 || meta.fps <= 0) {
+            return TRANSIENT_FALLBACK_CYCLE_MS;
+          }
+          return (meta.frames.length / meta.fps) * 1000;
+        };
+
         // Apply a transition and push a render snapshot only when the state
         // actually changes (debounce / fallback / no-op keep the same state).
-        const commit = (next: MascotState, options?: { force?: boolean; reason?: string }) => {
+        // repeat carries how many times the new action should play; persistent
+        // looping states (incl. fallback-to-idle) always loop forever.
+        const commit = (
+          next: MascotState,
+          options?: { force?: boolean; reason?: string },
+          repeat = Number.POSITIVE_INFINITY
+        ) => {
           const previous = machine.state;
           machine.request(next, options);
           if (machine.state !== previous) {
-            setSnapshot({ state: machine.state, action: machine.action });
+            const resolvedRepeat = PERSISTENT_STATES.has(machine.state)
+              ? Number.POSITIVE_INFINITY
+              : repeat;
+            setSnapshot({ state: machine.state, action: machine.action, repeat: resolvedRepeat });
           }
         };
 
@@ -138,15 +174,18 @@ export function useMascotState(manifestUrl: string): MascotController {
           }
         };
 
-        // Play a one-shot reaction, then fall back to idle after holdMs (rules 2/3/7).
+        // Play a one-shot reaction `repeats` times, then fall back to idle
+        // (rules 2/3/7). The animation's own completion normally triggers the
+        // return; this timer is a safety net sized to the real play duration.
         const playTransient = (
           next: MascotState,
-          holdMs: number,
+          repeats: number,
           reason: string,
           options?: { force?: boolean }
         ) => {
           clearTransient();
-          commit(next, { reason, force: options?.force });
+          commit(next, { reason, force: options?.force }, repeats);
+          const holdMs = Math.ceil(cycleMs(next) * repeats) + TRANSIENT_HOLD_BUFFER_MS;
           transientId = window.setTimeout(() => {
             transientId = 0;
             if (!draggingRef.current) {
@@ -178,7 +217,7 @@ export function useMascotState(manifestUrl: string): MascotController {
           }
           variationId = window.setTimeout(() => {
             if (machine.state === 'idle' && !draggingRef.current) {
-              playTransient(randomFrom(VARIATION_STATES), TRANSIENT_HOLD_MS, 'idle-variation');
+              playTransient(randomFrom(VARIATION_STATES), REACTION_REPEATS, 'idle-variation');
             }
             scheduleVariation();
           }, randomBetween(VARIATION_MIN_MS, VARIATION_MAX_MS));
@@ -191,7 +230,7 @@ export function useMascotState(manifestUrl: string): MascotController {
               return;
             }
             restartSleepTimer();
-            playTransient('thinking', PROXIMITY_THINKING_MS, 'proximity');
+            playTransient('thinking', REACTION_REPEATS, 'proximity');
           },
           // Rule 6: any mouse move / click wakes from sleep and defers sleeping.
           activity: () => {
@@ -209,7 +248,7 @@ export function useMascotState(manifestUrl: string): MascotController {
               return;
             }
             restartSleepTimer();
-            playTransient(randomFrom(DOUBLE_CLICK_STATES), TRANSIENT_HOLD_MS, 'double-click', {
+            playTransient(randomFrom(DOUBLE_CLICK_STATES), REACTION_REPEATS, 'double-click', {
               force: true
             });
           },
@@ -273,6 +312,7 @@ export function useMascotState(manifestUrl: string): MascotController {
       manifest,
       state: snapshot?.state ?? null,
       action: snapshot?.action ?? null,
+      repeat: snapshot?.repeat ?? Number.POSITIVE_INFINITY,
       proximity,
       activity,
       doubleClick,

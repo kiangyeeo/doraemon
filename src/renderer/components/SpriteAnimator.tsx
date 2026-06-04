@@ -15,6 +15,9 @@ type SpriteAnimatorProps = {
   // Normalized baseline (0..1) baked into each frame, aligned to the same point
   // on the stage so frames share a common floor line across scales.
   anchor: NormalizedAnchor;
+  // How many full times to play the action before firing onComplete. Infinity
+  // loops forever. Defaults to the action's own loop flag for backwards compat.
+  repeat?: number;
   renderMode?: 'canvas' | 'img';
   onComplete?: () => void;
 };
@@ -44,6 +47,7 @@ export function SpriteAnimator({
   stageHeight,
   scale,
   anchor,
+  repeat,
   renderMode = 'canvas',
   onComplete
 }: SpriteAnimatorProps) {
@@ -52,6 +56,8 @@ export function SpriteAnimator({
   const [frames, setFrames] = useState<LoadedFrame[]>([]);
   const [frameIndex, setFrameIndex] = useState(0);
   const currentActionKey = useMemo(() => actionKey(action), [action]);
+  // Number of full plays before completion; falls back to the manifest loop flag.
+  const playCount = repeat ?? (action.loop ? Number.POSITIVE_INFINITY : 1);
 
   useEffect(() => {
     completeRef.current = onComplete;
@@ -88,6 +94,7 @@ export function SpriteAnimator({
     let lastTick = performance.now();
     let elapsed = 0;
     let nextFrameIndex = 0;
+    let completedCycles = 0;
     let completed = false;
     const frameDuration = 1000 / Math.max(1, action.fps);
 
@@ -101,11 +108,14 @@ export function SpriteAnimator({
         nextFrameIndex += steps;
 
         if (nextFrameIndex >= frames.length) {
-          if (action.loop) {
-            nextFrameIndex %= frames.length;
-          } else {
+          // Tally however many full cycles we just crossed and stop once the
+          // action has played playCount times (Infinity keeps looping).
+          completedCycles += Math.floor(nextFrameIndex / frames.length);
+          if (completedCycles >= playCount) {
             nextFrameIndex = frames.length - 1;
             completed = true;
+          } else {
+            nextFrameIndex %= frames.length;
           }
         }
 
@@ -125,7 +135,7 @@ export function SpriteAnimator({
     return () => {
       cancelAnimationFrame(animationFrame);
     };
-  }, [action.fps, action.loop, currentActionKey, frames.length]);
+  }, [action.fps, currentActionKey, frames.length, playCount]);
 
   useEffect(() => {
     if (renderMode !== 'canvas') {
