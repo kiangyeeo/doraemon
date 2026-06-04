@@ -10,5 +10,6 @@ interface Window {
     startDrag(point: DesktopPetScreenPoint): Promise<void>;
     moveDrag(point: DesktopPetScreenPoint): void;
     endDrag(): void;
+    setInteractive(interactive: boolean): void;
   };
 }

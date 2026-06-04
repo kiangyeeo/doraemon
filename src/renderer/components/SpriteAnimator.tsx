@@ -144,7 +144,9 @@ export function SpriteAnimator({
     canvas.style.width = `${stageWidth}px`;
     canvas.style.height = `${stageHeight}px`;
 
-    const context = canvas.getContext('2d');
+    // willReadFrequently: MascotStage samples pixel alpha on every mouse move to
+    // hit-test the cursor against the sprite, so keep the backing store on the CPU.
+    const context = canvas.getContext('2d', { willReadFrequently: true });
     if (!context) {
       return;
     }

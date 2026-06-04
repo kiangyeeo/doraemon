@@ -65,6 +65,17 @@ function registerDragHandlers(mascotWindow: BrowserWindow): void {
     }
   });
 
+  ipcMain.on('mascot-window:set-interactive', (event, interactive: unknown) => {
+    const eventWindow = BrowserWindow.fromWebContents(event.sender);
+    if (!belongsToWindow(eventWindow, mascotWindow)) {
+      return;
+    }
+
+    // When not interactive, ignore mouse events but keep forwarding move events
+    // so the renderer can still hit-test the cursor against the sprite.
+    mascotWindow.setIgnoreMouseEvents(interactive !== true, { forward: true });
+  });
+
   mascotWindow.on('blur', () => {
     dragSession = null;
   });
@@ -92,6 +103,10 @@ export function createMascotWindow(): BrowserWindow {
 
   mascotWindow.setAlwaysOnTop(true, 'screen-saver');
   mascotWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  // Start click-through: the transparent area around the sprite passes mouse
+  // events to whatever is behind the window. The renderer flips this on while
+  // the cursor is over the sprite's opaque pixels.
+  mascotWindow.setIgnoreMouseEvents(true, { forward: true });
   registerDragHandlers(mascotWindow);
 
   if (process.env.ELECTRON_RENDERER_URL) {

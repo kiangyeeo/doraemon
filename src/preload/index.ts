@@ -21,5 +21,8 @@ contextBridge.exposeInMainWorld('desktopPet', {
   },
   endDrag() {
     ipcRenderer.send('mascot-window:end-drag');
+  },
+  setInteractive(interactive: boolean) {
+    ipcRenderer.send('mascot-window:set-interactive', interactive === true);
   }
 });
