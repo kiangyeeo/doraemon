@@ -9,12 +9,11 @@ import type {
 
 // --- Behaviour tuning -------------------------------------------------------
 const DEBOUNCE_MS = 350; // rule 8
-const IDLE_REST_MS = 45_000;
-const IDLE_SLEEP_MS = 90_000; // rule 5
-// Gap of plain idle between two idle "fidget" scenes (rule 7). Long enough that
-// the mascot is calm most of the time instead of constantly switching.
-const VARIATION_MIN_MS = 30_000;
-const VARIATION_MAX_MS = 50_000;
+// Plain-idle "breather" that opens each routine cycle in the ambient sequence.
+const IDLE_HOLD_MS = 20_000;
+// Only doze off ~5 minutes after the last interaction, so the calm idle moods
+// and rest get a long, full run before sleep takes over (rule 5).
+const IDLE_SLEEP_MS = 300_000;
 // One-shot reactions (rules 2/3/7) loop their clip at least this many times as a
 // floor, regardless of length.
 const REACTION_REPEATS = 3;
@@ -28,6 +27,9 @@ const MAX_VISIBLE_MS = 14_000;
 // hold for at least this long, looping their frames in place, so nothing the
 // user didn't trigger switches away in under half a minute.
 const AUTO_HOLD_MS = 30_000;
+// A double-click picks one activity and loops it for roughly this long, so the
+// chosen scene actually plays out instead of flashing past.
+const DOUBLE_CLICK_HOLD_MS = 15_000;
 // Grace added to the safety timer so it fires just after the final frame; the
 // animation's own completion is what normally drives the return to idle.
 const TRANSIENT_HOLD_BUFFER_MS = 250;
@@ -51,43 +53,39 @@ const PERSISTENT_STATES = new Set<MascotState>([
 
 const LONG_CLIP_STATES = new Set<MascotState>(['copter', 'door', 'timeTravel']);
 
-const CLICK_STATES: MascotState[] = ['greeting', 'connection', 'gratitude'];
+// Visually distinct single-click reactions. (The old connection/gratitude were
+// byte-for-byte the same waving art as greeting, so clicks always looked the
+// same; these three are genuinely different clips.)
+const CLICK_STATES: MascotState[] = ['greeting', 'happy', 'curiosity'];
 // Random reactions for a double-click (rule 3). Duplicate entries intentionally
-// weight common reactions over rare desktop-pet set pieces.
+// weight common reactions over rare desktop-pet set pieces. timeTravel is left
+// out: its art is a single static frame, so looping it would just freeze.
 const DOUBLE_CLICK_STATES: MascotState[] = [
-  'happy',
   'happy',
   'gadgetUse',
   'eating',
   'eating',
   'copter',
-  'door',
-  'timeTravel'
+  'door'
 ];
-// Pool of calm, single-source idle "moods" (rule 7). Each is now one coherent
-// clip that loops cleanly, so the rotation reads as "Doraemon settles into a
-// mood, holds it for a while, then drifts into another" instead of flickering.
-// Deliberately excludes travelling set pieces (copter/door) and busy poses.
+// Pool of calm idle "moods" (rule 7). Hand-picked so every entry is a VISUALLY
+// DISTINCT clip — the asset set has many duplicate-art states (e.g. wonder==awe,
+// contemplation/randomThought==curiosity, hope==greeting, satisfaction==rest),
+// which are deliberately excluded so the rotation never repeats the same picture
+// under a different name. Travelling set pieces (copter/door) are excluded too.
 const VARIATION_STATES: MascotState[] = [
   'calm',
   'curiosity',
   'thinking',
   'longing',
-  'wonder',
-  'contemplation',
-  'hope',
   'awe',
-  'satisfaction',
-  'randomThought',
+  'confusion',
+  'concern',
   'walk'
 ];
 
 function randomFrom<T>(items: readonly T[]): T {
   return items[Math.floor(Math.random() * items.length)];
-}
-
-function randomBetween(min: number, max: number): number {
-  return min + Math.random() * (max - min);
 }
 
 function resolveFramePath(manifestUrl: string, framePath: string): string {
@@ -187,11 +185,14 @@ export function useMascotState(manifestUrl: string): MascotController {
           repeat: Number.POSITIVE_INFINITY
         });
 
-        let restId = 0;
-        let sleepId = 0;
         let transientId = 0;
-        let variationId = 0;
         let introId = 0;
+        // Ambient routine state: `autoId` times the plain-idle breather, while
+        // `autoQueue` holds the remaining scenes of the current cycle.
+        // `lastInteractionAt` gates the slide into sleep.
+        let autoId = 0;
+        let autoQueue: MascotState[] = [];
+        let lastInteractionAt = performance.now();
 
         // Duration of a single full play of a state, derived from its real frame
         // count and fps, used to size the one-shot reaction timers.
@@ -274,72 +275,109 @@ export function useMascotState(manifestUrl: string): MascotController {
           }, holdMs);
         };
 
-        // Rule 5: rest first, then sleep after longer inactivity. If we are
-        // mid-reaction when a timer fires, retry shortly instead of resetting
-        // the full clock.
-        const tryRest = () => {
-          if (machine.state === 'idle') {
-            playTransient('rest', autoRepeats('rest'), 'idle-rest');
-          } else {
-            restId = window.setTimeout(tryRest, 5000);
+        // --- Ambient routine (rules 5 & 7) -----------------------------------
+        // Left alone, Doraemon runs a calm, ordered loop:
+        //   idle breather -> rest -> a random mood -> another random mood
+        // then the cycle repeats. Each non-idle scene loops its frames for
+        // AUTO_HOLD_MS so it reads clearly, and the next scene starts only once
+        // the current one ends. After IDLE_SLEEP_MS without interaction it dozes
+        // off and the routine pauses until something wakes it.
+        const buildCycle = (): MascotState[] => {
+          let first = randomFrom(VARIATION_STATES);
+          let second = randomFrom(VARIATION_STATES);
+          if (VARIATION_STATES.length > 1) {
+            while (second === first) {
+              second = randomFrom(VARIATION_STATES);
+            }
           }
-        };
-        const trySleep = () => {
-          if (machine.state === 'idle') {
-            commit('sleep', { reason: 'idle-timeout' });
-          } else {
-            sleepId = window.setTimeout(trySleep, 5000);
-          }
-        };
-        const restartIdleTimers = () => {
-          if (restId) {
-            clearTimeout(restId);
-          }
-          if (sleepId) {
-            clearTimeout(sleepId);
-          }
-          restId = window.setTimeout(tryRest, IDLE_REST_MS);
-          sleepId = window.setTimeout(trySleep, IDLE_SLEEP_MS);
+          return ['idle', 'rest', first, second];
         };
 
-        // Rule 7: wait a calm gap, then play one readable idle fidget that loops
-        // its frames enough whole times to be clearly seen before returning to
-        // idle. The next wait only starts once that scene ends.
-        const scheduleVariation = () => {
-          if (variationId) {
-            clearTimeout(variationId);
+        const clearAuto = () => {
+          if (autoId) {
+            clearTimeout(autoId);
+            autoId = 0;
           }
-          variationId = window.setTimeout(() => {
-            if (machine.state === 'idle' && !draggingRef.current) {
-              const variation = randomFrom(VARIATION_STATES);
-              playTransient(variation, autoRepeats(variation), 'idle-variation', {
-                afterEnd: scheduleVariation
-              });
-              return;
-            }
-            scheduleVariation();
-          }, randomBetween(VARIATION_MIN_MS, VARIATION_MAX_MS));
+        };
+
+        // Move to the next scene in the routine, refilling the cycle when empty.
+        // Runs at every scene boundary (idle breather end / scene afterEnd).
+        const advanceAuto = () => {
+          if (draggingRef.current) {
+            return;
+          }
+          if (performance.now() - lastInteractionAt >= IDLE_SLEEP_MS) {
+            clearAuto();
+            commit('sleep', { reason: 'idle-timeout' });
+            return;
+          }
+          if (autoQueue.length === 0) {
+            autoQueue = buildCycle();
+          }
+          const scene = autoQueue.shift()!;
+          if (scene === 'idle') {
+            commit('idle', { reason: 'auto-idle' });
+            clearAuto();
+            autoId = window.setTimeout(advanceAuto, IDLE_HOLD_MS);
+          } else {
+            playTransient(scene, autoRepeats(scene), `auto-${scene}`, {
+              afterEnd: advanceAuto
+            });
+          }
+        };
+
+        // (Re)start the routine from the top of a fresh cycle.
+        const restartAuto = () => {
+          clearAuto();
+          autoQueue = [];
+          advanceAuto();
+        };
+
+        const noteInteraction = () => {
+          lastInteractionAt = performance.now();
+        };
+
+        // Play a user-triggered reaction, then resume the calm routine. Without
+        // `holdMs` the clip loops for the default readable window (6-14s); with
+        // it, the clip loops enough whole times to fill ~holdMs.
+        const react = (next: MascotState, reason: string, holdMs?: number) => {
+          noteInteraction();
+          clearAuto();
+          const repeats =
+            holdMs === undefined
+              ? visibleRepeats(next)
+              : Math.max(1, Math.ceil(holdMs / cycleMs(next)));
+          playTransient(next, repeats, reason, {
+            force: true,
+            afterEnd: restartAuto
+          });
         };
 
         controlsRef.current = {
-          // Rule 2: mouse approaches -> curiosity, then idle.
+          // Rule 2: mouse approaches -> curiosity. Only from a calm idle, and
+          // never while a reaction/scene is already playing (a transient is
+          // pending) -- otherwise repeated pointerenter events, e.g. from the
+          // window toggling click-through as the sprite animates, would keep
+          // cutting an in-progress clip (like a double-click activity) short.
           proximity: () => {
             if (draggingRef.current) {
               return;
             }
-            restartIdleTimers();
-            playTransient('curiosity', visibleRepeats('curiosity'), 'proximity');
+            if (transientId || machine.state !== 'idle') {
+              noteInteraction();
+              return;
+            }
+            react('curiosity', 'proximity');
           },
-          // Rule 6: any mouse move / click wakes from sleep and defers sleeping.
+          // Rule 6: any mouse move defers sleep; if asleep, wake with a greeting.
+          // A plain hover never interrupts the scene currently playing.
           activity: () => {
             if (draggingRef.current) {
               return;
             }
-            restartIdleTimers();
+            noteInteraction();
             if (machine.state === 'sleep') {
-              playTransient('greeting', visibleRepeats('greeting'), 'wake', {
-                force: true
-              });
+              react('greeting', 'wake');
             }
           },
           // Single click -> small social acknowledgement.
@@ -347,60 +385,55 @@ export function useMascotState(manifestUrl: string): MascotController {
             if (draggingRef.current) {
               return;
             }
-            restartIdleTimers();
-            const reaction = randomFrom(CLICK_STATES);
-            playTransient(reaction, visibleRepeats(reaction), 'click', {
-              force: true
-            });
+            react(randomFrom(CLICK_STATES), 'click');
           },
           // Rule 3: double-click -> weighted random reaction / rare set piece.
           doubleClick: () => {
             if (draggingRef.current) {
               return;
             }
-            restartIdleTimers();
-            const reaction = randomFrom(DOUBLE_CLICK_STATES);
-            playTransient(reaction, visibleRepeats(reaction), 'double-click', {
-              force: true
-            });
+            react(randomFrom(DOUBLE_CLICK_STATES), 'double-click', DOUBLE_CLICK_HOLD_MS);
           },
           // Rule 4: enter drag while held (falls back to idle if drag has no frames).
           beginDrag: () => {
             draggingRef.current = true;
+            noteInteraction();
+            clearAuto();
             clearTransient();
             commit('drag', { force: true, reason: 'drag-start' });
           },
           endDrag: () => {
             draggingRef.current = false;
-            // The "slams down" landing plays exactly once, not on a loop.
-            playTransient('dragEnd', 1, 'drag-end', { force: true });
-            restartIdleTimers();
+            noteInteraction();
+            // The "slams down" landing plays once, then the routine resumes.
+            playTransient('dragEnd', 1, 'drag-end', { force: true, afterEnd: restartAuto });
           },
-          // A non-looping reaction finished on its own; settle back to idle.
+          // A non-looping reaction finished on its own. Its transient timer is
+          // what settles it and drives whatever comes next, so only step in here
+          // if no such timer is pending.
           actionComplete: () => {
-            const current = machine.state;
-            if (PERSISTENT_STATES.has(current)) {
+            if (transientId || PERSISTENT_STATES.has(machine.state)) {
               return;
             }
-            clearTransient();
             commit('idle', { reason: 'action-complete' });
           }
         };
 
-        restartIdleTimers();
-        scheduleVariation();
         introId = window.setTimeout(() => {
-          if (machine.state === 'idle' && !draggingRef.current) {
-            playTransient('greeting', visibleRepeats('greeting'), 'startup', { force: true });
+          if (draggingRef.current) {
+            return;
           }
+          // Greet once on startup, then fall into the ambient routine.
+          playTransient('greeting', visibleRepeats('greeting'), 'startup', {
+            force: true,
+            afterEnd: restartAuto
+          });
         }, 300);
 
         cleanup = () => {
-          if (restId) clearTimeout(restId);
-          if (sleepId) clearTimeout(sleepId);
           if (transientId) clearTimeout(transientId);
-          if (variationId) clearTimeout(variationId);
           if (introId) clearTimeout(introId);
+          if (autoId) clearTimeout(autoId);
         };
       })
       .catch((loadError: unknown) => {
