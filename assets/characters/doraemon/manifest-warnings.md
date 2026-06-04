@@ -1,12 +1,12 @@
 # Manifest warnings (doraemon)
 
-Generated: 2026-06-04T02:54:07.889Z
+Generated: 2026-06-04T03:15:24.314Z
 
 No empty states. Every classified state has at least one frame.
 
 ## Unclassified frames
 
-145 frame(s) did not match any keyword rule and were placed in `misc`. Review these and, if needed, rename the source art or extend the classification keywords in `scripts/build-manifest.ts`.
+146 frame(s) did not match any keyword rule and were placed in `misc`. Review these and, if needed, rename the source art or extend the classification keywords in `scripts/build-manifest.ts`.
 
 - action-chat_answer-01.png
 - action-chat_answer-02.png
@@ -29,8 +29,8 @@ No empty states. Every classified state has at least one frame.
 - action-rest-01.png
 - action-rest-02.png
 - action-rest-03.png
+- c028a1d10818b6acc00a2199a179f5a.png
 - drag_000.png
 - drag_001.png
 - emotion-awe-01.png
-- emotion-awe-02.png
-- … and 120 more
+- … and 121 more
