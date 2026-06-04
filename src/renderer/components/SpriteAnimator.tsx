@@ -96,7 +96,7 @@ export function SpriteAnimator({
     let nextFrameIndex = 0;
     let completedCycles = 0;
     let completed = false;
-    const frameDuration = 1000 / Math.max(1, action.fps);
+    const frameDuration = 1000 / Math.max(0.1, action.fps);
 
     const tick = (now: number) => {
       elapsed += now - lastTick;

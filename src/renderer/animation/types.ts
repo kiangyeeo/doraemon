@@ -35,6 +35,10 @@ export const MASCOT_STATES = [
   'satisfaction',
   'protect',
   'randomThought',
+  'calm',
+  'hope',
+  'wonder',
+  'contemplation',
   'misc'
 ] as const;
 

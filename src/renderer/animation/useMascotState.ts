@@ -11,11 +11,23 @@ import type {
 const DEBOUNCE_MS = 350; // rule 8
 const IDLE_REST_MS = 45_000;
 const IDLE_SLEEP_MS = 90_000; // rule 5
-const VARIATION_MIN_MS = 12_000; // rule 7
-const VARIATION_MAX_MS = 25_000; // rule 7
-// One-shot reactions (rules 2/3/7) play their full animation this many times
-// before settling back to idle, so a short clip no longer flashes past.
+// Gap of plain idle between two idle "fidget" scenes (rule 7). Long enough that
+// the mascot is calm most of the time instead of constantly switching.
+const VARIATION_MIN_MS = 30_000;
+const VARIATION_MAX_MS = 50_000;
+// One-shot reactions (rules 2/3/7) loop their clip at least this many times as a
+// floor, regardless of length.
 const REACTION_REPEATS = 3;
+// Every visible reaction stays on screen for a real-time window, looping its
+// frames as many *whole* times as needed. This is the core fix for short clips
+// (3-frame gadget poses, etc.) that used to flash past before you could tell
+// what they were: a 0.5s clip now loops ~12x instead of vanishing in 1.5s.
+const MIN_VISIBLE_MS = 6_000;
+const MAX_VISIBLE_MS = 14_000;
+// Ambient scenes the mascot rotates through *on its own* (idle fidgets, rest)
+// hold for at least this long, looping their frames in place, so nothing the
+// user didn't trigger switches away in under half a minute.
+const AUTO_HOLD_MS = 30_000;
 // Grace added to the safety timer so it fires just after the final frame; the
 // animation's own completion is what normally drives the return to idle.
 const TRANSIENT_HOLD_BUFFER_MS = 250;
@@ -52,19 +64,22 @@ const DOUBLE_CLICK_STATES: MascotState[] = [
   'door',
   'timeTravel'
 ];
-// Pool of brief "fidget" actions used for idle variations (rule 7).
+// Pool of calm, single-source idle "moods" (rule 7). Each is now one coherent
+// clip that loops cleanly, so the rotation reads as "Doraemon settles into a
+// mood, holds it for a while, then drifts into another" instead of flickering.
+// Deliberately excludes travelling set pieces (copter/door) and busy poses.
 const VARIATION_STATES: MascotState[] = [
-  'walk',
-  'randomThought',
+  'calm',
   'curiosity',
   'thinking',
-  'hungry',
   'longing',
-  'rest',
-  'gadgetSearch',
-  'codingThinking',
-  'copter',
-  'door'
+  'wonder',
+  'contemplation',
+  'hope',
+  'awe',
+  'satisfaction',
+  'randomThought',
+  'walk'
 ];
 
 function randomFrom<T>(items: readonly T[]): T {
@@ -73,10 +88,6 @@ function randomFrom<T>(items: readonly T[]): T {
 
 function randomBetween(min: number, max: number): number {
   return min + Math.random() * (max - min);
-}
-
-function reactionRepeatsFor(state: MascotState): number {
-  return LONG_CLIP_STATES.has(state) ? 1 : REACTION_REPEATS;
 }
 
 function resolveFramePath(manifestUrl: string, framePath: string): string {
@@ -193,6 +204,28 @@ export function useMascotState(manifestUrl: string): MascotController {
           return (meta.frames.length / meta.fps) * 1000;
         };
 
+        // How many *whole* times to loop a clip so it stays on screen for a
+        // comfortable, readable window. Short clips loop many times; clips that
+        // are already long (or the travelling set pieces) play just once. This
+        // is what guarantees "enough time" for every state regardless of how
+        // few frames it has.
+        const visibleRepeats = (name: MascotState): number => {
+          if (LONG_CLIP_STATES.has(name)) {
+            return 1;
+          }
+          const cycle = cycleMs(name);
+          const floorByTime = Math.ceil(MIN_VISIBLE_MS / cycle);
+          const capByTime = Math.max(1, Math.floor(MAX_VISIBLE_MS / cycle));
+          return Math.min(Math.max(REACTION_REPEATS, floorByTime), Math.max(REACTION_REPEATS, capByTime));
+        };
+
+        // Whole loops needed for a self-initiated ambient scene to hold for at
+        // least AUTO_HOLD_MS. No upper cap: half a minute is the floor, and we
+        // round up to a complete cycle so the loop never cuts off mid-frame.
+        const autoRepeats = (name: MascotState): number => {
+          return Math.max(1, Math.ceil(AUTO_HOLD_MS / cycleMs(name)));
+        };
+
         // Apply a transition and push a render snapshot only when the state
         // actually changes (debounce / fallback / no-op keep the same state).
         // repeat carries how many times the new action should play; persistent
@@ -219,14 +252,15 @@ export function useMascotState(manifestUrl: string): MascotController {
           }
         };
 
-        // Play a one-shot reaction `repeats` times, then fall back to idle
+        // Play a one-shot reaction `repeats` whole times, then fall back to idle
         // (rules 2/3/7). The animation's own completion normally triggers the
-        // return; this timer is a safety net sized to the real play duration.
+        // return; this timer is a safety net sized to the real play duration so
+        // the clip is never cut off mid-loop. `afterEnd` runs once it settles.
         const playTransient = (
           next: MascotState,
           repeats: number,
           reason: string,
-          options?: { force?: boolean }
+          options?: { force?: boolean; afterEnd?: () => void }
         ) => {
           clearTransient();
           commit(next, { reason, force: options?.force }, repeats);
@@ -236,6 +270,7 @@ export function useMascotState(manifestUrl: string): MascotController {
             if (!draggingRef.current) {
               commit('idle', { reason: `${reason}-end` });
             }
+            options?.afterEnd?.();
           }, holdMs);
         };
 
@@ -244,7 +279,7 @@ export function useMascotState(manifestUrl: string): MascotController {
         // the full clock.
         const tryRest = () => {
           if (machine.state === 'idle') {
-            playTransient('rest', reactionRepeatsFor('rest'), 'idle-rest');
+            playTransient('rest', autoRepeats('rest'), 'idle-rest');
           } else {
             restId = window.setTimeout(tryRest, 5000);
           }
@@ -267,7 +302,9 @@ export function useMascotState(manifestUrl: string): MascotController {
           sleepId = window.setTimeout(trySleep, IDLE_SLEEP_MS);
         };
 
-        // Rule 7: every 12-25s, if idle, play a random variation, then reschedule.
+        // Rule 7: wait a calm gap, then play one readable idle fidget that loops
+        // its frames enough whole times to be clearly seen before returning to
+        // idle. The next wait only starts once that scene ends.
         const scheduleVariation = () => {
           if (variationId) {
             clearTimeout(variationId);
@@ -275,7 +312,10 @@ export function useMascotState(manifestUrl: string): MascotController {
           variationId = window.setTimeout(() => {
             if (machine.state === 'idle' && !draggingRef.current) {
               const variation = randomFrom(VARIATION_STATES);
-              playTransient(variation, reactionRepeatsFor(variation), 'idle-variation');
+              playTransient(variation, autoRepeats(variation), 'idle-variation', {
+                afterEnd: scheduleVariation
+              });
+              return;
             }
             scheduleVariation();
           }, randomBetween(VARIATION_MIN_MS, VARIATION_MAX_MS));
@@ -288,7 +328,7 @@ export function useMascotState(manifestUrl: string): MascotController {
               return;
             }
             restartIdleTimers();
-            playTransient('curiosity', reactionRepeatsFor('curiosity'), 'proximity');
+            playTransient('curiosity', visibleRepeats('curiosity'), 'proximity');
           },
           // Rule 6: any mouse move / click wakes from sleep and defers sleeping.
           activity: () => {
@@ -297,7 +337,7 @@ export function useMascotState(manifestUrl: string): MascotController {
             }
             restartIdleTimers();
             if (machine.state === 'sleep') {
-              playTransient('greeting', reactionRepeatsFor('greeting'), 'wake', {
+              playTransient('greeting', visibleRepeats('greeting'), 'wake', {
                 force: true
               });
             }
@@ -309,7 +349,7 @@ export function useMascotState(manifestUrl: string): MascotController {
             }
             restartIdleTimers();
             const reaction = randomFrom(CLICK_STATES);
-            playTransient(reaction, reactionRepeatsFor(reaction), 'click', {
+            playTransient(reaction, visibleRepeats(reaction), 'click', {
               force: true
             });
           },
@@ -320,7 +360,7 @@ export function useMascotState(manifestUrl: string): MascotController {
             }
             restartIdleTimers();
             const reaction = randomFrom(DOUBLE_CLICK_STATES);
-            playTransient(reaction, reactionRepeatsFor(reaction), 'double-click', {
+            playTransient(reaction, visibleRepeats(reaction), 'double-click', {
               force: true
             });
           },
@@ -332,7 +372,8 @@ export function useMascotState(manifestUrl: string): MascotController {
           },
           endDrag: () => {
             draggingRef.current = false;
-            playTransient('dragEnd', reactionRepeatsFor('dragEnd'), 'drag-end', { force: true });
+            // The "slams down" landing plays exactly once, not on a loop.
+            playTransient('dragEnd', 1, 'drag-end', { force: true });
             restartIdleTimers();
           },
           // A non-looping reaction finished on its own; settle back to idle.
@@ -350,7 +391,7 @@ export function useMascotState(manifestUrl: string): MascotController {
         scheduleVariation();
         introId = window.setTimeout(() => {
           if (machine.state === 'idle' && !draggingRef.current) {
-            playTransient('greeting', reactionRepeatsFor('greeting'), 'startup', { force: true });
+            playTransient('greeting', visibleRepeats('greeting'), 'startup', { force: true });
           }
         }, 300);
 

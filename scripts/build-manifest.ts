@@ -36,6 +36,10 @@ const STATE_NAMES = [
   'satisfaction',
   'protect',
   'randomThought',
+  'calm',
+  'hope',
+  'wonder',
+  'contemplation',
   'drag',
   'dragEnd',
   'misc'
@@ -69,35 +73,33 @@ type StateDefinition = {
 const DEFAULT_SCALE = 0.55;
 const CANVAS = { width: 512, height: 512 };
 
-// Scene-first state design. Frames may intentionally be reused across states
-// when the same art supports multiple triggers, e.g. focus frames in coding and
-// research.
+// Scene-first state design. Each state draws frames from a SINGLE coherent art
+// source so a clip never jumps between unrelated styles mid-loop (e.g. idle no
+// longer flips between a calm face, a standing pose and a stray sketch every few
+// frames). Distinct moods that used to be merged are now their own states so the
+// idle rotation can hold each one, looping cleanly, for a comfortable while.
 const STATE_DEFINITIONS: StateDefinition[] = [
   {
     name: 'idle',
     fps: 6,
     loop: true,
-    include: [/\/idle\/idle_\d+\.png$/, /\/emotion\/emotion-calm-\d+\.png$/, /\/misc\/shime1a?\.png$/]
+    include: [/\/idle\/idle_\d+\.png$/]
   },
   {
     name: 'greeting',
     fps: 7,
     loop: false,
-    include: [/\/action\/action-greeting-\d+\.png$/, /\/emotion\/emotion-joy-\d+\.png$/]
+    include: [/\/action\/action-greeting-\d+\.png$/]
   },
   {
     name: 'walk',
     fps: 8,
     loop: true,
-    include: [
-      /\/walk\/walk_\d+\.png$/,
-      /\/action\/action-walk-\d+\.png$/,
-      /\/misc\/shime(?:2|3|12|13|13a|14)\.png$/
-    ]
+    include: [/\/walk\/walk_\d+\.png$/, /\/action\/action-walk-\d+\.png$/]
   },
   {
     name: 'sleep',
-    fps: 3,
+    fps: 0.35,
     loop: true,
     include: [
       /\/sleep\/sleep_\d+\.png$/,
@@ -108,60 +110,50 @@ const STATE_DEFINITIONS: StateDefinition[] = [
   {
     name: 'rest',
     fps: 4,
-    loop: false,
-    include: [/\/action\/action-rest-\d+\.png$/, /\/emotion\/emotion-fatigue-\d+\.png$/]
+    loop: true,
+    include: [/\/action\/action-rest-\d+\.png$/]
   },
   {
     name: 'happy',
     fps: 8,
     loop: false,
-    include: [
-      /\/happy\/happy_\d+\.png$/,
-      /\/emotion\/emotion-excitement-\d+\.png$/,
-      /\/emotion\/emotion-joy-\d+\.png$/
-    ]
+    include: [/\/happy\/happy_\d+\.png$/]
   },
   {
     name: 'curiosity',
     fps: 5,
-    loop: false,
-    include: [/\/emotion\/emotion-curiosity-\d+\.png$/, /\/action\/action-chat_question-\d+\.png$/]
+    loop: true,
+    include: [/\/emotion\/emotion-curiosity-\d+\.png$/]
   },
   {
     name: 'connection',
     fps: 5,
     loop: false,
-    include: [/\/emotion\/emotion-connection-\d+\.png$/, /\/emotion\/emotion-hope-\d+\.png$/]
+    include: [/\/emotion\/emotion-connection-\d+\.png$/]
   },
   {
     name: 'thinking',
     fps: 4,
     loop: true,
-    include: [
-      /\/thinking\/thinking_\d+\.png$/,
-      /\/emotion\/emotion-contemplation-\d+\.png$/,
-      /\/emotion\/emotion-confusion-\d+\.png$/,
-      /\/coding\/codingthinking\d+\.png$/,
-      /\/action\/action-coding_thinking-\d+\.png$/
-    ]
+    include: [/\/thinking\/thinking_\d+\.png$/]
   },
   {
     name: 'confusion',
     fps: 4,
     loop: false,
-    include: [/\/emotion\/emotion-confusion-\d+\.png$/, /\/emotion\/emotion-contemplation-\d+\.png$/]
+    include: [/\/emotion\/emotion-confusion-\d+\.png$/]
   },
   {
     name: 'chatQuestion',
     fps: 6,
     loop: true,
-    include: [/\/action\/action-chat_question-\d+\.png$/, /\/emotion\/emotion-curiosity-\d+\.png$/]
+    include: [/\/action\/action-chat_question-\d+\.png$/]
   },
   {
     name: 'chatAnswer',
     fps: 6,
     loop: true,
-    include: [/\/action\/action-chat_answer-\d+\.png$/, /\/emotion\/emotion-focus-\d+\.png$/]
+    include: [/\/action\/action-chat_answer-\d+\.png$/]
   },
   {
     name: 'coding',
@@ -169,8 +161,7 @@ const STATE_DEFINITIONS: StateDefinition[] = [
     loop: true,
     include: [
       /\/action\/action-coding_typing-\d+\.png$/,
-      /\/coding\/coding(?:_\d+|(?:2|3|4|9|10|11)?)\.png$/,
-      /\/emotion\/emotion-focus-\d+\.png$/
+      /\/coding\/coding(?:_\d+|(?:2|3|4|9|10|11)?)\.png$/
     ]
   },
   {
@@ -183,23 +174,19 @@ const STATE_DEFINITIONS: StateDefinition[] = [
     name: 'codingIntense',
     fps: 8,
     loop: true,
-    include: [/\/coding\/codingintense\d*\.png$/, /\/emotion\/emotion-determination-\d+\.png$/]
+    include: [/\/coding\/codingintense\d*\.png$/]
   },
   {
     name: 'codingCelebrate',
     fps: 8,
     loop: false,
-    include: [
-      /\/coding\/codingcelebrate\d+\.png$/,
-      /\/emotion\/emotion-pride-\d+\.png$/,
-      /\/emotion\/emotion-satisfaction-\d+\.png$/
-    ]
+    include: [/\/coding\/codingcelebrate\d+\.png$/]
   },
   {
     name: 'research',
     fps: 5,
     loop: true,
-    include: [/\/action\/action-research-\d+\.png$/, /\/emotion\/emotion-focus-\d+\.png$/]
+    include: [/\/action\/action-research-\d+\.png$/]
   },
   {
     name: 'gadgetSearch',
@@ -217,17 +204,13 @@ const STATE_DEFINITIONS: StateDefinition[] = [
     name: 'gadgetUse',
     fps: 7,
     loop: false,
-    include: [
-      /\/gadget\/gadget_\d+\.png$/,
-      /\/action\/action-gadget_use-\d+\.png$/,
-      /\/misc\/shime(?:34|35|36|37)\.png$/
-    ]
+    include: [/\/gadget\/gadget_\d+\.png$/, /\/action\/action-gadget_use-\d+\.png$/]
   },
   {
     name: 'gadgetSurprise',
     fps: 7,
     loop: false,
-    include: [/\/action\/action-gadget_surprise-\d+\.png$/, /\/emotion\/emotion-awe-\d+\.png$/]
+    include: [/\/action\/action-gadget_surprise-\d+\.png$/]
   },
   {
     name: 'copter',
@@ -251,7 +234,7 @@ const STATE_DEFINITIONS: StateDefinition[] = [
     name: 'eating',
     fps: 6,
     loop: true,
-    include: [/\/eating\/eating_\d+\.png$/, /\/action\/action-eating-\d+\.png$/, /\/misc\/shime11[a-d]?\.png$/]
+    include: [/\/eating\/eating_\d+\.png$/, /\/action\/action-eating-\d+\.png$/]
   },
   {
     name: 'hungry',
@@ -263,45 +246,37 @@ const STATE_DEFINITIONS: StateDefinition[] = [
     name: 'angry',
     fps: 6,
     loop: false,
-    include: [
-      /\/action\/action-angry-\d+\.png$/,
-      /\/emotion\/emotion-frustration-\d+\.png$/,
-      /\/misc\/shime(?:5|6|7|8|9|10|x|xa)\.png$/
-    ]
+    include: [/\/action\/action-angry-\d+\.png$/]
   },
   {
     name: 'longing',
     fps: 4,
-    loop: false,
-    include: [/\/emotion\/emotion-longing-\d+\.png$/, /\/misc\/shime(?:38|38a|39)\.png$/]
+    loop: true,
+    include: [/\/emotion\/emotion-longing-\d+\.png$/]
   },
   {
     name: 'concern',
     fps: 4,
     loop: false,
-    include: [/\/emotion\/emotion-concern-\d+\.png$/, /\/emotion\/emotion-melancholy-\d+\.png$/]
+    include: [/\/emotion\/emotion-concern-\d+\.png$/]
   },
   {
     name: 'awe',
     fps: 6,
-    loop: false,
-    include: [/\/emotion\/emotion-awe-\d+\.png$/, /\/emotion\/emotion-wonder-\d+\.png$/, /\/misc\/shime4\.png$/]
+    loop: true,
+    include: [/\/emotion\/emotion-awe-\d+\.png$/]
   },
   {
     name: 'gratitude',
     fps: 5,
     loop: false,
-    include: [/\/emotion\/emotion-gratitude-\d+\.png$/, /\/misc\/shime(?:30|31|32|33)\.png$/]
+    include: [/\/emotion\/emotion-gratitude-\d+\.png$/]
   },
   {
     name: 'satisfaction',
     fps: 5,
-    loop: false,
-    include: [
-      /\/emotion\/emotion-satisfaction-\d+\.png$/,
-      /\/emotion\/emotion-pride-\d+\.png$/,
-      /\/misc\/shime(?:26|27|28|29)\.png$/
-    ]
+    loop: true,
+    include: [/\/emotion\/emotion-satisfaction-\d+\.png$/]
   },
   {
     name: 'protect',
@@ -312,20 +287,47 @@ const STATE_DEFINITIONS: StateDefinition[] = [
   {
     name: 'randomThought',
     fps: 4,
-    loop: false,
-    include: [/\/action\/action-random_thought-\d+\.png$/, /\/emotion\/emotion-wonder-\d+\.png$/]
+    loop: true,
+    include: [/\/action\/action-random_thought-\d+\.png$/]
+  },
+  // Calm idle moods, each a clean single-source loop used by the idle rotation.
+  {
+    name: 'calm',
+    fps: 4,
+    loop: true,
+    include: [/\/emotion\/emotion-calm-\d+\.png$/]
+  },
+  {
+    name: 'hope',
+    fps: 4,
+    loop: true,
+    include: [/\/emotion\/emotion-hope-\d+\.png$/]
+  },
+  {
+    name: 'wonder',
+    fps: 4,
+    loop: true,
+    include: [/\/emotion\/emotion-wonder-\d+\.png$/]
+  },
+  {
+    name: 'contemplation',
+    fps: 4,
+    loop: true,
+    include: [/\/emotion\/emotion-contemplation-\d+\.png$/]
   },
   {
     name: 'drag',
     fps: 6,
     loop: true,
-    include: [/\/drag\/drag_\d+\.png$/, /\/misc\/shime18\.png$/]
+    include: [/\/drag\/drag_\d+\.png$/]
   },
   {
+    // "Slams down" when released: shime18 is the impact (star burst, dizzy eyes),
+    // shime19 is the settle right after. Played exactly once by the controller.
     name: 'dragEnd',
     fps: 5,
     loop: false,
-    include: [/\/misc\/shime19\.png$/, /\/emotion\/emotion-concern-\d+\.png$/]
+    include: [/\/misc\/shime(?:18|19)\.png$/]
   },
   {
     name: 'misc',
