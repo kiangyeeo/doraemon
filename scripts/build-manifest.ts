@@ -1,17 +1,49 @@
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { basename, extname, join, relative, resolve, sep } from 'node:path';
 
-type StateName =
-  | 'idle'
-  | 'walk'
-  | 'sleep'
-  | 'happy'
-  | 'thinking'
-  | 'coding'
-  | 'gadget'
-  | 'eating'
-  | 'angry'
-  | 'misc';
+const STATE_NAMES = [
+  'idle',
+  'greeting',
+  'walk',
+  'sleep',
+  'rest',
+  'happy',
+  'curiosity',
+  'connection',
+  'thinking',
+  'confusion',
+  'chatQuestion',
+  'chatAnswer',
+  'coding',
+  'codingThinking',
+  'codingIntense',
+  'codingCelebrate',
+  'research',
+  'gadgetSearch',
+  'gadgetExplain',
+  'gadgetUse',
+  'gadgetSurprise',
+  'copter',
+  'timeTravel',
+  'door',
+  'eating',
+  'hungry',
+  'angry',
+  'longing',
+  'concern',
+  'awe',
+  'gratitude',
+  'satisfaction',
+  'protect',
+  'randomThought',
+  'drag',
+  'dragEnd',
+  'misc'
+] as const;
+
+type StateName = (typeof STATE_NAMES)[number];
+
+type Matcher = string | RegExp;
 
 type StateConfig = {
   fps: number;
@@ -27,53 +59,284 @@ type Manifest = {
   states: Record<string, StateConfig>;
 };
 
-// Ordered classification rules. The first rule whose keyword appears in the
-// frame's file name wins, so the order here is significant: e.g. a file named
-// "coding_thinking" matches `thinking` before `coding`. Anything that matches
-// no rule falls through to `misc`.
-const CLASSIFICATION_RULES: { state: StateName; keywords: string[] }[] = [
-  { state: 'idle', keywords: ['idle', 'calm', 'normal'] },
-  { state: 'walk', keywords: ['walk'] },
-  { state: 'sleep', keywords: ['sleep', 'nap', 'fatigue'] },
-  { state: 'happy', keywords: ['happy', 'joy', 'excitement', 'pride'] },
-  { state: 'thinking', keywords: ['thinking', 'contemplation', 'confusion'] },
-  { state: 'coding', keywords: ['coding', 'focus'] },
-  { state: 'gadget', keywords: ['gadget', 'pocket', 'take_copter', 'time_travel'] },
-  { state: 'eating', keywords: ['eating', 'hungry', 'dorayaki'] },
-  { state: 'angry', keywords: ['angry', 'frustration'] }
-];
-
-// Default playback settings per state, also defining the output order of states.
-const STATE_DEFAULTS: { name: StateName; fps: number; loop: boolean }[] = [
-  { name: 'idle', fps: 6, loop: true },
-  { name: 'walk', fps: 8, loop: true },
-  { name: 'sleep', fps: 3, loop: true },
-  { name: 'happy', fps: 8, loop: false },
-  { name: 'thinking', fps: 4, loop: true },
-  { name: 'coding', fps: 6, loop: true },
-  { name: 'gadget', fps: 7, loop: false },
-  { name: 'eating', fps: 6, loop: true },
-  { name: 'angry', fps: 6, loop: false },
-  { name: 'misc', fps: 6, loop: true }
-];
+type StateDefinition = {
+  name: StateName;
+  fps: number;
+  loop: boolean;
+  include: Matcher[];
+};
 
 const DEFAULT_SCALE = 0.55;
 const CANVAS = { width: 512, height: 512 };
 
+// Scene-first state design. Frames may intentionally be reused across states
+// when the same art supports multiple triggers, e.g. focus frames in coding and
+// research.
+const STATE_DEFINITIONS: StateDefinition[] = [
+  {
+    name: 'idle',
+    fps: 6,
+    loop: true,
+    include: [/\/idle\/idle_\d+\.png$/, /\/emotion\/emotion-calm-\d+\.png$/, /\/misc\/shime1a?\.png$/]
+  },
+  {
+    name: 'greeting',
+    fps: 7,
+    loop: false,
+    include: [/\/action\/action-greeting-\d+\.png$/, /\/emotion\/emotion-joy-\d+\.png$/]
+  },
+  {
+    name: 'walk',
+    fps: 8,
+    loop: true,
+    include: [
+      /\/walk\/walk_\d+\.png$/,
+      /\/action\/action-walk-\d+\.png$/,
+      /\/misc\/shime(?:2|3|12|13|13a|14)\.png$/
+    ]
+  },
+  {
+    name: 'sleep',
+    fps: 3,
+    loop: true,
+    include: [
+      /\/sleep\/sleep_\d+\.png$/,
+      /\/action\/action-nap-\d+\.png$/,
+      /\/misc\/shime(?:20|20a|20b|21|21a)\.png$/
+    ]
+  },
+  {
+    name: 'rest',
+    fps: 4,
+    loop: false,
+    include: [/\/action\/action-rest-\d+\.png$/, /\/emotion\/emotion-fatigue-\d+\.png$/]
+  },
+  {
+    name: 'happy',
+    fps: 8,
+    loop: false,
+    include: [
+      /\/happy\/happy_\d+\.png$/,
+      /\/emotion\/emotion-excitement-\d+\.png$/,
+      /\/emotion\/emotion-joy-\d+\.png$/
+    ]
+  },
+  {
+    name: 'curiosity',
+    fps: 5,
+    loop: false,
+    include: [/\/emotion\/emotion-curiosity-\d+\.png$/, /\/action\/action-chat_question-\d+\.png$/]
+  },
+  {
+    name: 'connection',
+    fps: 5,
+    loop: false,
+    include: [/\/emotion\/emotion-connection-\d+\.png$/, /\/emotion\/emotion-hope-\d+\.png$/]
+  },
+  {
+    name: 'thinking',
+    fps: 4,
+    loop: true,
+    include: [
+      /\/thinking\/thinking_\d+\.png$/,
+      /\/emotion\/emotion-contemplation-\d+\.png$/,
+      /\/emotion\/emotion-confusion-\d+\.png$/,
+      /\/coding\/codingthinking\d+\.png$/,
+      /\/action\/action-coding_thinking-\d+\.png$/
+    ]
+  },
+  {
+    name: 'confusion',
+    fps: 4,
+    loop: false,
+    include: [/\/emotion\/emotion-confusion-\d+\.png$/, /\/emotion\/emotion-contemplation-\d+\.png$/]
+  },
+  {
+    name: 'chatQuestion',
+    fps: 6,
+    loop: true,
+    include: [/\/action\/action-chat_question-\d+\.png$/, /\/emotion\/emotion-curiosity-\d+\.png$/]
+  },
+  {
+    name: 'chatAnswer',
+    fps: 6,
+    loop: true,
+    include: [/\/action\/action-chat_answer-\d+\.png$/, /\/emotion\/emotion-focus-\d+\.png$/]
+  },
+  {
+    name: 'coding',
+    fps: 6,
+    loop: true,
+    include: [
+      /\/action\/action-coding_typing-\d+\.png$/,
+      /\/coding\/coding(?:_\d+|(?:2|3|4|9|10|11)?)\.png$/,
+      /\/emotion\/emotion-focus-\d+\.png$/
+    ]
+  },
+  {
+    name: 'codingThinking',
+    fps: 5,
+    loop: true,
+    include: [/\/action\/action-coding_thinking-\d+\.png$/, /\/coding\/codingthinking\d+\.png$/]
+  },
+  {
+    name: 'codingIntense',
+    fps: 8,
+    loop: true,
+    include: [/\/coding\/codingintense\d*\.png$/, /\/emotion\/emotion-determination-\d+\.png$/]
+  },
+  {
+    name: 'codingCelebrate',
+    fps: 8,
+    loop: false,
+    include: [
+      /\/coding\/codingcelebrate\d+\.png$/,
+      /\/emotion\/emotion-pride-\d+\.png$/,
+      /\/emotion\/emotion-satisfaction-\d+\.png$/
+    ]
+  },
+  {
+    name: 'research',
+    fps: 5,
+    loop: true,
+    include: [/\/action\/action-research-\d+\.png$/, /\/emotion\/emotion-focus-\d+\.png$/]
+  },
+  {
+    name: 'gadgetSearch',
+    fps: 6,
+    loop: false,
+    include: [/\/action\/action-gadget_search-\d+\.png$/]
+  },
+  {
+    name: 'gadgetExplain',
+    fps: 5,
+    loop: false,
+    include: [/\/action\/action-explain_gadget-\d+\.png$/]
+  },
+  {
+    name: 'gadgetUse',
+    fps: 7,
+    loop: false,
+    include: [
+      /\/gadget\/gadget_\d+\.png$/,
+      /\/action\/action-gadget_use-\d+\.png$/,
+      /\/misc\/shime(?:34|35|36|37)\.png$/
+    ]
+  },
+  {
+    name: 'gadgetSurprise',
+    fps: 7,
+    loop: false,
+    include: [/\/action\/action-gadget_surprise-\d+\.png$/, /\/emotion\/emotion-awe-\d+\.png$/]
+  },
+  {
+    name: 'copter',
+    fps: 8,
+    loop: false,
+    include: [/\/action\/action-take_copter-\d+\.png$/, /\/misc\/shime(?:15|16|17|22|23|23a|23b|23c|24|25)\.png$/]
+  },
+  {
+    name: 'timeTravel',
+    fps: 7,
+    loop: false,
+    include: [/\/action\/action-time_travel-\d+\.png$/]
+  },
+  {
+    name: 'door',
+    fps: 8,
+    loop: false,
+    include: [/\/misc\/shime(?:40|41[a-n]?|42|43|44|45|46|47|48|49|50)\.png$/]
+  },
+  {
+    name: 'eating',
+    fps: 6,
+    loop: true,
+    include: [/\/eating\/eating_\d+\.png$/, /\/action\/action-eating-\d+\.png$/, /\/misc\/shime11[a-d]?\.png$/]
+  },
+  {
+    name: 'hungry',
+    fps: 5,
+    loop: false,
+    include: [/\/action\/action-hungry-\d+\.png$/]
+  },
+  {
+    name: 'angry',
+    fps: 6,
+    loop: false,
+    include: [
+      /\/action\/action-angry-\d+\.png$/,
+      /\/emotion\/emotion-frustration-\d+\.png$/,
+      /\/misc\/shime(?:5|6|7|8|9|10|x|xa)\.png$/
+    ]
+  },
+  {
+    name: 'longing',
+    fps: 4,
+    loop: false,
+    include: [/\/emotion\/emotion-longing-\d+\.png$/, /\/misc\/shime(?:38|38a|39)\.png$/]
+  },
+  {
+    name: 'concern',
+    fps: 4,
+    loop: false,
+    include: [/\/emotion\/emotion-concern-\d+\.png$/, /\/emotion\/emotion-melancholy-\d+\.png$/]
+  },
+  {
+    name: 'awe',
+    fps: 6,
+    loop: false,
+    include: [/\/emotion\/emotion-awe-\d+\.png$/, /\/emotion\/emotion-wonder-\d+\.png$/, /\/misc\/shime4\.png$/]
+  },
+  {
+    name: 'gratitude',
+    fps: 5,
+    loop: false,
+    include: [/\/emotion\/emotion-gratitude-\d+\.png$/, /\/misc\/shime(?:30|31|32|33)\.png$/]
+  },
+  {
+    name: 'satisfaction',
+    fps: 5,
+    loop: false,
+    include: [
+      /\/emotion\/emotion-satisfaction-\d+\.png$/,
+      /\/emotion\/emotion-pride-\d+\.png$/,
+      /\/misc\/shime(?:26|27|28|29)\.png$/
+    ]
+  },
+  {
+    name: 'protect',
+    fps: 5,
+    loop: true,
+    include: [/\/action\/action-protect-\d+\.png$/]
+  },
+  {
+    name: 'randomThought',
+    fps: 4,
+    loop: false,
+    include: [/\/action\/action-random_thought-\d+\.png$/, /\/emotion\/emotion-wonder-\d+\.png$/]
+  },
+  {
+    name: 'drag',
+    fps: 6,
+    loop: true,
+    include: [/\/drag\/drag_\d+\.png$/, /\/misc\/shime18\.png$/]
+  },
+  {
+    name: 'dragEnd',
+    fps: 5,
+    loop: false,
+    include: [/\/misc\/shime19\.png$/, /\/emotion\/emotion-concern-\d+\.png$/]
+  },
+  {
+    name: 'misc',
+    fps: 6,
+    loop: true,
+    include: []
+  }
+];
+
 function toPosixPath(pathName: string): string {
   return pathName.split(sep).join('/');
-}
-
-function classifyFrame(filePath: string): StateName {
-  const stem = basename(filePath, extname(filePath)).toLowerCase();
-
-  for (const rule of CLASSIFICATION_RULES) {
-    if (rule.keywords.some((keyword) => stem.includes(keyword))) {
-      return rule.state;
-    }
-  }
-
-  return 'misc';
 }
 
 function scanPngFiles(root: string): string[] {
@@ -105,6 +368,15 @@ function naturalByFileName(left: string, right: string): number {
   }
 
   return left.localeCompare(right, undefined, { numeric: true });
+}
+
+function matchesFrame(framePath: string, matcher: Matcher): boolean {
+  const normalized = framePath.toLowerCase();
+  if (typeof matcher === 'string') {
+    return normalized.includes(matcher.toLowerCase());
+  }
+
+  return matcher.test(normalized);
 }
 
 function readProjectVersion(): string {
@@ -222,7 +494,7 @@ function buildPreviewHtml(character: string, manifest: Manifest): string {
 </style>
 </head>
 <body>
-  <h1>${character} &mdash; animation preview</h1>
+  <h1>${character} - animation preview</h1>
   <p class="sub">Generated by <code>scripts/build-manifest.ts</code>. Each card loops its frames at the state's configured fps. Open this file directly in a browser from the character folder.</p>
   <div class="controls">
     <label>Global speed</label>
@@ -334,7 +606,7 @@ function buildWarningsMarkdown(
   ];
 
   if (emptyStates.length === 0) {
-    lines.push('No empty states. Every classified state has at least one frame.');
+    lines.push('No empty states. Every designed state has at least one frame.');
   } else {
     lines.push('## Empty states');
     lines.push('');
@@ -346,18 +618,18 @@ function buildWarningsMarkdown(
   }
 
   lines.push('');
-  lines.push('## Unclassified frames');
+  lines.push('## Unassigned frames');
   lines.push('');
   if (miscCount === 0) {
     lines.push('No frames fell through to `misc`.');
   } else {
-    lines.push(`${miscCount} frame(s) did not match any keyword rule and were placed in \`misc\`. Review these and, if needed, rename the source art or extend the classification keywords in \`scripts/build-manifest.ts\`.`);
+    lines.push(`${miscCount} frame(s) were not assigned to a designed state and were placed in \`misc\`. Review these and, if needed, extend \`STATE_DEFINITIONS\` in \`scripts/build-manifest.ts\`.`);
     lines.push('');
     for (const sample of miscSample) {
       lines.push(`- ${sample}`);
     }
     if (miscCount > miscSample.length) {
-      lines.push(`- … and ${miscCount - miscSample.length} more`);
+      lines.push(`- ... and ${miscCount - miscSample.length} more`);
     }
   }
   lines.push('');
@@ -378,27 +650,43 @@ function main(): void {
   }
 
   const existingStates = readExistingStates(manifestPath);
-
-  const grouped = new Map<StateName, string[]>();
-  for (const { name } of STATE_DEFAULTS) {
-    grouped.set(name, []);
-  }
-
-  for (const filePath of scanPngFiles(processedRoot)) {
-    const state = classifyFrame(filePath);
-    const relativePath = toPosixPath(relative(characterRoot, filePath));
-    grouped.get(state)!.push(relativePath);
-  }
-
+  const processedFrames = scanPngFiles(processedRoot)
+    .map((filePath) => toPosixPath(relative(characterRoot, filePath)))
+    .sort(naturalByFileName);
+  const referenced = new Set<string>();
   const states: Record<string, StateConfig> = {};
-  for (const { name, fps, loop } of STATE_DEFAULTS) {
-    const frames = grouped.get(name)!.sort(naturalByFileName);
-    const preserved = existingStates.get(name);
-    states[name] = {
-      fps: preserved?.fps ?? fps,
-      loop: preserved?.loop ?? loop,
+
+  for (const definition of STATE_DEFINITIONS) {
+    if (definition.name === 'misc') {
+      continue;
+    }
+
+    const frames = processedFrames.filter((frame) =>
+      definition.include.some((matcher) => matchesFrame(frame, matcher))
+    );
+    for (const frame of frames) {
+      referenced.add(frame);
+    }
+
+    const preserved = existingStates.get(definition.name);
+    states[definition.name] = {
+      fps: preserved?.fps ?? definition.fps,
+      loop: preserved?.loop ?? definition.loop,
       frames
     };
+  }
+
+  const miscDefinition = STATE_DEFINITIONS.find((definition) => definition.name === 'misc')!;
+  const preservedMisc = existingStates.get('misc');
+  states.misc = {
+    fps: preservedMisc?.fps ?? miscDefinition.fps,
+    loop: preservedMisc?.loop ?? miscDefinition.loop,
+    frames: processedFrames.filter((frame) => !referenced.has(frame))
+  };
+
+  const orderedStates: Record<string, StateConfig> = {};
+  for (const name of STATE_NAMES) {
+    orderedStates[name] = states[name];
   }
 
   const manifest: Manifest = {
@@ -406,15 +694,15 @@ function main(): void {
     version: readProjectVersion(),
     canvas: CANVAS,
     defaultScale: DEFAULT_SCALE,
-    states
+    states: orderedStates
   };
 
   writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
 
-  const emptyStates = STATE_DEFAULTS.map((entry) => entry.name).filter(
-    (name) => states[name].frames.length === 0
+  const emptyStates = STATE_NAMES.filter(
+    (name) => name !== 'misc' && manifest.states[name].frames.length === 0
   );
-  const miscFrames = states.misc.frames;
+  const miscFrames = manifest.states.misc.frames;
   const warnings = buildWarningsMarkdown(
     character,
     emptyStates,
@@ -425,10 +713,15 @@ function main(): void {
 
   writeFileSync(previewPath, buildPreviewHtml(character, manifest), 'utf8');
 
-  const total = Object.values(states).reduce((sum, state) => sum + state.frames.length, 0);
-  console.log(`Built manifest for ${character}: ${total} frame(s) across ${STATE_DEFAULTS.length} state(s).`);
-  for (const { name } of STATE_DEFAULTS) {
-    console.log(`  ${name.padEnd(9)} ${states[name].frames.length} frame(s)`);
+  const totalAssigned = Object.entries(manifest.states)
+    .filter(([name]) => name !== 'misc')
+    .reduce((sum, [, state]) => sum + state.frames.length, 0);
+  const uniqueAssigned = referenced.size;
+  console.log(
+    `Built manifest for ${character}: ${uniqueAssigned} unique frame(s), ${totalAssigned} assigned use(s), ${STATE_NAMES.length} state(s).`
+  );
+  for (const name of STATE_NAMES) {
+    console.log(`  ${name.padEnd(16)} ${manifest.states[name].frames.length} frame(s)`);
   }
   if (emptyStates.length > 0) {
     console.warn(`[warning] empty state(s): ${emptyStates.join(', ')} (see ${relative(process.cwd(), warningsPath)})`);

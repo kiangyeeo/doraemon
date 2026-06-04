@@ -27,11 +27,21 @@ type PressState = {
 export function MascotStage({ manifestUrl }: MascotStageProps) {
   const controller = useMascotState(manifestUrl);
   const pressRef = useRef<PressState | null>(null);
+  const clickTimerRef = useRef<number | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   // Mirrors the window's click-through state so we only round-trip to the main
   // process when it actually changes.
   const interactiveRef = useRef(false);
   const [isDragging, setIsDragging] = useState(false);
+
+  const clearClickTimer = useCallback(() => {
+    if (clickTimerRef.current !== null) {
+      window.clearTimeout(clickTimerRef.current);
+      clickTimerRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => clearClickTimer, [clearClickTimer]);
 
   const setInteractive = useCallback((next: boolean) => {
     if (interactiveRef.current === next) {
@@ -164,16 +174,23 @@ export function MascotStage({ manifestUrl }: MascotStageProps) {
         setIsDragging(false);
         controller.endDrag();
       } else {
-        // A press that never moved is a click: treat it as waking activity.
+        // Delay a plain click slightly so a following double-click can claim
+        // the interaction without playing both reactions.
         controller.activity();
+        clearClickTimer();
+        clickTimerRef.current = window.setTimeout(() => {
+          clickTimerRef.current = null;
+          controller.click();
+        }, 300);
       }
     },
-    [controller]
+    [clearClickTimer, controller]
   );
 
   const handleDoubleClick = useCallback(() => {
+    clearClickTimer();
     controller.doubleClick();
-  }, [controller]);
+  }, [clearClickTimer, controller]);
 
   if (controller.status === 'loading') {
     return <div className="mascot-stage" aria-label="Loading mascot" />;

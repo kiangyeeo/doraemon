@@ -9,9 +9,10 @@ import type {
 
 // --- Behaviour tuning -------------------------------------------------------
 const DEBOUNCE_MS = 350; // rule 8
-const IDLE_SLEEP_MS = 60_000; // rule 5
-const VARIATION_MIN_MS = 10_000; // rule 7
-const VARIATION_MAX_MS = 20_000; // rule 7
+const IDLE_REST_MS = 45_000;
+const IDLE_SLEEP_MS = 90_000; // rule 5
+const VARIATION_MIN_MS = 12_000; // rule 7
+const VARIATION_MAX_MS = 25_000; // rule 7
 // One-shot reactions (rules 2/3/7) play their full animation this many times
 // before settling back to idle, so a short clip no longer flashes past.
 const REACTION_REPEATS = 3;
@@ -21,13 +22,50 @@ const TRANSIENT_HOLD_BUFFER_MS = 250;
 // Cycle length assumed only when an action reports no frames / zero fps.
 const TRANSIENT_FALLBACK_CYCLE_MS = 2500;
 
-// States that loop while active and never auto-return to idle on their own.
-const PERSISTENT_STATES = new Set<MascotState>(['idle', 'sleep', 'drag']);
+// States that loop while active and never auto-return to idle on animation
+// completion. Transient timers may still return them to idle when used as a
+// deliberate short reaction.
+const PERSISTENT_STATES = new Set<MascotState>([
+  'idle',
+  'sleep',
+  'drag',
+  'chatAnswer',
+  'coding',
+  'codingThinking',
+  'codingIntense',
+  'research',
+  'protect'
+]);
 
-// Random reactions for a double-click (rule 3).
-const DOUBLE_CLICK_STATES: MascotState[] = ['happy', 'gadget', 'eating'];
+const LONG_CLIP_STATES = new Set<MascotState>(['copter', 'door', 'timeTravel']);
+
+const CLICK_STATES: MascotState[] = ['greeting', 'connection', 'gratitude'];
+// Random reactions for a double-click (rule 3). Duplicate entries intentionally
+// weight common reactions over rare desktop-pet set pieces.
+const DOUBLE_CLICK_STATES: MascotState[] = [
+  'happy',
+  'happy',
+  'gadgetUse',
+  'eating',
+  'eating',
+  'copter',
+  'door',
+  'timeTravel'
+];
 // Pool of brief "fidget" actions used for idle variations (rule 7).
-const VARIATION_STATES: MascotState[] = ['walk', 'happy', 'thinking', 'eating', 'coding'];
+const VARIATION_STATES: MascotState[] = [
+  'walk',
+  'randomThought',
+  'curiosity',
+  'thinking',
+  'hungry',
+  'longing',
+  'rest',
+  'gadgetSearch',
+  'codingThinking',
+  'copter',
+  'door'
+];
 
 function randomFrom<T>(items: readonly T[]): T {
   return items[Math.floor(Math.random() * items.length)];
@@ -35,6 +73,10 @@ function randomFrom<T>(items: readonly T[]): T {
 
 function randomBetween(min: number, max: number): number {
   return min + Math.random() * (max - min);
+}
+
+function reactionRepeatsFor(state: MascotState): number {
+  return LONG_CLIP_STATES.has(state) ? 1 : REACTION_REPEATS;
 }
 
 function resolveFramePath(manifestUrl: string, framePath: string): string {
@@ -74,6 +116,7 @@ async function loadCharacterManifest(manifestUrl: string): Promise<LoadedCharact
 type MascotControls = {
   proximity(): void;
   activity(): void;
+  click(): void;
   doubleClick(): void;
   beginDrag(): void;
   endDrag(): void;
@@ -133,9 +176,11 @@ export function useMascotState(manifestUrl: string): MascotController {
           repeat: Number.POSITIVE_INFINITY
         });
 
+        let restId = 0;
         let sleepId = 0;
         let transientId = 0;
         let variationId = 0;
+        let introId = 0;
 
         // Duration of a single full play of a state, derived from its real frame
         // count and fps, used to size the one-shot reaction timers.
@@ -194,8 +239,16 @@ export function useMascotState(manifestUrl: string): MascotController {
           }, holdMs);
         };
 
-        // Rule 5: sleep after IDLE_SLEEP_MS of inactivity. If we are mid-reaction
-        // when the timer fires, retry shortly instead of resetting the full clock.
+        // Rule 5: rest first, then sleep after longer inactivity. If we are
+        // mid-reaction when a timer fires, retry shortly instead of resetting
+        // the full clock.
+        const tryRest = () => {
+          if (machine.state === 'idle') {
+            playTransient('rest', reactionRepeatsFor('rest'), 'idle-rest');
+          } else {
+            restId = window.setTimeout(tryRest, 5000);
+          }
+        };
         const trySleep = () => {
           if (machine.state === 'idle') {
             commit('sleep', { reason: 'idle-timeout' });
@@ -203,52 +256,71 @@ export function useMascotState(manifestUrl: string): MascotController {
             sleepId = window.setTimeout(trySleep, 5000);
           }
         };
-        const restartSleepTimer = () => {
+        const restartIdleTimers = () => {
+          if (restId) {
+            clearTimeout(restId);
+          }
           if (sleepId) {
             clearTimeout(sleepId);
           }
+          restId = window.setTimeout(tryRest, IDLE_REST_MS);
           sleepId = window.setTimeout(trySleep, IDLE_SLEEP_MS);
         };
 
-        // Rule 7: every 10-20s, if idle, play a random variation, then reschedule.
+        // Rule 7: every 12-25s, if idle, play a random variation, then reschedule.
         const scheduleVariation = () => {
           if (variationId) {
             clearTimeout(variationId);
           }
           variationId = window.setTimeout(() => {
             if (machine.state === 'idle' && !draggingRef.current) {
-              playTransient(randomFrom(VARIATION_STATES), REACTION_REPEATS, 'idle-variation');
+              const variation = randomFrom(VARIATION_STATES);
+              playTransient(variation, reactionRepeatsFor(variation), 'idle-variation');
             }
             scheduleVariation();
           }, randomBetween(VARIATION_MIN_MS, VARIATION_MAX_MS));
         };
 
         controlsRef.current = {
-          // Rule 2: mouse approaches -> thinking for 1.5s, then idle.
+          // Rule 2: mouse approaches -> curiosity, then idle.
           proximity: () => {
             if (draggingRef.current) {
               return;
             }
-            restartSleepTimer();
-            playTransient('thinking', REACTION_REPEATS, 'proximity');
+            restartIdleTimers();
+            playTransient('curiosity', reactionRepeatsFor('curiosity'), 'proximity');
           },
           // Rule 6: any mouse move / click wakes from sleep and defers sleeping.
           activity: () => {
             if (draggingRef.current) {
               return;
             }
-            restartSleepTimer();
+            restartIdleTimers();
             if (machine.state === 'sleep') {
-              commit('idle', { force: true, reason: 'wake' });
+              playTransient('greeting', reactionRepeatsFor('greeting'), 'wake', {
+                force: true
+              });
             }
           },
-          // Rule 3: double-click -> random happy / gadget / eating.
+          // Single click -> small social acknowledgement.
+          click: () => {
+            if (draggingRef.current) {
+              return;
+            }
+            restartIdleTimers();
+            const reaction = randomFrom(CLICK_STATES);
+            playTransient(reaction, reactionRepeatsFor(reaction), 'click', {
+              force: true
+            });
+          },
+          // Rule 3: double-click -> weighted random reaction / rare set piece.
           doubleClick: () => {
             if (draggingRef.current) {
               return;
             }
-            restartSleepTimer();
-            playTransient(randomFrom(DOUBLE_CLICK_STATES), REACTION_REPEATS, 'double-click', {
+            restartIdleTimers();
+            const reaction = randomFrom(DOUBLE_CLICK_STATES);
+            playTransient(reaction, reactionRepeatsFor(reaction), 'double-click', {
               force: true
             });
           },
@@ -260,13 +332,13 @@ export function useMascotState(manifestUrl: string): MascotController {
           },
           endDrag: () => {
             draggingRef.current = false;
-            commit('idle', { force: true, reason: 'drag-end' });
-            restartSleepTimer();
+            playTransient('dragEnd', reactionRepeatsFor('dragEnd'), 'drag-end', { force: true });
+            restartIdleTimers();
           },
           // A non-looping reaction finished on its own; settle back to idle.
           actionComplete: () => {
             const current = machine.state;
-            if (current === 'idle' || current === 'drag' || current === 'sleep') {
+            if (PERSISTENT_STATES.has(current)) {
               return;
             }
             clearTransient();
@@ -274,13 +346,20 @@ export function useMascotState(manifestUrl: string): MascotController {
           }
         };
 
-        restartSleepTimer();
+        restartIdleTimers();
         scheduleVariation();
+        introId = window.setTimeout(() => {
+          if (machine.state === 'idle' && !draggingRef.current) {
+            playTransient('greeting', reactionRepeatsFor('greeting'), 'startup', { force: true });
+          }
+        }, 300);
 
         cleanup = () => {
+          if (restId) clearTimeout(restId);
           if (sleepId) clearTimeout(sleepId);
           if (transientId) clearTimeout(transientId);
           if (variationId) clearTimeout(variationId);
+          if (introId) clearTimeout(introId);
         };
       })
       .catch((loadError: unknown) => {
@@ -300,6 +379,7 @@ export function useMascotState(manifestUrl: string): MascotController {
 
   const proximity = useCallback(() => controlsRef.current?.proximity(), []);
   const activity = useCallback(() => controlsRef.current?.activity(), []);
+  const click = useCallback(() => controlsRef.current?.click(), []);
   const doubleClick = useCallback(() => controlsRef.current?.doubleClick(), []);
   const beginDrag = useCallback(() => controlsRef.current?.beginDrag(), []);
   const endDrag = useCallback(() => controlsRef.current?.endDrag(), []);
@@ -315,11 +395,12 @@ export function useMascotState(manifestUrl: string): MascotController {
       repeat: snapshot?.repeat ?? Number.POSITIVE_INFINITY,
       proximity,
       activity,
+      click,
       doubleClick,
       beginDrag,
       endDrag,
       actionComplete
     }),
-    [status, error, manifest, snapshot, proximity, activity, doubleClick, beginDrag, endDrag, actionComplete]
+    [status, error, manifest, snapshot, proximity, activity, click, doubleClick, beginDrag, endDrag, actionComplete]
   );
 }
