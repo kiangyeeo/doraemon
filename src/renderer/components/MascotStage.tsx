@@ -1,29 +1,32 @@
 import { useCallback, useRef, useState } from 'preact/hooks';
 import type { JSX } from 'preact';
-import { useAnimationController } from '../animation/useAnimationController';
 import { BASELINE_ANCHOR } from '../animation/types';
+import { useMascotState } from '../animation/useMascotState';
 import { SpriteAnimator } from './SpriteAnimator';
 
 type MascotStageProps = {
   manifestUrl: string;
 };
 
-type DragState = {
+// A press only becomes a window drag once the pointer travels past this many
+// screen pixels, so a plain click or double-click never flips into drag.
+const DRAG_THRESHOLD_PX = 4;
+
+type PressState = {
   pointerId: number;
-  active: boolean;
+  startX: number;
+  startY: number;
+  dragging: boolean;
 };
 
-function screenPointFromEvent(event: PointerEvent): { x: number; y: number } {
-  return {
-    x: event.screenX,
-    y: event.screenY
-  };
-}
-
 export function MascotStage({ manifestUrl }: MascotStageProps) {
-  const controller = useAnimationController(manifestUrl);
-  const dragStateRef = useRef<DragState | null>(null);
+  const controller = useMascotState(manifestUrl);
+  const pressRef = useRef<PressState | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+
+  const handlePointerEnter = useCallback(() => {
+    controller.proximity();
+  }, [controller]);
 
   const handlePointerDown = useCallback(
     (event: JSX.TargetedPointerEvent<HTMLDivElement>) => {
@@ -31,55 +34,83 @@ export function MascotStage({ manifestUrl }: MascotStageProps) {
         return;
       }
 
-      dragStateRef.current = {
+      pressRef.current = {
         pointerId: event.pointerId,
-        active: true
+        startX: event.screenX,
+        startY: event.screenY,
+        dragging: false
       };
 
       event.currentTarget.setPointerCapture(event.pointerId);
-      setIsDragging(true);
-      controller.beginDrag();
-      window.desktopPet.startDrag(screenPointFromEvent(event)).catch(console.error);
+      // Start the OS-level window move immediately; the drag *animation* only
+      // kicks in once the pointer actually moves past the threshold.
+      window.desktopPet.startDrag({ x: event.screenX, y: event.screenY }).catch(console.error);
     },
     [controller]
   );
 
-  const handlePointerMove = useCallback((event: JSX.TargetedPointerEvent<HTMLDivElement>) => {
-    const dragState = dragStateRef.current;
-
-    if (!dragState?.active || dragState.pointerId !== event.pointerId) {
-      return;
-    }
-
-    window.desktopPet.moveDrag(screenPointFromEvent(event));
-  }, []);
-
-  const endDrag = useCallback(
+  const handlePointerMove = useCallback(
     (event: JSX.TargetedPointerEvent<HTMLDivElement>) => {
-      const dragState = dragStateRef.current;
+      const press = pressRef.current;
 
-      if (!dragState?.active || dragState.pointerId !== event.pointerId) {
+      if (!press || press.pointerId !== event.pointerId) {
+        // Hovering without a button held counts as nearby mouse activity.
+        controller.activity();
         return;
       }
 
-      dragStateRef.current = null;
+      const distance = Math.hypot(event.screenX - press.startX, event.screenY - press.startY);
+      if (!press.dragging && distance > DRAG_THRESHOLD_PX) {
+        press.dragging = true;
+        setIsDragging(true);
+        controller.beginDrag();
+      }
+
+      if (press.dragging) {
+        window.desktopPet.moveDrag({ x: event.screenX, y: event.screenY });
+      }
+    },
+    [controller]
+  );
+
+  const handlePointerUp = useCallback(
+    (event: JSX.TargetedPointerEvent<HTMLDivElement>) => {
+      const press = pressRef.current;
+
+      if (!press || press.pointerId !== event.pointerId) {
+        return;
+      }
+
+      pressRef.current = null;
       if (event.currentTarget.hasPointerCapture(event.pointerId)) {
         event.currentTarget.releasePointerCapture(event.pointerId);
       }
 
-      setIsDragging(false);
       window.desktopPet.endDrag();
-      controller.endDrag();
+
+      if (press.dragging) {
+        setIsDragging(false);
+        controller.endDrag();
+      } else {
+        // A press that never moved is a click: treat it as waking activity.
+        controller.activity();
+      }
     },
     [controller]
   );
+
+  const handleDoubleClick = useCallback(() => {
+    controller.doubleClick();
+  }, [controller]);
 
   if (controller.status === 'loading') {
     return <div className="mascot-stage" aria-label="Loading mascot" />;
   }
 
-  if (controller.status === 'error') {
-    console.error(controller.error);
+  if (controller.status === 'error' || !controller.manifest || !controller.action) {
+    if (controller.error) {
+      console.error(controller.error);
+    }
     return <div className="mascot-stage mascot-stage-error" aria-label="Mascot failed to load" />;
   }
 
@@ -88,16 +119,18 @@ export function MascotStage({ manifestUrl }: MascotStageProps) {
   return (
     <div
       className={`mascot-stage ${isDragging ? 'is-dragging' : ''}`}
-      data-state={state}
-      onPointerCancel={endDrag}
+      data-state={state ?? 'idle'}
+      onDblClick={handleDoubleClick}
+      onPointerCancel={handlePointerUp}
       onPointerDown={handlePointerDown}
+      onPointerEnter={handlePointerEnter}
       onPointerMove={handlePointerMove}
-      onPointerUp={endDrag}
+      onPointerUp={handlePointerUp}
     >
       <SpriteAnimator
         action={action}
         anchor={BASELINE_ANCHOR}
-        onComplete={controller.completeAction}
+        onComplete={controller.actionComplete}
         scale={manifest.defaultScale}
         stageHeight={manifest.canvas.height}
         stageWidth={manifest.canvas.width}

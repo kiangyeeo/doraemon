@@ -17,6 +17,31 @@ npm run dev
 
 The app opens a transparent, frameless, always-on-top 512 x 512 desktop window. Drag the mascot surface to move the window.
 
+The renderer dev server runs on the uncommon fixed port `53117` (set in
+[`electron.vite.config.ts`](electron.vite.config.ts) with `strictPort`, so a
+conflict fails loudly instead of silently shifting).
+
+## Behaviour & interactions
+
+The mascot is driven by a debounced animation state machine
+([`src/renderer/animation/stateMachine.ts`](src/renderer/animation/stateMachine.ts))
+plus a behaviour hook
+([`src/renderer/animation/useMascotState.ts`](src/renderer/animation/useMascotState.ts)):
+
+- **Idle** is the default state.
+- **Mouse approach** plays `thinking` for ~1.5s, then returns to idle.
+- **Double-click** plays a random reaction (`happy` / `gadget` / `eating`).
+- **Dragging** the mascot enters `drag` while held, then returns to idle.
+- After **60s of inactivity** it falls asleep (`sleep`); any mouse move or click wakes it.
+- Every **10-20s** while idle it plays a brief random "idle variation".
+- Transitions are **debounced** (~350ms) so states cannot thrash, and any state
+  with no frames in the manifest **falls back to idle**. Every transition is
+  logged to the console (`[mascot] "idle" -> "thinking" (proximity)`) for debugging.
+
+> Note: the current `manifest.json` has no `drag` frames, so the `drag` state
+> falls back to idle visually. Add a `drag` state to the manifest (or rename art
+> so a frame's file name contains `drag`) to give it a dedicated animation.
+
 ## Project Layout
 
 ```text

@@ -2,13 +2,13 @@ export const MASCOT_STATES = [
   'idle',
   'walk',
   'sleep',
+  'drag',
   'happy',
   'thinking',
   'coding',
   'gadget',
   'eating',
-  'angry',
-  'misc'
+  'angry'
 ] as const;
 
 export type MascotState = (typeof MASCOT_STATES)[number];

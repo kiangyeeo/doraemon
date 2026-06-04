@@ -56,6 +56,12 @@ export default defineConfig({
   },
   renderer: {
     plugins: [preact(), assetsPlugin()],
+    // Uncommon fixed port to avoid clashing with other local dev servers.
+    // strictPort makes a port conflict fail loudly instead of silently shifting.
+    server: {
+      port: 53117,
+      strictPort: true
+    },
     resolve: {
       alias: {
         '@renderer': resolve(projectRoot, 'src/renderer')
