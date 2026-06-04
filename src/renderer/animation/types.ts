@@ -2,56 +2,61 @@ export const MASCOT_STATES = [
   'idle',
   'walk',
   'sleep',
-  'drag',
   'happy',
   'thinking',
   'coding',
   'gadget',
-  'eating'
+  'eating',
+  'angry',
+  'misc'
 ] as const;
 
 export type MascotState = (typeof MASCOT_STATES)[number];
 
 export type AnimationFramePath = string;
 
-export type ManifestActionName = MascotState | string;
+// Baseline baked into every processed frame by scripts/normalize-frames.ts
+// (anchorX 0.5, anchorY 0.88). The renderer aligns each frame's baseline to the
+// same point on the stage so frames stay registered to a common floor line
+// regardless of defaultScale. Keep this in sync with the normalizer defaults.
+export const BASELINE_ANCHOR = { x: 0.5, y: 0.88 } as const;
 
-export type AnimationActionManifest = {
-  name: ManifestActionName;
-  frames: AnimationFramePath[];
+// A single animation state as stored in manifest.json -> states[name].
+export type AnimationStateManifest = {
   fps: number;
   loop: boolean;
-  anchorX: number;
-  anchorY: number;
-  scale: number;
-  nextState?: MascotState;
+  frames: AnimationFramePath[];
 };
 
+// The on-disk character manifest produced by scripts/build-manifest.ts.
 export type CharacterManifest = {
-  schemaVersion: 1;
-  characterId: string;
-  displayName: string;
-  defaultState: MascotState;
-  window: {
+  character: string;
+  version: string;
+  canvas: {
     width: number;
     height: number;
   };
-  stage: {
-    anchorX: number;
-    anchorY: number;
-    defaultDisplaySize: number;
-  };
-  actions: AnimationActionManifest[];
+  defaultScale: number;
+  states: Record<string, AnimationStateManifest>;
 };
 
-export type ResolvedAnimationAction = Omit<AnimationActionManifest, 'frames'> & {
-  name: ManifestActionName;
+// A manifest state after its frame paths have been resolved to absolute URLs.
+export type ResolvedAnimationState = AnimationStateManifest & {
+  name: string;
   frames: string[];
 };
 
-export type LoadedCharacterManifest = Omit<CharacterManifest, 'actions'> & {
+export type LoadedCharacterManifest = {
   manifestUrl: string;
-  actions: ResolvedAnimationAction[];
+  character: string;
+  version: string;
+  canvas: {
+    width: number;
+    height: number;
+  };
+  defaultScale: number;
+  defaultState: MascotState;
+  states: ResolvedAnimationState[];
 };
 
 export function isMascotState(value: string): value is MascotState {

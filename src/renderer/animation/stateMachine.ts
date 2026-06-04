@@ -1,30 +1,32 @@
-import { MASCOT_STATES, type MascotState, type ResolvedAnimationAction } from './types';
+import type { MascotState, ResolvedAnimationState } from './types';
 
-type StateMap = Map<string, ResolvedAnimationAction>;
+type StateMap = Map<string, ResolvedAnimationState>;
 
 export class MascotStateMachine {
   private currentState: MascotState;
 
   private readonly defaultState: MascotState;
 
-  private readonly actions: StateMap;
+  private readonly states: StateMap;
 
-  constructor(defaultState: MascotState, actions: ResolvedAnimationAction[]) {
+  constructor(defaultState: MascotState, states: ResolvedAnimationState[]) {
     this.defaultState = defaultState;
     this.currentState = defaultState;
-    this.actions = new Map(actions.map((action) => [action.name, action]));
+    this.states = new Map(states.map((state) => [state.name, state]));
   }
 
   get state(): MascotState {
     return this.currentState;
   }
 
-  get action(): ResolvedAnimationAction {
-    return this.actionFor(this.currentState) ?? this.requiredAction(this.defaultState);
+  get action(): ResolvedAnimationState {
+    return this.stateFor(this.currentState) ?? this.requiredState(this.defaultState);
   }
 
+  // A state can only be entered if it exists and actually has frames to play.
   canEnter(nextState: MascotState): boolean {
-    return MASCOT_STATES.includes(nextState) && this.actions.has(nextState);
+    const target = this.states.get(nextState);
+    return target !== undefined && target.frames.length > 0;
   }
 
   enter(nextState: MascotState): MascotState {
@@ -35,30 +37,32 @@ export class MascotStateMachine {
     return this.currentState;
   }
 
+  // The states manifest has no per-state successor, so any non-looping state
+  // settles back to the default state once its animation finishes.
   completeCurrentAction(): MascotState {
-    const currentAction = this.action;
-    const nextState = currentAction.nextState ?? this.defaultState;
-    return this.enter(nextState);
+    return this.enter(this.defaultState);
   }
 
-  private actionFor(state: MascotState): ResolvedAnimationAction | undefined {
-    return this.actions.get(state);
+  private stateFor(state: MascotState): ResolvedAnimationState | undefined {
+    return this.states.get(state);
   }
 
-  private requiredAction(state: MascotState): ResolvedAnimationAction {
-    const action = this.actionFor(state);
-    if (!action) {
-      throw new Error(`Missing animation action for required state "${state}".`);
+  private requiredState(state: MascotState): ResolvedAnimationState {
+    const resolved = this.stateFor(state);
+    if (!resolved) {
+      throw new Error(`Missing animation state for required state "${state}".`);
     }
-    return action;
+    return resolved;
   }
 }
 
-export function assertRequiredActions(actions: ResolvedAnimationAction[]): void {
-  const available = new Set(actions.map((action) => action.name));
-  const missing = MASCOT_STATES.filter((state) => !available.has(state));
+// 'idle' is the default/fallback state, so it is the one hard requirement.
+// Other states may legitimately be empty (recorded in manifest-warnings.md);
+// they are simply not enterable until they gain frames.
+export function assertRequiredStates(states: ResolvedAnimationState[]): void {
+  const idle = states.find((state) => state.name === 'idle');
 
-  if (missing.length > 0) {
-    throw new Error(`Character manifest is missing actions: ${missing.join(', ')}`);
+  if (!idle || idle.frames.length === 0) {
+    throw new Error('Character manifest is missing a non-empty "idle" state.');
   }
 }

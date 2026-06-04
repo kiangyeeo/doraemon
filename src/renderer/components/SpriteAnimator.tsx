@@ -1,16 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import type { ResolvedAnimationAction } from '../animation/types';
+import type { ResolvedAnimationState } from '../animation/types';
 
-type StageAnchor = {
+type NormalizedAnchor = {
   x: number;
   y: number;
 };
 
 type SpriteAnimatorProps = {
-  action: ResolvedAnimationAction;
+  action: ResolvedAnimationState;
   stageWidth: number;
   stageHeight: number;
-  stageAnchor: StageAnchor;
+  // Global display scale applied to every frame (manifest.defaultScale).
+  scale: number;
+  // Normalized baseline (0..1) baked into each frame, aligned to the same point
+  // on the stage so frames share a common floor line across scales.
+  anchor: NormalizedAnchor;
   renderMode?: 'canvas' | 'img';
   onComplete?: () => void;
 };
@@ -30,7 +34,7 @@ function loadFrame(src: string): Promise<LoadedFrame> {
   });
 }
 
-function actionKey(action: ResolvedAnimationAction): string {
+function actionKey(action: ResolvedAnimationState): string {
   return `${action.name}:${action.frames.join('|')}`;
 }
 
@@ -38,7 +42,8 @@ export function SpriteAnimator({
   action,
   stageWidth,
   stageHeight,
-  stageAnchor,
+  scale,
+  anchor,
   renderMode = 'canvas',
   onComplete
 }: SpriteAnimatorProps) {
@@ -147,21 +152,24 @@ export function SpriteAnimator({
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.imageSmoothingEnabled = false;
 
-    const drawWidth = currentFrame.image.naturalWidth * action.scale * dpr;
-    const drawHeight = currentFrame.image.naturalHeight * action.scale * dpr;
-    const drawX = stageAnchor.x * dpr - action.anchorX * action.scale * dpr;
-    const drawY = stageAnchor.y * dpr - action.anchorY * action.scale * dpr;
+    const frameWidth = currentFrame.image.naturalWidth;
+    const frameHeight = currentFrame.image.naturalHeight;
+    const drawWidth = frameWidth * scale * dpr;
+    const drawHeight = frameHeight * scale * dpr;
+    // Map the frame's baked baseline anchor onto the matching point on the stage.
+    const drawX = (stageWidth * anchor.x - frameWidth * anchor.x * scale) * dpr;
+    const drawY = (stageHeight * anchor.y - frameHeight * anchor.y * scale) * dpr;
 
     context.drawImage(currentFrame.image, drawX, drawY, drawWidth, drawHeight);
-  }, [action.anchorX, action.anchorY, action.scale, frameIndex, frames, renderMode, stageAnchor.x, stageAnchor.y, stageHeight, stageWidth]);
+  }, [anchor.x, anchor.y, scale, frameIndex, frames, renderMode, stageHeight, stageWidth]);
 
   if (renderMode === 'img') {
     const currentFrame = frames[frameIndex];
     const firstFrame = currentFrame?.image ?? frames[0]?.image;
-    const naturalWidth = firstFrame?.naturalWidth ?? 256;
-    const naturalHeight = firstFrame?.naturalHeight ?? 256;
-    const width = naturalWidth * action.scale;
-    const height = naturalHeight * action.scale;
+    const naturalWidth = firstFrame?.naturalWidth ?? stageWidth;
+    const naturalHeight = firstFrame?.naturalHeight ?? stageHeight;
+    const width = naturalWidth * scale;
+    const height = naturalHeight * scale;
 
     return (
       <img
@@ -170,8 +178,8 @@ export function SpriteAnimator({
         draggable={false}
         src={currentFrame?.src}
         style={{
-          left: `${stageAnchor.x - action.anchorX * action.scale}px`,
-          top: `${stageAnchor.y - action.anchorY * action.scale}px`,
+          left: `${stageWidth * anchor.x - naturalWidth * anchor.x * scale}px`,
+          top: `${stageHeight * anchor.y - naturalHeight * anchor.y * scale}px`,
           width: `${width}px`,
           height: `${height}px`
         }}

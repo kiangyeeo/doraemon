@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import { assertRequiredActions, MascotStateMachine } from './stateMachine';
+import { assertRequiredStates, MascotStateMachine } from './stateMachine';
 import type {
   CharacterManifest,
   LoadedCharacterManifest,
   MascotState,
-  ResolvedAnimationAction
+  ResolvedAnimationState
 } from './types';
 
 type ControllerState =
@@ -18,7 +18,7 @@ type ControllerState =
   | {
       status: 'ready';
       manifest: LoadedCharacterManifest;
-      action: ResolvedAnimationAction;
+      action: ResolvedAnimationState;
       state: MascotState;
       error: null;
     }
@@ -48,17 +48,26 @@ async function loadCharacterManifest(manifestUrl: string): Promise<LoadedCharact
   }
 
   const manifest = (await response.json()) as CharacterManifest;
-  const resolvedActions = manifest.actions.map((action) => ({
-    ...action,
-    frames: action.frames.map((framePath) => resolveFramePath(response.url, framePath))
-  }));
+  const resolvedStates: ResolvedAnimationState[] = Object.entries(manifest.states).map(
+    ([name, state]) => ({
+      name,
+      fps: state.fps,
+      loop: state.loop,
+      frames: state.frames.map((framePath) => resolveFramePath(response.url, framePath))
+    })
+  );
 
-  assertRequiredActions(resolvedActions);
+  assertRequiredStates(resolvedStates);
 
   return {
-    ...manifest,
     manifestUrl: response.url,
-    actions: resolvedActions
+    character: manifest.character,
+    version: manifest.version,
+    canvas: manifest.canvas,
+    defaultScale: manifest.defaultScale,
+    // assertRequiredStates guarantees a non-empty idle state to fall back to.
+    defaultState: 'idle',
+    states: resolvedStates
   };
 }
 
@@ -89,7 +98,7 @@ export function useAnimationController(manifestUrl: string): AnimationController
           return;
         }
 
-        const stateMachine = new MascotStateMachine(manifest.defaultState, manifest.actions);
+        const stateMachine = new MascotStateMachine(manifest.defaultState, manifest.states);
         stateMachineRef.current = stateMachine;
         setControllerState({
           status: 'ready',
@@ -150,8 +159,10 @@ export function useAnimationController(manifestUrl: string): AnimationController
     [updateFromMachine]
   );
 
+  // The new manifest has no dedicated drag animation, so picking the mascot up
+  // plays a brief "happy" reaction; dropping it settles back to idle.
   const beginDrag = useCallback(() => {
-    requestState('drag');
+    requestState('happy');
   }, [requestState]);
 
   const endDrag = useCallback(() => {

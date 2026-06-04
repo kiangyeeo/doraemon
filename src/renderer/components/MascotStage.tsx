@@ -1,6 +1,7 @@
-import { useCallback, useRef } from 'preact/hooks';
+import { useCallback, useRef, useState } from 'preact/hooks';
 import type { JSX } from 'preact';
 import { useAnimationController } from '../animation/useAnimationController';
+import { BASELINE_ANCHOR } from '../animation/types';
 import { SpriteAnimator } from './SpriteAnimator';
 
 type MascotStageProps = {
@@ -22,6 +23,7 @@ function screenPointFromEvent(event: PointerEvent): { x: number; y: number } {
 export function MascotStage({ manifestUrl }: MascotStageProps) {
   const controller = useAnimationController(manifestUrl);
   const dragStateRef = useRef<DragState | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const handlePointerDown = useCallback(
     (event: JSX.TargetedPointerEvent<HTMLDivElement>) => {
@@ -35,6 +37,7 @@ export function MascotStage({ manifestUrl }: MascotStageProps) {
       };
 
       event.currentTarget.setPointerCapture(event.pointerId);
+      setIsDragging(true);
       controller.beginDrag();
       window.desktopPet.startDrag(screenPointFromEvent(event)).catch(console.error);
     },
@@ -64,6 +67,7 @@ export function MascotStage({ manifestUrl }: MascotStageProps) {
         event.currentTarget.releasePointerCapture(event.pointerId);
       }
 
+      setIsDragging(false);
       window.desktopPet.endDrag();
       controller.endDrag();
     },
@@ -83,7 +87,7 @@ export function MascotStage({ manifestUrl }: MascotStageProps) {
 
   return (
     <div
-      className={`mascot-stage ${state === 'drag' ? 'is-dragging' : ''}`}
+      className={`mascot-stage ${isDragging ? 'is-dragging' : ''}`}
       data-state={state}
       onPointerCancel={endDrag}
       onPointerDown={handlePointerDown}
@@ -92,13 +96,11 @@ export function MascotStage({ manifestUrl }: MascotStageProps) {
     >
       <SpriteAnimator
         action={action}
+        anchor={BASELINE_ANCHOR}
         onComplete={controller.completeAction}
-        stageAnchor={{
-          x: manifest.stage.anchorX,
-          y: manifest.stage.anchorY
-        }}
-        stageHeight={manifest.window.height}
-        stageWidth={manifest.window.width}
+        scale={manifest.defaultScale}
+        stageHeight={manifest.canvas.height}
+        stageWidth={manifest.canvas.width}
       />
     </div>
   );
