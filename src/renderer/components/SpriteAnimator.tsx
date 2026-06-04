@@ -162,7 +162,8 @@ export function SpriteAnimator({
     }
 
     context.clearRect(0, 0, canvas.width, canvas.height);
-    context.imageSmoothingEnabled = false;
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = 'high';
 
     const frameWidth = currentFrame.image.naturalWidth;
     const frameHeight = currentFrame.image.naturalHeight;

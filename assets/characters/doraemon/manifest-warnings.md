@@ -1,6 +1,6 @@
 # Manifest warnings (doraemon)
 
-Generated: 2026-06-03T23:57:19.490Z
+Generated: 2026-06-04T02:54:07.889Z
 
 No empty states. Every classified state has at least one frame.
 

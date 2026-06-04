@@ -47,14 +47,10 @@ body {
   position: absolute;
   inset: 0;
   display: block;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
 }
 
 .sprite-img {
   position: absolute;
   display: block;
   object-fit: contain;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
 }
