@@ -1,0 +1,42 @@
+{
+  "name": "doraemon-pet-activity",
+  "displayName": "Doraemon Pet Activity",
+  "description": "Feeds editor + AI-agent coding activity to the Doraemon desktop pet.",
+  "version": "0.1.0",
+  "private": true,
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "doraemonPet.signal",
+        "title": "Doraemon Pet: Send Activity Signal"
+      }
+    ],
+    "configuration": {
+      "title": "Doraemon Pet Activity",
+      "properties": {
+        "doraemonPet.host": {
+          "type": "string",
+          "default": "127.0.0.1",
+          "description": "Host of the desktop pet activity server."
+        },
+        "doraemonPet.port": {
+          "type": "number",
+          "default": 53118,
+          "description": "Port of the desktop pet activity server."
+        },
+        "doraemonPet.editingDebounceMs": {
+          "type": "number",
+          "default": 400,
+          "description": "Minimum gap between 'editing' signals while you type."
+        }
+      }
+    }
+  }
+}

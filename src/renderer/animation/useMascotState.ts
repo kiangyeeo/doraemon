@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { ACTIVITY_BEHAVIOR, type ActivityKind } from '../../shared/activity';
 import { assertRequiredStates, MascotStateMachine } from './stateMachine';
 import type {
   CharacterManifest,
@@ -43,11 +44,13 @@ const PERSISTENT_STATES = new Set<MascotState>([
   'idle',
   'sleep',
   'drag',
+  'chatQuestion',
   'chatAnswer',
   'coding',
   'codingThinking',
   'codingIntense',
   'research',
+  'confusion',
   'protect'
 ]);
 
@@ -130,6 +133,8 @@ type MascotControls = {
   beginDrag(): void;
   endDrag(): void;
   actionComplete(): void;
+  // Drive a coding/agent animation from a real editor or AI-agent event.
+  signalActivity(kind: ActivityKind): void;
 };
 
 export type MascotController = {
@@ -187,6 +192,17 @@ export function useMascotState(manifestUrl: string): MascotController {
 
         let transientId = 0;
         let introId = 0;
+        // Times a latched phase's optional self-stand-down (only `answer` uses it:
+        // relax to the ambient routine after a stretch of silence). Re-armed or
+        // cleared by every new activity event, so it never cuts a live phase off.
+        let latchTimeoutId = 0;
+        // Drives the slow editing scene rotation (rule: while you keep typing the
+        // pet ambles through coding moods, one change per `rotateEveryMs`).
+        // `editingActive` guards against a keystroke storm restarting it.
+        let editingRotateId = 0;
+        let editingActive = false;
+        let rotateStates: MascotState[] = [];
+        let rotateEveryMs = 0;
         // Ambient routine state: `autoId` times the plain-idle breather, while
         // `autoQueue` holds the remaining scenes of the current cycle.
         // `lastInteractionAt` gates the slide into sleep.
@@ -251,6 +267,21 @@ export function useMascotState(manifestUrl: string): MascotController {
             clearTimeout(transientId);
             transientId = 0;
           }
+        };
+
+        const clearLatchTimeout = () => {
+          if (latchTimeoutId) {
+            clearTimeout(latchTimeoutId);
+            latchTimeoutId = 0;
+          }
+        };
+
+        const clearEditingRotation = () => {
+          if (editingRotateId) {
+            clearTimeout(editingRotateId);
+            editingRotateId = 0;
+          }
+          editingActive = false;
         };
 
         // Play a one-shot reaction `repeats` whole times, then fall back to idle
@@ -328,6 +359,8 @@ export function useMascotState(manifestUrl: string): MascotController {
 
         // (Re)start the routine from the top of a fresh cycle.
         const restartAuto = () => {
+          clearLatchTimeout();
+          clearEditingRotation();
           clearAuto();
           autoQueue = [];
           advanceAuto();
@@ -342,6 +375,8 @@ export function useMascotState(manifestUrl: string): MascotController {
         // it, the clip loops enough whole times to fill ~holdMs.
         const react = (next: MascotState, reason: string, holdMs?: number) => {
           noteInteraction();
+          clearLatchTimeout();
+          clearEditingRotation();
           clearAuto();
           const repeats =
             holdMs === undefined
@@ -351,6 +386,90 @@ export function useMascotState(manifestUrl: string): MascotController {
             force: true,
             afterEnd: restartAuto
           });
+        };
+
+        // --- Coding / agent activity (the editor + AI-agent feed) ------------
+        // External events (you typing, an agent prompting / running tools /
+        // researching / answering) drive the otherwise-unused coding states.
+        // Each phase LATCHES: the pet enters it and holds it (looping, with no
+        // timer) until the NEXT event arrives, so a glance at the pet tells you
+        // which step the work is on. Control returns to the ambient routine only
+        // on an explicit stand-down (`idle` / session end) or a mouse interaction.
+        // Slowly drift through a pool of related scenes (used by `editing`):
+        // hold one ~rotateEveryMs, then switch to a *different* one, indefinitely.
+        const advanceRotation = () => {
+          let scene = randomFrom(rotateStates);
+          if (rotateStates.length > 1) {
+            while (scene === machine.state) {
+              scene = randomFrom(rotateStates);
+            }
+          }
+          commit(scene, { force: true, reason: 'editing-scene' });
+          editingRotateId = window.setTimeout(advanceRotation, rotateEveryMs);
+        };
+
+        // Enter (or keep alive) the editing rotation. The first event shows a
+        // coding mood at once and arms the slow timer; later keystroke events
+        // just keep it active — they never restart it or force an early switch,
+        // so typing continuously does NOT make the scene flicker.
+        const startRotation = (states: MascotState[], everyMs: number) => {
+          noteInteraction();
+          if (editingActive) {
+            return;
+          }
+          clearAuto();
+          clearTransient();
+          clearLatchTimeout();
+          editingActive = true;
+          rotateStates = states;
+          rotateEveryMs = everyMs;
+          advanceRotation();
+        };
+
+        const latchState = (next: MascotState, reason: string, standDownMs?: number) => {
+          noteInteraction();
+          clearAuto();
+          clearTransient();
+          clearLatchTimeout();
+          clearEditingRotation();
+          // Persistent states resolve to an infinite loop inside commit(), so the
+          // phase keeps playing until the next event replaces it — no hold timer.
+          commit(next, { force: true, reason });
+          // A terminal phase (answer) optionally relaxes on its own after a quiet
+          // stretch; any new event re-enters latchState and clears this first.
+          if (standDownMs !== undefined) {
+            latchTimeoutId = window.setTimeout(() => {
+              latchTimeoutId = 0;
+              if (!draggingRef.current) {
+                restartAuto();
+              }
+            }, standDownMs);
+          }
+        };
+
+        // Map a semantic activity event onto a mascot state. Phase events latch;
+        // momentary acknowledgements (done / error) reuse the one-shot react()
+        // path; an explicit stand-down hands control back to the ambient routine.
+        const signalActivity = (kind: ActivityKind) => {
+          if (draggingRef.current) {
+            return;
+          }
+          const behavior = ACTIVITY_BEHAVIOR[kind];
+          if (behavior.mode === 'standdown') {
+            restartAuto();
+            return;
+          }
+          if (behavior.mode === 'rotate') {
+            startRotation(behavior.states, behavior.everyMs);
+            return;
+          }
+          if (behavior.mode === 'latch') {
+            latchState(behavior.state, `activity:${kind}`, behavior.standDownMs);
+            return;
+          }
+          // A momentary reaction (celebrate / concern): play the clip, then the
+          // ambient routine resumes until the next phase event latches.
+          react(behavior.state, `activity:${kind}`, behavior.holdMs);
         };
 
         controlsRef.current = {
@@ -400,6 +519,8 @@ export function useMascotState(manifestUrl: string): MascotController {
             noteInteraction();
             clearAuto();
             clearTransient();
+            clearLatchTimeout();
+            clearEditingRotation();
             commit('drag', { force: true, reason: 'drag-start' });
           },
           endDrag: () => {
@@ -416,7 +537,8 @@ export function useMascotState(manifestUrl: string): MascotController {
               return;
             }
             commit('idle', { reason: 'action-complete' });
-          }
+          },
+          signalActivity
         };
 
         introId = window.setTimeout(() => {
@@ -434,6 +556,8 @@ export function useMascotState(manifestUrl: string): MascotController {
           if (transientId) clearTimeout(transientId);
           if (introId) clearTimeout(introId);
           if (autoId) clearTimeout(autoId);
+          if (latchTimeoutId) clearTimeout(latchTimeoutId);
+          if (editingRotateId) clearTimeout(editingRotateId);
         };
       })
       .catch((loadError: unknown) => {
@@ -458,6 +582,10 @@ export function useMascotState(manifestUrl: string): MascotController {
   const beginDrag = useCallback(() => controlsRef.current?.beginDrag(), []);
   const endDrag = useCallback(() => controlsRef.current?.endDrag(), []);
   const actionComplete = useCallback(() => controlsRef.current?.actionComplete(), []);
+  const signalActivity = useCallback(
+    (kind: ActivityKind) => controlsRef.current?.signalActivity(kind),
+    []
+  );
 
   return useMemo(
     () => ({
@@ -473,8 +601,9 @@ export function useMascotState(manifestUrl: string): MascotController {
       doubleClick,
       beginDrag,
       endDrag,
-      actionComplete
+      actionComplete,
+      signalActivity
     }),
-    [status, error, manifest, snapshot, proximity, activity, click, doubleClick, beginDrag, endDrag, actionComplete]
+    [status, error, manifest, snapshot, proximity, activity, click, doubleClick, beginDrag, endDrag, actionComplete, signalActivity]
   );
 }

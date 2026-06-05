@@ -1,0 +1,41 @@
+{
+  "//": "Doraemon desktop-pet activity hooks for Claude Code. Merge the \"hooks\" block into your Claude Code settings.json (project: .claude/settings.json, or user: ~/.claude/settings.json). Replace ABSOLUTE_PATH with the real path to integrations/pet-notify.mjs. Windows example: E:\\\\Project\\\\doraemon\\\\integrations\\\\pet-notify.mjs",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node ABSOLUTE_PATH/integrations/pet-notify.mjs prompt claude-code" }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          { "type": "command", "command": "node ABSOLUTE_PATH/integrations/pet-notify.mjs tool claude-code" }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node ABSOLUTE_PATH/integrations/pet-notify.mjs ask claude-code" }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node ABSOLUTE_PATH/integrations/pet-notify.mjs answer claude-code" }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node ABSOLUTE_PATH/integrations/pet-notify.mjs idle claude-code" }
+        ]
+      }
+    ]
+  }
+}

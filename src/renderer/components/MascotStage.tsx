@@ -106,6 +106,20 @@ export function MascotStage({ manifestUrl }: MascotStageProps) {
     };
   }, [isOverSprite, setInteractive]);
 
+  // Bridge the loopback activity feed (editor + AI-agent events) into the
+  // mascot's coding states. `signalActivity` is stable, so this binds once the
+  // controller is ready and re-binds only if the bridge identity changes.
+  const { signalActivity } = controller;
+  useEffect(() => {
+    if (controller.status !== 'ready') {
+      return;
+    }
+    const unsubscribe = window.desktopPet.onActivity((event) => {
+      signalActivity(event.kind);
+    });
+    return unsubscribe;
+  }, [controller.status, signalActivity]);
+
   const handlePointerEnter = useCallback(() => {
     controller.proximity();
   }, [controller]);

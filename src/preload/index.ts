@@ -1,4 +1,5 @@
-import { contextBridge, ipcRenderer } from 'electron';
+import { contextBridge, ipcRenderer, type IpcRendererEvent } from 'electron';
+import { ACTIVITY_IPC_CHANNEL, type ActivityEvent } from '../shared/activity';
 
 type ScreenPoint = {
   x: number;
@@ -24,5 +25,14 @@ contextBridge.exposeInMainWorld('desktopPet', {
   },
   setInteractive(interactive: boolean) {
     ipcRenderer.send('mascot-window:set-interactive', interactive === true);
+  },
+  // Subscribe to coding/agent activity events forwarded from the loopback
+  // activity server. Returns an unsubscribe function.
+  onActivity(callback: (event: ActivityEvent) => void) {
+    const listener = (_event: IpcRendererEvent, payload: ActivityEvent) => callback(payload);
+    ipcRenderer.on(ACTIVITY_IPC_CHANNEL, listener);
+    return () => {
+      ipcRenderer.removeListener(ACTIVITY_IPC_CHANNEL, listener);
+    };
   }
 });

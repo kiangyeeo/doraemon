@@ -11,6 +11,7 @@
 - [Quick Start](#quick-start)
 - [Project Snapshot](#project-snapshot)
 - [Interaction Model](#interaction-model)
+- [Coding Activity (Editor & AI Agents)](#coding-activity-editor--ai-agents)
 - [Asset Workflow](#asset-workflow)
 - [Manifest Tuning](#manifest-tuning)
 - [Project Map](#project-map)
@@ -84,6 +85,52 @@ transition in the console.
 > The renderer can request `drag`, but the generated manifest currently does not
 > include a dedicated `drag` state by default. Add one to the manifest builder or
 > hand-tune `manifest.json` if you want dragging to use separate frames.
+
+## Coding Activity (Editor & AI Agents)
+
+Beyond mouse interaction, the mascot reacts to **real coding activity** — you
+typing in VS Code / Cursor, and AI agents (Claude Code, Codex, Copilot, …)
+thinking, answering, asking, finishing, or erroring. This is what drives the
+otherwise-unused `coding*`, `chat*`, and `research` states.
+
+```text
+editor / agent ──HTTP POST──▶ 127.0.0.1:53118/activity ──IPC──▶ state machine ──▶ animation
+```
+
+The app starts a **loopback-only** HTTP server automatically. Anything that can
+POST to `localhost` can drive the pet — no plugin required:
+
+```bash
+curl -s 127.0.0.1:53118/activity -d '{"kind":"thinking","source":"test"}'
+```
+
+| `kind`     | Fires when…                              | Mascot state      |
+| ---------- | ---------------------------------------- | ----------------- |
+| `editing`  | You type / edit code                     | `coding`          |
+| `prompt`   | You send a question to an agent          | `chatQuestion`    |
+| `thinking` | The agent is reasoning                   | `codingThinking`  |
+| `tool`     | The agent runs tools / edits / shell     | `codingIntense`   |
+| `research` | The agent reads files / searches         | `research`        |
+| `answer`   | The agent replies                        | `chatAnswer`      |
+| `ask`      | The agent needs input / raises a doubt   | `confusion`       |
+| `done`     | A task finishes successfully             | `codingCelebrate` |
+| `error`    | A task fails                             | `concern`         |
+| `idle`     | Nothing happening — stand down           | ambient routine   |
+
+Looping "session" states (`editing`/`thinking`/`tool`/`research`/`prompt`/
+`answer`) linger a few seconds after the last event and re-arm while events keep
+arriving; one-shot reactions (`ask`/`done`/`error`) play once and resume the
+routine. The mapping and timings live in
+[`src/shared/activity.ts`](src/shared/activity.ts).
+
+Ready-made adapters live in [`integrations/`](integrations/README.md):
+
+- **`pet-notify.mjs`** — universal fire-and-forget CLI poster for any hook/script.
+- **`claude-code/`** — Claude Code lifecycle hooks (prompt → tool → ask → answer).
+- **`vscode-extension/`** — VS Code / Cursor companion (typing, save, idle, manual signals).
+
+See [`integrations/README.md`](integrations/README.md) for the full HTTP contract
+and install steps.
 
 ## Asset Workflow
 
@@ -210,10 +257,13 @@ file name, case-insensitive. Anything unmatched falls through to `misc`.
 | Path | Purpose |
 | --- | --- |
 | `src/main/window.ts` | Creates the transparent desktop pet window. |
+| `src/main/activityServer.ts` | Loopback HTTP server that forwards coding/agent events to the window. |
+| `src/shared/activity.ts` | Activity-kind → mascot-state contract shared by main and renderer. |
 | `src/renderer/app.tsx` | Wires the renderer UI and mascot stage. |
-| `src/renderer/components/MascotStage.tsx` | Handles dragging and user interaction events. |
+| `src/renderer/components/MascotStage.tsx` | Handles dragging, user interaction, and the activity feed. |
 | `src/renderer/components/SpriteAnimator.tsx` | Renders manifest frames to the mascot canvas. |
-| `src/renderer/animation/useMascotState.ts` | Loads the manifest and applies behavior rules. |
+| `src/renderer/animation/useMascotState.ts` | Loads the manifest, applies behavior rules, and maps activity events. |
+| `integrations/` | Adapters that feed editor/agent activity to the pet (CLI, Claude Code, VS Code). |
 | `scripts/import-doraemon-assets.ts` | Copies likely sprite assets from a local source folder. |
 | `scripts/normalize-frames.ts` | Normalizes raw PNGs into registered transparent canvases. |
 | `scripts/build-manifest.ts` | Builds `manifest.json`, warnings, and the preview page. |
