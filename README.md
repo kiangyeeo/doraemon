@@ -70,21 +70,25 @@ transition core in
 | Trigger | Result |
 | --- | --- |
 | Default state | Plays `idle`. |
-| Mouse approaches | Plays a `thinking` reaction, then settles back to `idle`. |
-| Double-click | Plays a random `happy`, `gadget`, or `eating` reaction. |
+| Mouse approaches | Plays a `curiosity` reaction, then settles back to the routine. |
+| Single click | Plays a random short reaction — `greeting`, `happy`, `curiosity`, `awe`, `excitement`, `pride`, a `gadgetSearch` pocket hunt, or a `hungry` grumble. |
+| Double-click | Plays a bigger random set piece — the gadget storyline (`gadgetUse` / `gadgetExplain` / `gadgetSurprise`), `eating`, `copter`, `door`, `angry`, `protect`, or `happy`. |
 | Drag start | Requests `drag` while the mascot is held. |
-| Drag end | Forces the mascot back to `idle`. |
-| 60s inactivity | Enters `sleep`. |
-| Mouse move or click while sleeping | Wakes back to `idle`. |
-| Idle for 10-20s | Plays a brief random idle variation. |
+| Drag end | Plays the `dragEnd` landing, then resumes the routine. |
+| ~5 min inactivity | Enters `sleep`. |
+| Mouse move or click while sleeping | Wakes with a `greeting`. |
+| Left alone | Runs an ambient routine: a gentle idle breather, then three different random moods (`curiosity`, `thinking`, `awe`, `confusion`, `concern`, the once-buried `determination` / `focus` / `pride` / `excitement`, plus the odd gadget hunt or snack), each held for a readable while. |
+
+Every clip in the rotation has real motion: frozen single-frame "states" (`calm`,
+`longing`, `fatigue`, `melancholy`, `rest`) and the size-mixing `walk` are kept
+out so nothing freezes or jumps scale. Frame rates are tuned low (3–5 fps) and
+each reaction plays only a couple of gentle loops, so short two/three-pose clips
+read clearly instead of strobing. Coding/agent states (`coding`, `chatQuestion`,
+`research`, …) are driven only by the live editor / AI-agent activity feed.
 
 Transitions are debounced by roughly `350ms`. If the requested state has no
 frames in the manifest, the state machine falls back to `idle` and logs the
 transition in the console.
-
-> The renderer can request `drag`, but the generated manifest currently does not
-> include a dedicated `drag` state by default. Add one to the manifest builder or
-> hand-tune `manifest.json` if you want dragging to use separate frames.
 
 ## Coding Activity (Editor & AI Agents)
 

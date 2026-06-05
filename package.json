@@ -11,7 +11,8 @@
     "type-check": "tsc --noEmit",
     "assets:import": "tsx scripts/import-doraemon-assets.ts",
     "assets:normalize": "tsx scripts/normalize-frames.ts",
-    "assets:manifest": "tsx scripts/build-manifest.ts"
+    "assets:manifest": "tsx scripts/build-manifest.ts",
+    "assets:audit": "tsx scripts/audit-frames.ts"
   },
   "dependencies": {
     "preact": "^10.24.3"

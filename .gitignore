@@ -5,3 +5,5 @@ dist/
 .DS_Store
 Thumbs.db
 .codex/
+# Generated frame-audit montages (npm run assets:audit)
+assets/characters/*/_audit/

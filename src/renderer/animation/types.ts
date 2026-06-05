@@ -39,6 +39,12 @@ export const MASCOT_STATES = [
   'hope',
   'wonder',
   'contemplation',
+  'excitement',
+  'pride',
+  'determination',
+  'focus',
+  'fatigue',
+  'melancholy',
   'misc'
 ] as const;
 

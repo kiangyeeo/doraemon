@@ -11,26 +11,26 @@ import type {
 // --- Behaviour tuning -------------------------------------------------------
 const DEBOUNCE_MS = 350; // rule 8
 // Plain-idle "breather" that opens each routine cycle in the ambient sequence.
-const IDLE_HOLD_MS = 20_000;
+const IDLE_HOLD_MS = 9_000;
 // Only doze off ~5 minutes after the last interaction, so the calm idle moods
-// and rest get a long, full run before sleep takes over (rule 5).
+// get a long, full run before sleep takes over (rule 5).
 const IDLE_SLEEP_MS = 300_000;
-// One-shot reactions (rules 2/3/7) loop their clip at least this many times as a
-// floor, regardless of length.
-const REACTION_REPEATS = 3;
-// Every visible reaction stays on screen for a real-time window, looping its
-// frames as many *whole* times as needed. This is the core fix for short clips
-// (3-frame gadget poses, etc.) that used to flash past before you could tell
-// what they were: a 0.5s clip now loops ~12x instead of vanishing in 1.5s.
-const MIN_VISIBLE_MS = 6_000;
-const MAX_VISIBLE_MS = 14_000;
-// Ambient scenes the mascot rotates through *on its own* (idle fidgets, rest)
-// hold for at least this long, looping their frames in place, so nothing the
-// user didn't trigger switches away in under half a minute.
-const AUTO_HOLD_MS = 30_000;
-// A double-click picks one activity and loops it for roughly this long, so the
-// chosen scene actually plays out instead of flashing past.
-const DOUBLE_CLICK_HOLD_MS = 15_000;
+// One-shot reactions (rules 2/3/7) loop their clip at least this many *whole*
+// times. Kept low (2): the manifest fps is now tuned so a single play already
+// reads clearly, so we only need a loop or two — not the dozen that used to turn
+// short two/three-pose clips into a strobe.
+const REACTION_REPEATS = 2;
+// A reaction stays on screen for roughly this window, looping its (now slow)
+// frames a few whole times. The clips themselves were the flashing problem —
+// e.g. a 3-frame gadget pose at 6-7fps looped 12x flickered between two poses;
+// the frames now play at 3-5fps, so 2-3 gentle loops over ~2.5-5s is enough to
+// read the action without any strobing.
+const MIN_VISIBLE_MS = 2_500;
+const MAX_VISIBLE_MS = 5_000;
+// Ambient scenes the mascot rotates through *on its own* hold for at least this
+// long, looping their slowed frames in place a handful of times, then hand off
+// to the next mood. Short enough that the rich mood pool cycles through often.
+const AUTO_HOLD_MS = 8_000;
 // Grace added to the safety timer so it fires just after the final frame; the
 // animation's own completion is what normally drives the return to idle.
 const TRANSIENT_HOLD_BUFFER_MS = 250;
@@ -56,39 +56,83 @@ const PERSISTENT_STATES = new Set<MascotState>([
 
 const LONG_CLIP_STATES = new Set<MascotState>(['copter', 'door', 'timeTravel']);
 
-// Visually distinct single-click reactions. (The old connection/gratitude were
-// byte-for-byte the same waving art as greeting, so clicks always looked the
-// same; these three are genuinely different clips.)
-const CLICK_STATES: MascotState[] = ['greeting', 'happy', 'curiosity'];
-// Random reactions for a double-click (rule 3). Duplicate entries intentionally
-// weight common reactions over rare desktop-pet set pieces. timeTravel is left
-// out: its art is a single static frame, so looping it would just freeze.
-const DOUBLE_CLICK_STATES: MascotState[] = [
+// Single-click reactions: short, expressive one-shots plus a light "peek in the
+// pocket" gadget hunt, so a tap shows a varied mood rather than the same three
+// clips. Every entry is genuinely distinct art (the byte-for-byte greeting
+// twins — connection/gratitude/hope/joy — and the curiosity/awe twins are kept
+// out so a click never just repeats a pose under a different name).
+const CLICK_STATES: MascotState[] = [
+  'greeting',
   'happy',
+  'curiosity',
+  'awe',
+  'excitement',
+  'pride',
+  'gadgetSearch',
+  'hungry'
+];
+// Random reactions for a double-click (rule 3): the bigger "show me something"
+// set pieces and the full gadget storyline (pull one out, use it, explain it,
+// get startled by it). Duplicate entries intentionally weight crowd-pleasers
+// (eating) over rarer beats. timeTravel is left out: its three frames are
+// identical, so it is a frozen pose, not an animation; `protect` is left out too
+// because its clip is byte-for-byte the same as gadgetSurprise.
+const DOUBLE_CLICK_STATES: MascotState[] = [
   'gadgetUse',
+  'gadgetExplain',
+  'gadgetSurprise',
   'eating',
   'eating',
   'copter',
-  'door'
+  'door',
+  'angry',
+  'happy'
 ];
-// Pool of calm idle "moods" (rule 7). Hand-picked so every entry is a VISUALLY
-// DISTINCT clip — the asset set has many duplicate-art states (e.g. wonder==awe,
-// contemplation/randomThought==curiosity, hope==greeting, satisfaction==rest),
-// which are deliberately excluded so the rotation never repeats the same picture
-// under a different name. Travelling set pieces (copter/door) are excluded too.
+// Pool of idle "moods" the pet drifts through on its own (rule 7). Every entry
+// is now a clip with REAL motion (>=2 distinct frames) so the rotation never
+// freezes on a single static frame. Deliberately excluded:
+//   - duplicate-art states (wonder==awe, contemplation/randomThought==curiosity,
+//     hope==greeting, satisfaction==rest, frustration==angry) — same picture,
+//     different name;
+//   - frozen single-frame states (calm, longing, fatigue, melancholy) — their
+//     "4 frames" are byte-identical, and fatigue/melancholy read as sleeping,
+//     which clashes with the real sleep state;
+//   - walk — its frames mix two art sizes, and a walk-in-place on a fixed window
+//     looks odd anyway;
+//   - travelling set pieces (copter/door) — those are double-click payoffs.
+// What's left are the genuinely animated everyday moods, including the ones that
+// used to be buried in the `misc` grab-bag (determination/focus/pride/excitement)
+// and a few everyday beats — a gadget hunt, a snack, a hungry grumble.
 const VARIATION_STATES: MascotState[] = [
-  'calm',
   'curiosity',
   'thinking',
-  'longing',
   'awe',
   'confusion',
   'concern',
-  'walk'
+  'determination',
+  'focus',
+  'pride',
+  'excitement',
+  'gadgetSearch',
+  'eating',
+  'hungry'
 ];
 
 function randomFrom<T>(items: readonly T[]): T {
   return items[Math.floor(Math.random() * items.length)];
+}
+
+// Pick up to `count` distinct items in random order. Used to seed each ambient
+// cycle with several different moods so the idle rotation works through the pool
+// quickly instead of replaying the same one or two scenes.
+function pickDistinct<T>(items: readonly T[], count: number): T[] {
+  const pool = [...items];
+  const picked: T[] = [];
+  while (picked.length < count && pool.length > 0) {
+    const index = Math.floor(Math.random() * pool.length);
+    picked.push(pool.splice(index, 1)[0]);
+  }
+  return picked;
 }
 
 function resolveFramePath(manifestUrl: string, framePath: string): string {
@@ -308,20 +352,19 @@ export function useMascotState(manifestUrl: string): MascotController {
 
         // --- Ambient routine (rules 5 & 7) -----------------------------------
         // Left alone, Doraemon runs a calm, ordered loop:
-        //   idle breather -> rest -> a random mood -> another random mood
+        //   idle breather -> rest -> three different random moods
         // then the cycle repeats. Each non-idle scene loops its frames for
         // AUTO_HOLD_MS so it reads clearly, and the next scene starts only once
         // the current one ends. After IDLE_SLEEP_MS without interaction it dozes
         // off and the routine pauses until something wakes it.
         const buildCycle = (): MascotState[] => {
-          let first = randomFrom(VARIATION_STATES);
-          let second = randomFrom(VARIATION_STATES);
-          if (VARIATION_STATES.length > 1) {
-            while (second === first) {
-              second = randomFrom(VARIATION_STATES);
-            }
-          }
-          return ['idle', 'rest', first, second];
+          // A gentle idle breather, then three different moods per cycle so the
+          // pool is surfaced quickly — you see the gadget hunt, a snack, the
+          // buried emotions, etc. without waiting many cycles. `rest` is no longer
+          // forced in every cycle: its frames are byte-identical (a frozen
+          // lean-back), and the now-animated idle breather already covers the calm
+          // beat between moods.
+          return ['idle', ...pickDistinct(VARIATION_STATES, 3)];
         };
 
         const clearAuto = () => {
@@ -507,11 +550,15 @@ export function useMascotState(manifestUrl: string): MascotController {
             react(randomFrom(CLICK_STATES), 'click');
           },
           // Rule 3: double-click -> weighted random reaction / rare set piece.
+          // No fixed hold: react() sizes the play time to the clip, so the
+          // narrative set pieces (door/copter, in LONG_CLIP_STATES) play through
+          // exactly once instead of looping, while shorter reactions loop the
+          // usual gentle 2-3 times.
           doubleClick: () => {
             if (draggingRef.current) {
               return;
             }
-            react(randomFrom(DOUBLE_CLICK_STATES), 'double-click', DOUBLE_CLICK_HOLD_MS);
+            react(randomFrom(DOUBLE_CLICK_STATES), 'double-click');
           },
           // Rule 4: enter drag while held (falls back to idle if drag has no frames).
           beginDrag: () => {

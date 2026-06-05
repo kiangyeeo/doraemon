@@ -40,6 +40,12 @@ const STATE_NAMES = [
   'hope',
   'wonder',
   'contemplation',
+  'excitement',
+  'pride',
+  'determination',
+  'focus',
+  'fatigue',
+  'melancholy',
   'drag',
   'dragEnd',
   'misc'
@@ -81,13 +87,13 @@ const CANVAS = { width: 512, height: 512 };
 const STATE_DEFINITIONS: StateDefinition[] = [
   {
     name: 'idle',
-    fps: 6,
+    fps: 4,
     loop: true,
     include: [/\/idle\/idle_\d+\.png$/]
   },
   {
     name: 'greeting',
-    fps: 7,
+    fps: 5,
     loop: false,
     include: [/\/action\/action-greeting-\d+\.png$/]
   },
@@ -115,13 +121,13 @@ const STATE_DEFINITIONS: StateDefinition[] = [
   },
   {
     name: 'happy',
-    fps: 8,
+    fps: 4,
     loop: false,
     include: [/\/happy\/happy_\d+\.png$/]
   },
   {
     name: 'curiosity',
-    fps: 5,
+    fps: 3,
     loop: true,
     include: [/\/emotion\/emotion-curiosity-\d+\.png$/]
   },
@@ -133,7 +139,7 @@ const STATE_DEFINITIONS: StateDefinition[] = [
   },
   {
     name: 'thinking',
-    fps: 4,
+    fps: 3,
     loop: true,
     include: [/\/thinking\/thinking_\d+\.png$/]
   },
@@ -145,13 +151,13 @@ const STATE_DEFINITIONS: StateDefinition[] = [
   },
   {
     name: 'chatQuestion',
-    fps: 6,
+    fps: 4,
     loop: true,
     include: [/\/action\/action-chat_question-\d+\.png$/]
   },
   {
     name: 'chatAnswer',
-    fps: 6,
+    fps: 5,
     loop: true,
     include: [/\/action\/action-chat_answer-\d+\.png$/]
   },
@@ -172,7 +178,7 @@ const STATE_DEFINITIONS: StateDefinition[] = [
   },
   {
     name: 'codingIntense',
-    fps: 8,
+    fps: 6,
     loop: true,
     include: [/\/coding\/codingintense\d*\.png$/]
   },
@@ -184,31 +190,33 @@ const STATE_DEFINITIONS: StateDefinition[] = [
   },
   {
     name: 'research',
-    fps: 5,
+    fps: 3,
     loop: true,
     include: [/\/action\/action-research-\d+\.png$/]
   },
   {
     name: 'gadgetSearch',
-    fps: 6,
+    fps: 3,
     loop: false,
     include: [/\/action\/action-gadget_search-\d+\.png$/]
   },
   {
     name: 'gadgetExplain',
-    fps: 5,
+    fps: 3,
     loop: false,
     include: [/\/action\/action-explain_gadget-\d+\.png$/]
   },
   {
     name: 'gadgetUse',
-    fps: 7,
+    fps: 5,
     loop: false,
-    include: [/\/gadget\/gadget_\d+\.png$/, /\/action\/action-gadget_use-\d+\.png$/]
+    // Big-head art only — the small full-body action-gadget_use frames are a
+    // different size and caused a jarring scale jump halfway through the clip.
+    include: [/\/gadget\/gadget_\d+\.png$/]
   },
   {
     name: 'gadgetSurprise',
-    fps: 7,
+    fps: 4,
     loop: false,
     include: [/\/action\/action-gadget_surprise-\d+\.png$/]
   },
@@ -232,19 +240,21 @@ const STATE_DEFINITIONS: StateDefinition[] = [
   },
   {
     name: 'eating',
-    fps: 6,
+    fps: 4,
     loop: true,
-    include: [/\/eating\/eating_\d+\.png$/, /\/action\/action-eating-\d+\.png$/]
+    // Big-head art only — the small full-body action-eating frames are a
+    // different size (and were static), so they caused a scale jump mid-clip.
+    include: [/\/eating\/eating_\d+\.png$/]
   },
   {
     name: 'hungry',
-    fps: 5,
+    fps: 4,
     loop: false,
     include: [/\/action\/action-hungry-\d+\.png$/]
   },
   {
     name: 'angry',
-    fps: 6,
+    fps: 4,
     loop: false,
     include: [/\/action\/action-angry-\d+\.png$/]
   },
@@ -262,7 +272,7 @@ const STATE_DEFINITIONS: StateDefinition[] = [
   },
   {
     name: 'awe',
-    fps: 6,
+    fps: 4,
     loop: true,
     include: [/\/emotion\/emotion-awe-\d+\.png$/]
   },
@@ -314,6 +324,47 @@ const STATE_DEFINITIONS: StateDefinition[] = [
     fps: 4,
     loop: true,
     include: [/\/emotion\/emotion-contemplation-\d+\.png$/]
+  },
+  // Distinct emotional moods that previously fell through to the `misc` grab-bag
+  // and so were never shown on their own. Each is a clean single-source loop the
+  // idle rotation and click reactions can hold. (joy and frustration are left in
+  // `misc`: their art is byte-for-byte greeting / angry respectively, so promoting
+  // them would just repeat an existing pose under a new name.)
+  {
+    name: 'excitement',
+    fps: 4,
+    loop: true,
+    include: [/\/emotion\/emotion-excitement-\d+\.png$/]
+  },
+  {
+    name: 'pride',
+    fps: 3,
+    loop: true,
+    include: [/\/emotion\/emotion-pride-\d+\.png$/]
+  },
+  {
+    name: 'determination',
+    fps: 3,
+    loop: true,
+    include: [/\/emotion\/emotion-determination-\d+\.png$/]
+  },
+  {
+    name: 'focus',
+    fps: 3,
+    loop: true,
+    include: [/\/emotion\/emotion-focus-\d+\.png$/]
+  },
+  {
+    name: 'fatigue',
+    fps: 4,
+    loop: true,
+    include: [/\/emotion\/emotion-fatigue-\d+\.png$/]
+  },
+  {
+    name: 'melancholy',
+    fps: 4,
+    loop: true,
+    include: [/\/emotion\/emotion-melancholy-\d+\.png$/]
   },
   {
     name: 'drag',
