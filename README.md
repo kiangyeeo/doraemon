@@ -108,24 +108,29 @@ POST to `localhost` can drive the pet — no plugin required:
 curl -s 127.0.0.1:53118/activity -d '{"kind":"thinking","source":"test"}'
 ```
 
-| `kind`     | Fires when…                              | Mascot state      |
-| ---------- | ---------------------------------------- | ----------------- |
-| `editing`  | You type / edit code                     | `coding`          |
-| `prompt`   | You send a question to an agent          | `chatQuestion`    |
-| `thinking` | The agent is reasoning                   | `codingThinking`  |
-| `tool`     | The agent runs tools / edits / shell     | `codingIntense`   |
-| `research` | The agent reads files / searches         | `research`        |
-| `answer`   | The agent replies                        | `chatAnswer`      |
-| `ask`      | The agent needs input / raises a doubt   | `confusion`       |
-| `done`     | A task finishes successfully             | `codingCelebrate` |
-| `error`    | A task fails                             | `concern`         |
-| `idle`     | Nothing happening — stand down           | ambient routine   |
+| `kind`     | Fires when…                              | What the pet does                                       |
+| ---------- | ---------------------------------------- | ------------------------------------------------------- |
+| `editing`  | You type / edit code                     | Drifts randomly through four `coding` clips, ~3s a swap |
+| `prompt`   | You send a question to an agent          | A fixed 6-frame question/think cycle, 1.5s a frame      |
+| `thinking` | The agent is reasoning                   | Joins the continuous **working timeline** (below)       |
+| `tool`     | The agent runs tools / edits / shell     | Joins the continuous **working timeline**               |
+| `research` | The agent reads files / searches         | Joins the continuous **working timeline**               |
+| `answer`   | The agent replies                        | A scripted celebration, then back to the routine        |
+| `done`     | A task finishes successfully             | A scripted celebration, then back to the routine        |
+| `ask`      | The agent needs input / raises a doubt   | A held puzzled pose (`confusion`)                       |
+| `error`    | A task fails                             | A worried one-shot reaction (`concern`)                 |
+| `idle`     | Nothing happening — stand down           | Ambient routine                                         |
 
-Looping "session" states (`editing`/`thinking`/`tool`/`research`/`prompt`/
-`answer`) linger a few seconds after the last event and re-arm while events keep
-arriving; one-shot reactions (`ask`/`done`/`error`) play once and resume the
-routine. The mapping and timings live in
-[`src/shared/activity.ts`](src/shared/activity.ts).
+The **working timeline** is the heart of an agent turn: `thinking`/`tool`/
+`research` all feed *one* continuous progression through a fixed sequence of
+coding poses (~3s each) that **latches on its final intense pose**. Intermittent
+work events never restart it, so a turn's stop-start tool calls read as one
+unbroken run. A `prompt` opens a new turn (resetting the timeline); `answer`/
+`done` end it with the celebration; an `ask` only *pauses* it (work resumes from
+where it left off); a mouse click or `idle` drops it back to the ambient routine.
+The kind→director map lives in [`src/shared/activity.ts`](src/shared/activity.ts);
+the concrete frame clips, ordering, and timings live in
+[`src/renderer/animation/codingScenes.ts`](src/renderer/animation/codingScenes.ts).
 
 Ready-made adapters live in [`integrations/`](integrations/README.md):
 

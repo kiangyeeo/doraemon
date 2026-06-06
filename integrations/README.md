@@ -44,28 +44,29 @@ curl -s 127.0.0.1:53118/activity -d '{"kind":"done","source":"test"}'
 
 ## Activity kinds → what the pet does
 
-| `kind`     | When to send it                                   | Mascot state     | Style              |
-| ---------- | ------------------------------------------------- | ---------------- | ------------------ |
-| `editing`  | You are typing / editing code                     | `coding`         | looping session    |
-| `prompt`   | You sent a question/prompt to an agent            | `chatQuestion`   | looping session    |
-| `thinking` | The agent is reasoning / generating               | `codingThinking` | looping session    |
-| `tool`     | The agent is running tools / editing / shell      | `codingIntense`  | looping session    |
-| `research` | The agent is reading files / searching / browsing | `research`       | looping session    |
-| `answer`   | The agent produced a reply                        | `chatAnswer`     | looping session    |
-| `ask`      | The agent needs input / raised a doubt            | `confusion`      | one-shot reaction  |
-| `done`     | A task finished successfully                      | `codingCelebrate`| one-shot reaction  |
-| `error`    | A task failed (error / test / build)              | `concern`        | one-shot reaction  |
-| `idle`     | Nothing happening — stand down                    | (ambient routine)| resumes idle loop  |
+| `kind`     | When to send it                                   | What the pet does                            |
+| ---------- | ------------------------------------------------- | -------------------------------------------- |
+| `editing`  | You are typing / editing code                     | Random drift through four coding clips (~3s) |
+| `prompt`   | You sent a question/prompt to an agent            | Fixed 6-frame question/think cycle (1.5s)    |
+| `thinking` | The agent is reasoning / generating               | Continuous **working timeline**              |
+| `tool`     | The agent is running tools / editing / shell      | Continuous **working timeline**              |
+| `research` | The agent is reading files / searching / browsing | Continuous **working timeline**              |
+| `answer`   | The agent produced a reply                        | Scripted celebration, then ambient           |
+| `done`     | A task finished successfully                      | Scripted celebration, then ambient           |
+| `ask`      | The agent needs input / raised a doubt            | Held puzzled pose (pauses the timeline)      |
+| `error`    | A task failed (error / test / build)              | Worried one-shot reaction                    |
+| `idle`     | Nothing happening — stand down                    | Resumes the ambient routine                  |
 
-**Looping session** states linger ~7–12s after the *last* event and keep
-re-arming while events stream in, so a steady run of `thinking`/`tool` events
-holds the mood and then gracefully relaxes. **One-shot reactions** play their
-clip once (kept readable for ~6–8s) and then resume the ambient routine. Mouse
-interaction with the pet always takes priority and the coding feed resumes
-afterward.
+`thinking`/`tool`/`research` all drive **one continuous working timeline**: a
+fixed sequence of coding poses (~3s each) that advances on its own timer and
+**latches on its final intense pose**. Intermittent work events never restart it,
+so a turn's stop-start tool calls read as one unbroken run. `prompt` opens a new
+turn (resetting the timeline), `answer`/`done` end it with the celebration, `ask`
+only pauses it, and a mouse click or `idle` drops back to the ambient routine.
 
-The mapping lives in [`src/shared/activity.ts`](../src/shared/activity.ts) — edit
-it there to retune states/timings.
+The kind→director map lives in [`src/shared/activity.ts`](../src/shared/activity.ts);
+the concrete frame clips, ordering, and per-step timings live in
+[`src/renderer/animation/codingScenes.ts`](../src/renderer/animation/codingScenes.ts).
 
 ---
 

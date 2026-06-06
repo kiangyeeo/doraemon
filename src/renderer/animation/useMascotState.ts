@@ -1,5 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import { ACTIVITY_BEHAVIOR, type ActivityKind } from '../../shared/activity';
+import { ACTIVITY_PHASE, type ActivityKind } from '../../shared/activity';
+import {
+  ANSWER_SCRIPT,
+  EDITING_CLIPS,
+  EDITING_SWITCH_MS,
+  PROMPT_CYCLE,
+  WORKING_STEP_MS,
+  WORKING_STEPS,
+  type SceneClip
+} from './codingScenes';
 import { assertRequiredStates, MascotStateMachine } from './stateMachine';
 import type {
   CharacterManifest,
@@ -240,13 +249,21 @@ export function useMascotState(manifestUrl: string): MascotController {
         // relax to the ambient routine after a stretch of silence). Re-armed or
         // cleared by every new activity event, so it never cuts a live phase off.
         let latchTimeoutId = 0;
-        // Drives the slow editing scene rotation (rule: while you keep typing the
-        // pet ambles through coding moods, one change per `rotateEveryMs`).
-        // `editingActive` guards against a keystroke storm restarting it.
+        // Editing (you typing) drifts through the coding clips, ~one swap per
+        // EDITING_SWITCH_MS. `editingActive` guards against a keystroke storm
+        // restarting it; `lastEditingClip` avoids picking the same clip twice.
         let editingRotateId = 0;
         let editingActive = false;
-        let rotateStates: MascotState[] = [];
-        let rotateEveryMs = 0;
+        let lastEditingClip = '';
+        // The shared "agent working" timeline (thinking/tool/research). It advances
+        // on its own timer and is CONTINUOUS: intermittent work events never
+        // restart it — only a new turn (prompt), the reply (answer/done), an
+        // explicit stand-down, or a user interaction resets the cursor.
+        let workingId = 0;
+        let workingActive = false;
+        let workingStep = 0;
+        // Drives the scripted answer celebration (bespoke per-frame timing).
+        let scriptId = 0;
         // Ambient routine state: `autoId` times the plain-idle breather, while
         // `autoQueue` holds the remaining scenes of the current cycle.
         // `lastInteractionAt` gates the slide into sleep.
@@ -400,10 +417,13 @@ export function useMascotState(manifestUrl: string): MascotController {
           }
         };
 
-        // (Re)start the routine from the top of a fresh cycle.
+        // (Re)start the routine from the top of a fresh cycle. This is the single
+        // "go ambient" path, so it also tears down every coding director.
         const restartAuto = () => {
           clearLatchTimeout();
           clearEditingRotation();
+          clearScript();
+          resetWorking();
           clearAuto();
           autoQueue = [];
           advanceAuto();
@@ -420,6 +440,8 @@ export function useMascotState(manifestUrl: string): MascotController {
           noteInteraction();
           clearLatchTimeout();
           clearEditingRotation();
+          clearScript();
+          resetWorking();
           clearAuto();
           const repeats =
             holdMs === undefined
@@ -432,87 +454,221 @@ export function useMascotState(manifestUrl: string): MascotController {
         };
 
         // --- Coding / agent activity (the editor + AI-agent feed) ------------
-        // External events (you typing, an agent prompting / running tools /
-        // researching / answering) drive the otherwise-unused coding states.
-        // Each phase LATCHES: the pet enters it and holds it (looping, with no
-        // timer) until the NEXT event arrives, so a glance at the pet tells you
-        // which step the work is on. Control returns to the ambient routine only
-        // on an explicit stand-down (`idle` / session end) or a mouse interaction.
-        // Slowly drift through a pool of related scenes (used by `editing`):
-        // hold one ~rotateEveryMs, then switch to a *different* one, indefinitely.
-        const advanceRotation = () => {
-          let scene = randomFrom(rotateStates);
-          if (rotateStates.length > 1) {
-            while (scene === machine.state) {
-              scene = randomFrom(rotateStates);
-            }
-          }
-          commit(scene, { force: true, reason: 'editing-scene' });
-          editingRotateId = window.setTimeout(advanceRotation, rotateEveryMs);
+        // Real editor / AI-agent events drive a set of bespoke coding directors.
+        // Each scene is rendered as an explicit frame clip (resolved against the
+        // manifest URL) looped forever; our own timers decide when to swap, so
+        // the SpriteAnimator's onComplete is never relied on here. The concrete
+        // art and timings live in codingScenes.ts.
+        const resolveClip = (clip: SceneClip): ResolvedAnimationState => ({
+          name: clip.name,
+          fps: clip.fps,
+          loop: clip.loop,
+          frames: clip.frames.map((path) => resolveFramePath(loaded.manifestUrl, path))
+        });
+        const oneFrame = (name: string, frame: string): ResolvedAnimationState => ({
+          name,
+          fps: 1,
+          loop: true,
+          frames: [resolveFramePath(loaded.manifestUrl, frame)]
+        });
+        const editingClips = EDITING_CLIPS.map(resolveClip);
+        const promptCycle = resolveClip(PROMPT_CYCLE);
+        const workingSteps = WORKING_STEPS.map((step, i) => ({
+          state: step.state,
+          action: oneFrame(`work-${i}`, step.frame)
+        }));
+        const answerScript = ANSWER_SCRIPT.map((step, i) => ({
+          state: step.state,
+          ms: step.ms,
+          action: oneFrame(`answer-${i}`, step.frame)
+        }));
+        const confusionAction = stateByName.get('confusion');
+
+        // Warm the browser cache so swapping a single frame never flashes blank.
+        for (const url of new Set<string>([
+          ...editingClips.flatMap((clip) => clip.frames),
+          ...promptCycle.frames,
+          ...workingSteps.flatMap((step) => step.action.frames),
+          ...answerScript.flatMap((step) => step.action.frames)
+        ])) {
+          const warm = new Image();
+          warm.src = url;
+        }
+
+        // Show one explicit clip at once, looping forever (our timers swap it).
+        // The machine state is kept roughly in sync so the proximity/idle guards
+        // keep treating the pet as "busy" rather than interruptible-idle, and we
+        // always push a snapshot (even when the category state is unchanged) so a
+        // same-category frame swap still re-renders.
+        const showClip = (state: MascotState, action: ResolvedAnimationState, reason: string) => {
+          machine.request(state, { force: true, reason });
+          setSnapshot({ state, action, repeat: Number.POSITIVE_INFINITY });
         };
 
-        // Enter (or keep alive) the editing rotation. The first event shows a
-        // coding mood at once and arms the slow timer; later keystroke events
-        // just keep it active — they never restart it or force an early switch,
-        // so typing continuously does NOT make the scene flicker.
-        const startRotation = (states: MascotState[], everyMs: number) => {
+        const clearWorkingTimer = () => {
+          if (workingId) {
+            clearTimeout(workingId);
+            workingId = 0;
+          }
+        };
+        // Full reset: the agent turn is over, so the cursor returns to step 0 and
+        // the next turn's first work event starts the timeline fresh.
+        const resetWorking = () => {
+          clearWorkingTimer();
+          workingActive = false;
+          workingStep = 0;
+        };
+        const clearScript = () => {
+          if (scriptId) {
+            clearTimeout(scriptId);
+            scriptId = 0;
+          }
+        };
+
+        // A. editing -> a slow random drift through the coding clips, one swap per
+        // EDITING_SWITCH_MS, holding/looping each in place. Persists until another
+        // phase or a click takes over.
+        const showEditingClip = () => {
+          let clip = randomFrom(editingClips);
+          while (editingClips.length > 1 && clip.name === lastEditingClip) {
+            clip = randomFrom(editingClips);
+          }
+          lastEditingClip = clip.name;
+          showClip('coding', clip, 'editing-scene');
+          editingRotateId = window.setTimeout(showEditingClip, EDITING_SWITCH_MS);
+        };
+        const startEditing = () => {
           noteInteraction();
           if (editingActive) {
-            return;
+            return; // already drifting; a keystroke storm must not restart it
           }
           clearAuto();
           clearTransient();
           clearLatchTimeout();
+          clearScript();
+          clearWorkingTimer(); // pause (not reset) any agent timeline so it resumes
           editingActive = true;
-          rotateStates = states;
-          rotateEveryMs = everyMs;
-          advanceRotation();
+          showEditingClip();
         };
 
-        const latchState = (next: MascotState, reason: string, standDownMs?: number) => {
+        // B. prompt -> the fixed six-frame question/think cycle, in order, 1.5s a
+        // frame, looping until the next phase. A prompt opens a new turn, so the
+        // agent timeline is reset to its first step.
+        const startPrompt = () => {
           noteInteraction();
           clearAuto();
           clearTransient();
           clearLatchTimeout();
           clearEditingRotation();
-          // Persistent states resolve to an infinite loop inside commit(), so the
-          // phase keeps playing until the next event replaces it — no hold timer.
-          commit(next, { force: true, reason });
-          // A terminal phase (answer) optionally relaxes on its own after a quiet
-          // stretch; any new event re-enters latchState and clears this first.
-          if (standDownMs !== undefined) {
-            latchTimeoutId = window.setTimeout(() => {
-              latchTimeoutId = 0;
-              if (!draggingRef.current) {
-                restartAuto();
-              }
-            }, standDownMs);
+          clearScript();
+          resetWorking();
+          showClip('chatQuestion', promptCycle, 'activity:prompt');
+        };
+
+        // C. thinking / tool / research -> ONE continuous timeline. It advances on
+        // its own WORKING_STEP_MS timer and latches on the final step; repeated
+        // work events never restart it, so a turn's stop-start tool calls read as
+        // one unbroken progression.
+        const showWorkingStep = () => {
+          const step = workingSteps[workingStep];
+          showClip(step.state, step.action, `work-${workingStep}`);
+        };
+        const armWorkingTimer = () => {
+          // No timer on the final step: it latches until the reply or a click.
+          workingId =
+            workingStep < workingSteps.length - 1
+              ? window.setTimeout(advanceWorking, WORKING_STEP_MS)
+              : 0;
+        };
+        function advanceWorking(): void {
+          if (workingStep < workingSteps.length - 1) {
+            workingStep += 1;
+            showWorkingStep();
+            armWorkingTimer();
+          }
+        }
+        const startWorking = () => {
+          noteInteraction();
+          if (workingActive && workingId) {
+            return; // genuinely advancing -> keep the timeline unbroken
+          }
+          // Fresh start, or resume after another phase paused the timer.
+          clearAuto();
+          clearTransient();
+          clearLatchTimeout();
+          clearEditingRotation();
+          clearScript();
+          workingActive = true;
+          showWorkingStep();
+          armWorkingTimer();
+        };
+
+        // D. answer / done -> a scripted celebration with bespoke per-frame timing,
+        // then hand control back to the ambient routine. Ends the turn.
+        function runScript(index: number): void {
+          if (index >= answerScript.length) {
+            scriptId = 0;
+            restartAuto();
+            return;
+          }
+          const step = answerScript[index];
+          showClip(step.state, step.action, `answer-${index}`);
+          scriptId = window.setTimeout(() => runScript(index + 1), step.ms);
+        }
+        const startCelebrate = () => {
+          noteInteraction();
+          clearAuto();
+          clearTransient();
+          clearLatchTimeout();
+          clearEditingRotation();
+          resetWorking();
+          clearScript();
+          runScript(0);
+        };
+
+        // ask -> a held puzzled pose so you notice the agent is waiting. It only
+        // pauses the agent timeline (an ask is mid-turn), so work resumes cleanly.
+        const startAsk = () => {
+          noteInteraction();
+          clearAuto();
+          clearTransient();
+          clearLatchTimeout();
+          clearEditingRotation();
+          clearScript();
+          clearWorkingTimer();
+          if (confusionAction) {
+            showClip('confusion', confusionAction, 'activity:ask');
           }
         };
 
-        // Map a semantic activity event onto a mascot state. Phase events latch;
-        // momentary acknowledgements (done / error) reuse the one-shot react()
-        // path; an explicit stand-down hands control back to the ambient routine.
+        // Map a semantic activity event onto its coding director.
         const signalActivity = (kind: ActivityKind) => {
           if (draggingRef.current) {
             return;
           }
-          const behavior = ACTIVITY_BEHAVIOR[kind];
-          if (behavior.mode === 'standdown') {
-            restartAuto();
-            return;
+          switch (ACTIVITY_PHASE[kind]) {
+            case 'editing':
+              startEditing();
+              break;
+            case 'prompt':
+              startPrompt();
+              break;
+            case 'working':
+              startWorking();
+              break;
+            case 'celebrate':
+              startCelebrate();
+              break;
+            case 'ask':
+              startAsk();
+              break;
+            case 'concern':
+              react('concern', `activity:${kind}`);
+              break;
+            case 'standdown':
+              restartAuto();
+              break;
           }
-          if (behavior.mode === 'rotate') {
-            startRotation(behavior.states, behavior.everyMs);
-            return;
-          }
-          if (behavior.mode === 'latch') {
-            latchState(behavior.state, `activity:${kind}`, behavior.standDownMs);
-            return;
-          }
-          // A momentary reaction (celebrate / concern): play the clip, then the
-          // ambient routine resumes until the next phase event latches.
-          react(behavior.state, `activity:${kind}`, behavior.holdMs);
         };
 
         controlsRef.current = {
@@ -568,6 +724,8 @@ export function useMascotState(manifestUrl: string): MascotController {
             clearTransient();
             clearLatchTimeout();
             clearEditingRotation();
+            clearScript();
+            resetWorking();
             commit('drag', { force: true, reason: 'drag-start' });
           },
           endDrag: () => {
@@ -605,6 +763,8 @@ export function useMascotState(manifestUrl: string): MascotController {
           if (autoId) clearTimeout(autoId);
           if (latchTimeoutId) clearTimeout(latchTimeoutId);
           if (editingRotateId) clearTimeout(editingRotateId);
+          if (workingId) clearTimeout(workingId);
+          if (scriptId) clearTimeout(scriptId);
         };
       })
       .catch((loadError: unknown) => {

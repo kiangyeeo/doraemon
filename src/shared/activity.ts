@@ -6,10 +6,8 @@
 // pre-existing but previously-unused coding animation states.
 //
 // It is imported by BOTH the Electron main process (to validate inbound HTTP
-// events) and the renderer (to map an event to a mascot state). Keep it free of
-// any DOM or Node API so both bundles can use it.
-
-import type { MascotState } from '../renderer/animation/types';
+// events) and the renderer (to map an event to a coding director). Keep it free
+// of any DOM or Node API so both bundles can use it.
 
 // The semantic, tool-agnostic vocabulary an integration emits. Every editor or
 // agent adapter (Claude Code hook, VS Code extension, Codex/Copilot bridge, a
@@ -40,69 +38,42 @@ export type ActivityEvent = {
   receivedAt: number;
 };
 
-// How a kind maps onto a concrete mascot state. The pet is meant to read as an
-// at-a-glance status of which step the work is on, so phases are NOT given a
-// guessed-at dwell time — they latch:
+// Each kind drives one of the renderer's coding "directors". The concrete art —
+// which frame clips, in what order, with what per-step timing — lives in
+// src/renderer/animation/codingScenes.ts. This map only assigns a kind to a
+// director, so the wire contract stays tool-agnostic and timing-free.
 //
-// - `mode: 'latch'`  -> a looping phase state (coding, prompt, thinking, tool,
-//   research, answer, ...). The pet enters it and STAYS until the *next* activity
-//   event arrives. So the prompt pose holds until the first tool call, the
-//   tool/coding pose holds until research begins, and so on. Normally no timer
-//   ends it — only the next event, an explicit `idle`, or you touching the pet.
-//   The optional `standDownMs` is the one exception: a terminal phase (answer)
-//   that, with nothing following it, should relax back to the ambient routine on
-//   its own after that many ms of silence.
-// - `mode: 'rotate'` -> a long-running phase that drifts slowly through a pool of
-//   related scenes, switching every `everyMs`. Used for `editing`: writing code
-//   is a long haul, so instead of one fixed clip (monotonous) or re-latching on
-//   every keystroke (flickery) the pet ambles between coding moods, ~one change
-//   per `everyMs`, for as long as editing stays the active phase.
-// - `mode: 'reaction'` -> a momentary acknowledgement (celebrate / concern) that
-//   plays its clip for ~`holdMs` and then lets the ambient routine resume until
-//   the next phase event latches.
-// - `mode: 'standdown'` -> drop the current phase and return to the ambient
-//   routine right away (the `idle` kind / end of a session).
-export type ActivityBehavior =
-  | { mode: 'latch'; state: MascotState; standDownMs?: number }
-  | { mode: 'rotate'; states: MascotState[]; everyMs: number }
-  | { mode: 'reaction'; state: MascotState; holdMs: number }
-  | { mode: 'standdown' };
+// - 'editing'   -> a slow random drift through the coding clips while you type.
+// - 'prompt'    -> the fixed question/think cycle; also opens a new agent turn.
+// - 'working'   -> ONE continuous thinking/tool/research timeline. It advances on
+//                  its own timer and latches on its final step; intermittent work
+//                  events never restart it, so a turn's stop-start tool calls read
+//                  as one unbroken progression.
+// - 'celebrate' -> the scripted answer/done celebration, then back to ambient.
+// - 'ask'       -> a held puzzled pose. It only *pauses* the working timeline (an
+//                  ask is mid-turn), so work resumes from where it left off.
+// - 'concern'   -> a one-shot worried reaction.
+// - 'standdown' -> drop everything and resume the ambient routine.
+export type CodingPhase =
+  | 'editing'
+  | 'prompt'
+  | 'working'
+  | 'celebrate'
+  | 'ask'
+  | 'concern'
+  | 'standdown';
 
-// One scene change roughly every half-minute while you keep editing.
-const EDITING_SCENE_MS = 30_000;
-
-const REACTION_HOLD_MS = 6_000; // one-shot reactions stay readable for ~6s
-
-export const ACTIVITY_BEHAVIOR: Record<ActivityKind, ActivityBehavior> = {
-  // You typing -> a slow drift through the "writing code" moods (normal coding,
-  // head-scratching, heads-down intense), changing ~every 30s so a long session
-  // stays alive without flickering.
-  editing: {
-    mode: 'rotate',
-    states: ['coding', 'codingThinking', 'codingIntense'],
-    everyMs: EDITING_SCENE_MS
-  },
-  // You asking the agent -> Doraemon poses the question, held until work starts.
-  prompt: { mode: 'latch', state: 'chatQuestion' },
-  // Agent reasoning -> head-scratching coding-think loop.
-  thinking: { mode: 'latch', state: 'codingThinking' },
-  // Agent running tools -> intense, heads-down coding.
-  tool: { mode: 'latch', state: 'codingIntense' },
-  // Agent reading/searching -> research loop.
-  research: { mode: 'latch', state: 'research' },
-  // Agent replying -> presenting the answer. As the terminal phase of a turn it
-  // holds the pose, but with nothing following it relaxes to the ambient routine
-  // after 30s of silence.
-  answer: { mode: 'latch', state: 'chatAnswer', standDownMs: 30_000 },
-  // Agent needs your input / raised a doubt -> puzzled pose, held so you notice
-  // the agent is waiting on you.
-  ask: { mode: 'latch', state: 'confusion' },
-  // Task finished -> a celebration, then back to the routine.
-  done: { mode: 'reaction', state: 'codingCelebrate', holdMs: 8_000 },
-  // Task failed -> a concerned reaction, then back to the routine.
-  error: { mode: 'reaction', state: 'concern', holdMs: REACTION_HOLD_MS },
-  // Explicit stand-down -> return to the ambient routine.
-  idle: { mode: 'standdown' }
+export const ACTIVITY_PHASE: Record<ActivityKind, CodingPhase> = {
+  editing: 'editing',
+  prompt: 'prompt',
+  thinking: 'working',
+  tool: 'working',
+  research: 'working',
+  answer: 'celebrate',
+  done: 'celebrate',
+  ask: 'ask',
+  error: 'concern',
+  idle: 'standdown'
 };
 
 export function isActivityKind(value: unknown): value is ActivityKind {
