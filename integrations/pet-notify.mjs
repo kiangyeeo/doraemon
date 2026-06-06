@@ -45,10 +45,14 @@ const READ_ONLY_TOOLS = new Set([
   'TodoWrite'
 ]);
 
-// Claude Code hook event -> activity kind, used when no explicit kind is passed.
+// Agent hook event -> activity kind, used when no explicit kind is passed.
+// Claude Code and Codex share most event names; Codex raises `PermissionRequest`
+// where Claude raises `Notification`, and Codex has no `SessionEnd` (Stop ends a
+// turn), so both are mapped here for the auto-derive path.
 const HOOK_EVENT_KIND = {
   UserPromptSubmit: 'prompt',
   Notification: 'ask',
+  PermissionRequest: 'ask',
   PreToolUse: 'tool',
   PostToolUse: 'tool',
   Stop: 'answer',

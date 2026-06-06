@@ -1,0 +1,39 @@
+# Doraemon desktop-pet activity hooks for the OpenAI Codex CLI.
+#
+# Codex (since the lifecycle-hooks release) fires the same family of hooks as
+# Claude Code and hands each one a JSON payload on stdin. We pass an explicit
+# kind as the first CLI arg, so pet-notify.mjs never has to parse the payload —
+# it just forwards the event to the pet's loopback activity server.
+#
+# Install: merge these [[hooks.*]] blocks into your Codex config
+# (user level: ~/.codex/config.toml). Replace ABSOLUTE_PATH with the real path
+# to this repo.
+#   Windows example: E:/Project/doraemon/integrations/pet-notify.mjs
+#
+# `matcher` is omitted on PreToolUse so the hook fires for every tool (Bash,
+# apply_patch, MCP). Codex has no SessionEnd event — `Stop` ends each turn.
+
+[[hooks.UserPromptSubmit]]
+[[hooks.UserPromptSubmit.hooks]]
+type = "command"
+command = "node ABSOLUTE_PATH/integrations/pet-notify.mjs prompt codex"
+
+[[hooks.PreToolUse]]
+[[hooks.PreToolUse.hooks]]
+type = "command"
+command = "node ABSOLUTE_PATH/integrations/pet-notify.mjs tool codex"
+
+[[hooks.PermissionRequest]]
+[[hooks.PermissionRequest.hooks]]
+type = "command"
+command = "node ABSOLUTE_PATH/integrations/pet-notify.mjs ask codex"
+
+[[hooks.Stop]]
+[[hooks.Stop.hooks]]
+type = "command"
+command = "node ABSOLUTE_PATH/integrations/pet-notify.mjs answer codex"
+
+[[hooks.SessionStart]]
+[[hooks.SessionStart.hooks]]
+type = "command"
+command = "node ABSOLUTE_PATH/integrations/pet-notify.mjs idle codex"

@@ -105,27 +105,58 @@ to `research`.
 projects) and replace `ABSOLUTE_PATH` with the path to this repo. Restart Claude
 Code so it reloads hooks.
 
-### `vscode-extension/` — VS Code / Cursor companion
+### `vscode-extension/` — VS Code **and** Cursor companion
 
-Plain-JS extension (no build step). Detects editor activity the API actually
-exposes:
+One extension covers **both editors** — Cursor is a VS Code fork and loads the
+same `.vsix`/extension folder, so there is no separate "Cursor build." It is a
+plain-JS extension (no build step) that detects the editor activity the public
+API actually exposes:
 
 | Editor event             | Sent kind |
 | ------------------------ | --------- |
 | You type in a file       | `editing` |
 | You save a file          | `tool`    |
-| ~30s with no edits       | `idle`    |
 | `doraemonPet.signal` cmd | any kind  |
 
-**Run it:** open `integrations/vscode-extension/` in VS Code / Cursor and press
-`F5` (Extension Development Host), or copy the folder into your extensions
-directory (`~/.vscode/extensions/` or `~/.cursor/extensions/`) and reload.
+(It deliberately does **not** emit `idle` — the renderer relaxes a session ~9s
+after the last event, and an editor `idle` would stomp an in-progress agent mood.)
+
+**Run it (dev):** open `integrations/vscode-extension/` in VS Code / Cursor and
+press `F5` (Extension Development Host).
+
+**Install it (persistent):** copy the folder into your editor's extensions dir
+and reload the window (`Developer: Reload Window`):
+
+- VS Code → `~/.vscode/extensions/doraemon-pet-activity-0.1.0`
+- Cursor → `~/.cursor/extensions/doraemon-pet-activity-0.1.0`
+
 Configure host/port under the `doraemonPet.*` settings. The `doraemonPet.signal`
 command lets keybindings, tasks, or other extensions push any agent mood.
 
-### Codex / Copilot / other agents
+### `codex/` — OpenAI Codex CLI hooks
+
+Codex's lifecycle hooks mirror Claude Code's and hand each hook a JSON payload
+on stdin, so the **same `pet-notify.mjs`** drives both. `codex/config.hooks.toml`
+maps:
+
+| Codex hook          | Sent kind | Pet shows           |
+| ------------------- | --------- | ------------------- |
+| `UserPromptSubmit`  | `prompt`  | poses your question |
+| `PreToolUse`        | `tool`    | intense coding      |
+| `PermissionRequest` | `ask`     | puzzled / needs you |
+| `Stop`              | `answer`  | presenting answer   |
+| `SessionStart`      | `idle`    | back to routine     |
+
+**Install:** merge the `[[hooks.*]]` blocks from `codex/config.hooks.toml` into
+your **user-level** Codex config (`~/.codex/config.toml`) and replace
+`ABSOLUTE_PATH` with the path to this repo. Restart Codex. (Codex has no
+`SessionEnd`; `Stop` ends each turn. The `matcher` is omitted on `PreToolUse` so
+it fires for every tool — Bash, apply_patch, MCP.)
+
+### Copilot / other agents
 
 Any agent that supports lifecycle hooks or shell callbacks can call
 `pet-notify.mjs <kind>` (or POST directly). Map its "prompt submitted / thinking
 / tool run / responded / awaiting input / finished / failed" events onto the
-kinds above.
+kinds above. If the agent passes a hook payload with a `hook_event_name` field
+on stdin, you can omit `<kind>` entirely and let `pet-notify.mjs` derive it.

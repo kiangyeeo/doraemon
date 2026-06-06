@@ -136,10 +136,32 @@ Ready-made adapters live in [`integrations/`](integrations/README.md):
 
 - **`pet-notify.mjs`** — universal fire-and-forget CLI poster for any hook/script.
 - **`claude-code/`** — Claude Code lifecycle hooks (prompt → tool → ask → answer).
-- **`vscode-extension/`** — VS Code / Cursor companion (typing, save, idle, manual signals).
+- **`codex/`** — OpenAI Codex CLI lifecycle hooks (same mapping as Claude Code).
+- **`vscode-extension/`** — VS Code **and** Cursor companion (typing, save, manual
+  signals). One extension covers both editors — Cursor is a VS Code fork.
+
+### Turn it on
+
+The pet only animates `coding*`/`chat*`/`research` while it is **running**
+(`npm run dev`) — every adapter just POSTs to its loopback server, so start the
+pet first, then enable whichever tools you use:
+
+| Tool | How to enable | Drives |
+| --- | --- | --- |
+| **Claude Code** | Merge the `hooks` block from [`integrations/claude-code/settings.hooks.json`](integrations/claude-code/settings.hooks.json) into `~/.claude/settings.json` (all projects) or `.claude/settings.json` (one project), replace `ABSOLUTE_PATH` with this repo's path, and restart Claude Code. | Agent moods: prompt → tool/research → ask → answer |
+| **Codex CLI** | Merge the `[[hooks.*]]` blocks from [`integrations/codex/config.hooks.toml`](integrations/codex/config.hooks.toml) into **user-level** `~/.codex/config.toml`, replace `ABSOLUTE_PATH`, and restart Codex. | Agent moods (same as Claude Code) |
+| **VS Code / Cursor** | Copy [`integrations/vscode-extension/`](integrations/vscode-extension/) into `~/.vscode/extensions/doraemon-pet-activity-0.1.0` (or `~/.cursor/extensions/…`) and run `Developer: Reload Window`. Or open the folder and press `F5` for a dev host. | Editor activity: typing → `editing`, save → `tool` |
+
+Verify the chain end-to-end at any time without any tool:
+
+```powershell
+Invoke-RestMethod -Uri http://127.0.0.1:53118/health           # pet up?
+Invoke-RestMethod -Uri http://127.0.0.1:53118/activity -Method Post `
+  -ContentType 'application/json' -Body '{"kind":"thinking","source":"test"}'
+```
 
 See [`integrations/README.md`](integrations/README.md) for the full HTTP contract
-and install steps.
+and per-adapter details.
 
 ## Asset Workflow
 
@@ -184,7 +206,6 @@ folder.
 ```bash
 npm run assets:normalize
 ```
-
 The normalizer:
 
 - Detects each frame's non-transparent bounding box.
